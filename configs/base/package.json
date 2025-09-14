@@ -1,12 +1,10 @@
 {
-  "name": "@funtoyz/base",
-  "scripts": {
-    "check:types": "tsc --noEmit"
-  },
-  "dependencies": {
-    "vitest": "^3.2.4"
-  },
-  "devDependencies": {
-    "typescript": "^5.9.2"
-  }
+	"name": "@funtoyz/base",
+	"scripts": {},
+	"dependencies": {
+		"vitest": "^3.2.4"
+	},
+	"devDependencies": {
+		"typescript": "^5.9.2"
+	}
 }
