@@ -1,0 +1,28 @@
+{
+	"compilerOptions": {
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"target": "ESNext",
+		"useDefineForClassFields": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"module": "preserve",
+		"lib": ["ESNext", "dom"],
+		/* Bundler mode */
+		"verbatimModuleSyntax": false,
+		"moduleDetection": "force",
+		"types": ["vitest/globals"],
+		/* Linting */
+		/* we avoid rules which are redundant with eslint */
+		"strict": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"erasableSyntaxOnly": true,
+		"noFallthroughCasesInSwitch": false,
+		"noUncheckedSideEffectImports": true,
+		"outDir": "dist",
+		"rootDir": "src"
+	},
+	"include": ["src"]
+}

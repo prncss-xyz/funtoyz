@@ -2,7 +2,6 @@
 	"name": "funtoyz",
 	"version": "0.0.0",
 	"description": "",
-	"main": "index.js",
 	"scripts": {
 		"check": "turbo run check",
 		"fix": "turbo run fix",
