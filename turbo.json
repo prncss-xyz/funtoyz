@@ -1,0 +1,43 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "tasks": {
+    "transit": {
+      "dependsOn": [
+        "^transit"
+      ]
+    },
+    "//#fix:lint": {},
+    "//#fix:style": {},
+    "fix": {
+      "dependsOn": [
+        "//#fix:lint",
+        "//#fix:style"
+      ]
+    },
+    "//#check:knip": {},
+    "check:types": {
+      "dependsOn": [
+        "transit"
+      ]
+    },
+    "check:unit": {
+      "dependsOn": []
+    },
+    "check": {
+      "dependsOn": [
+        "//#check:knip",
+        "check:types",
+        "check:unit"
+      ]
+    },
+    "build": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false
+    }
+  }
+}

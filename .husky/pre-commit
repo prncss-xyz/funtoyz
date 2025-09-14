@@ -1,0 +1,5 @@
+pnpm exec lint-staged --allow-empty 
+pnpm check
+pnpm fix
+pnpm build
+git update-index --again
