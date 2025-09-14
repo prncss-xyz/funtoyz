@@ -1,46 +1,30 @@
 {
-  "$schema": "https://turborepo.com/schema.json",
-  "tasks": {
-    "transit": {
-      "dependsOn": [
-        "^transit"
-      ]
-    },
-    "//#fix:lint": {},
-    "//#fix:style": {},
-    "fix": {
-      "dependsOn": [
-        "//#fix:lint",
-        "//#fix:style"
-      ]
-    },
-    "//#check:tests": {},
-    "//#check:knip": {},
-    "check:types": {
-      "dependsOn": [
-        "transit"
-      ]
-    },
-    "check": {
-      "dependsOn": [
-        "//#check:knip",
-        "check:types",
-        "check:tests"
-      ]
-    },
-    "build": {
-      "dependsOn": [
-        "^build"
-      ]
-    },
-    "//#dev:tests": {},
-    "dev": {
-      "persistent": true,
-      "cache": false,
-      "dependsOn": [
-        "//#dev:tests",
-        "dev:start"
-      ]
-    }
-  }
+	"$schema": "https://turborepo.com/schema.json",
+	"tasks": {
+		"transit": {
+			"dependsOn": ["^transit"]
+		},
+		"//#fix:lint": {},
+		"//#fix:style": {},
+		"fix": {
+			"dependsOn": ["//#fix:lint", "//#fix:style"]
+		},
+		"//#check:tests": {},
+		"//#check:knip": {},
+		"check:types": {
+			"dependsOn": ["transit"]
+		},
+		"check": {
+			"dependsOn": ["//#check:knip", "check:types"]
+		},
+		"build": {
+			"dependsOn": ["^build"]
+		},
+		"//#dev:tests": {},
+		"dev": {
+			"persistent": true,
+			"cache": false,
+			"dependsOn": ["//#dev:tests", "dev:start"]
+		}
+	}
 }
