@@ -14,20 +14,18 @@
         "//#fix:style"
       ]
     },
+    "//#check:tests": {},
     "//#check:knip": {},
     "check:types": {
       "dependsOn": [
         "transit"
       ]
     },
-    "check:unit": {
-      "dependsOn": []
-    },
     "check": {
       "dependsOn": [
         "//#check:knip",
         "check:types",
-        "check:unit"
+        "check:tests"
       ]
     },
     "build": {
@@ -35,9 +33,14 @@
         "^build"
       ]
     },
+    "//#dev:tests": {},
     "dev": {
       "persistent": true,
-      "cache": false
+      "cache": false,
+      "dependsOn": [
+        "//#dev:tests",
+        "dev:start"
+      ]
     }
   }
 }
