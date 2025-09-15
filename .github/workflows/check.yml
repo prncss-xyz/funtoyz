@@ -1,11 +1,12 @@
-on: push
+on:
+  push:
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Cache turbo build setup
+      - name: Cache turbo setup
         uses: actions/cache@v4
         with:
           path: .turbo
@@ -21,5 +22,5 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
-      - name: Build
+      - name: Check
         run: pnpm run check

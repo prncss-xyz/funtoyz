@@ -4,27 +4,33 @@
 		"transit": {
 			"dependsOn": ["^transit"]
 		},
-		"//#fix:lint": {},
-		"//#fix:style": {},
-		"fix": {
-			"dependsOn": ["//#fix:lint", "//#fix:style"]
+		"//#check:tests": {
+			"outputs": ["coverage"]
 		},
-		"//#check:tests": {},
 		"//#check:knip": {},
 		"check:types": {
 			"dependsOn": ["transit"]
 		},
 		"check": {
-			"dependsOn": ["//#check:knip", "check:types"]
+			"dependsOn": ["//#check:knip", "check:types", "//#check:tests"]
 		},
+		"//#fix:lint": {},
+		"//#fix:style": {},
+		"fix": {
+			"dependsOn": ["//#fix:lint", "//#fix:style", "check"]
+		},
+		"//#build:lint": {},
 		"build": {
-			"dependsOn": ["^build"]
+			"outputs": ["dist/**"],
+			"dependsOn": ["//#build:lint", "check", "^build"]
 		},
-		"//#dev:tests": {},
-		"dev": {
+		"//#dev:tests": {
 			"persistent": true,
-			"cache": false,
-			"dependsOn": ["//#dev:tests", "dev:start"]
+			"cache": false
+		},
+		"dev:start": {
+			"persistent": true,
+			"cache": false
 		}
 	}
 }

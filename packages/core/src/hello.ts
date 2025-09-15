@@ -1,3 +1,3 @@
 export function hello() {
-	return 'world'
+	return { hello: 0, world: 1 }
 }

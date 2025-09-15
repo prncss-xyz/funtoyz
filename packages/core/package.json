@@ -6,7 +6,7 @@
 	"scripts": {
 		"check:types": "tsc --noEmit",
 		"build": "tsdown",
-		"dev:start": "tsdown"
+		"dev:start": "tsdown --watch"
 	},
 	"keywords": [],
 	"author": "Juliette Lamarche <juliette.lamarche.xyz@gmail.com> (https://github.com/prncss-xyz/)",
