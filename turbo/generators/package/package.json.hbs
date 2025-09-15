@@ -1,0 +1,17 @@
+{
+  "name": "@funtoyz/{{ name }}",
+  "version": "{{ pkg 'version' }}",
+  "description": "",
+  "scripts": {
+    "check:types": "tsc --noEmit",
+    "build": "tsdown",
+    "dev:start": "tsdown"
+  },
+  "keywords": [],
+  "author": "{{{ pkg 'author' }}}",
+  "license": "{{{ pkg 'license' }}}",
+  "type": "module",
+  "devDependencies": {
+    "@funtoyz/base": "workspace:*"
+  }
+}
