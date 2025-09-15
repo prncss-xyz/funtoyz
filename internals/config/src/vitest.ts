@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config'
 
-export const vitestBase = defineConfig({
+export const sharedVitest = defineConfig({
 	test: {
 		coverage: {
 			exclude: ['**.test.*'],

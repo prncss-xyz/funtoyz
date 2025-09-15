@@ -1,5 +1,5 @@
 {
-	"name": "@funtoyz/base",
+	"name": "@funtoyz/config",
 	"type": "module",
 	"scripts": {
 		"check:types": "tsc --noEmit",

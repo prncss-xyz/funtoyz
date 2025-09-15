@@ -15,7 +15,7 @@
 	"packageManager": "pnpm@10.15.1",
 	"type": "module",
 	"devDependencies": {
-		"@funtoyz/base": "workspace:*",
+		"@funtoyz/config": "workspace:*",
 		"@types/node": "^24.4.0",
 		"tsdown": "^0.15.1",
 		"typescript": "^5.9.2",

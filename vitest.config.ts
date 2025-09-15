@@ -1,9 +1,9 @@
-import { vitestBase } from '@funtoyz/base'
+import { sharedVitest } from '@funtoyz/config'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
-	...vitestBase,
+	...sharedVitest,
 	test: {
-		...vitestBase.test,
+		...sharedVitest.test,
 	},
 })

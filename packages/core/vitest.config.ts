@@ -1,2 +1,2 @@
-import { vitestBase } from '@funtoyz/base'
-export default vitestBase
+import { sharedVitest } from '@funtoyz/config'
+export default sharedVitest
