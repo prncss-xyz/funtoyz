@@ -5,7 +5,8 @@
 			"dependsOn": ["^transit"]
 		},
 		"check:tests": {
-			"outputs": ["coverage"]
+			"outputs": ["coverage"],
+			"dependsOn": ["build"]
 		},
 		"//#check:knip": {},
 		"check:types": {
