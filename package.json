@@ -10,7 +10,7 @@
 		"check:knip": "knip",
 		"check:tests": "vitest run --coverage",
 		"dev:tests": "vitest",
-		"build:lint": "eslint",
+		"build:lint": "eslint $(git diff --name-only HEAD^ HEAD -- '*.{js,ts,jsx,tsx}')",
 		"fix": "turbo run fix",
 		"fix:lint": "pnpm run build:lint --fix",
 		"fix:style": "prettier  --no-error-on-unmatched-pattern --write {internals,packages,apps,*.js}",
