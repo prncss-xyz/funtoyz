@@ -5,8 +5,9 @@
 	"main": "./dist/hello.js",
 	"scripts": {
 		"check:types": "tsc --noEmit",
+		"check:tests": "vitest run --coverage",
 		"build": "tsdown",
-		"dev:start": "tsdown --watch"
+		"dev": "tsdown --watch"
 	},
 	"keywords": [],
 	"author": "Juliette Lamarche <juliette.lamarche.xyz@gmail.com> (https://github.com/prncss-xyz/)",
@@ -17,11 +18,13 @@
 		"@funtoyz/base": "workspace:*",
 		"@types/node": "^24.4.0",
 		"tsdown": "^0.15.1",
-		"typescript": "^5.9.2"
+		"typescript": "^5.9.2",
+		"vitest": "^3.2.4"
 	},
 	"exports": {
 		".": "./dist/hello.js",
 		"./package.json": "./package.json"
 	},
-	"module": "./dist/hello.js"
+	"module": "./dist/hello.js",
+	"types": "./dist/hello.d.ts"
 }

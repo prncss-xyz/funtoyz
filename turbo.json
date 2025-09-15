@@ -4,7 +4,7 @@
 		"transit": {
 			"dependsOn": ["^transit"]
 		},
-		"//#check:tests": {
+		"check:tests": {
 			"outputs": ["coverage"]
 		},
 		"//#check:knip": {},
@@ -12,7 +12,7 @@
 			"dependsOn": ["transit"]
 		},
 		"check": {
-			"dependsOn": ["//#check:knip", "check:types", "//#check:tests"]
+			"dependsOn": ["//#check:knip", "check:types", "check:tests"]
 		},
 		"//#fix:lint": {},
 		"//#fix:style": {},
@@ -24,11 +24,7 @@
 			"outputs": ["dist/**"],
 			"dependsOn": ["//#build:lint", "check", "^build"]
 		},
-		"//#dev:tests": {
-			"persistent": true,
-			"cache": false
-		},
-		"dev:start": {
+		"dev": {
 			"persistent": true,
 			"cache": false
 		}

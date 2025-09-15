@@ -18,7 +18,14 @@ export default function generator(plop: PlopTypes.NodePlopAPI) {
 				type: 'addMany',
 			},
 			{
-				args: ['install', '-D', 'typescript', 'tsdown', '@types/node'],
+				args: [
+					'install',
+					'-D',
+					'@types/node',
+					'tsdown',
+					'typescript',
+					'vitest',
+				],
 				command: 'pnpm',
 				type: 'spawn',
 			} as any,

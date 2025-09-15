@@ -1,0 +1,24 @@
+{
+	"name": "@funtoyz/base",
+	"type": "module",
+	"scripts": {
+		"check:types": "tsc --noEmit",
+		"build": "tsc --declaration",
+		"dev": "tsc --declaration --watch"
+	},
+	"dependencies": {
+		"vitest": "^3.2.4"
+	},
+	"devDependencies": {
+		"vite": "^7.1.5",
+		"typescript": "^5.9.2"
+	},
+	"exports": {
+		".": "./dist/vitest.js",
+		"./tsconfig.json": "./tsconfig.json",
+		"./package.json": "./package.json"
+	},
+	"main": "./dist/vitest.js",
+	"module": "./dist/vitest.js",
+	"types": "./dist/vitest.d.ts"
+}

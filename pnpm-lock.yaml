@@ -19,6 +19,9 @@ importers:
       '@eslint/js':
         specifier: ^9.35.0
         version: 9.35.0
+      '@funtoyz/base':
+        specifier: workspace:*
+        version: link:internals/base
       '@turbo/gen':
         specifier: ^2.5.6
         version: 2.5.6(@types/node@24.4.0)(typescript@5.9.2)
@@ -62,7 +65,7 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.4.0)(jiti@2.5.1)(yaml@2.8.1)
 
-  configs/base:
+  internals/base:
     dependencies:
       vitest:
         specifier: ^3.2.4
@@ -71,12 +74,15 @@ importers:
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
+      vite:
+        specifier: ^7.1.5
+        version: 7.1.5(@types/node@24.4.0)(jiti@2.5.1)(yaml@2.8.1)
 
   packages/core:
     devDependencies:
       '@funtoyz/base':
         specifier: workspace:*
-        version: link:../../configs/base
+        version: link:../../internals/base
       '@types/node':
         specifier: ^24.4.0
         version: 24.4.0
@@ -86,6 +92,9 @@ importers:
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.4(@types/node@24.4.0)(jiti@2.5.1)(yaml@2.8.1)
 
 packages:
   '@ampproject/remapping@2.3.0':
