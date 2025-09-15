@@ -12,7 +12,7 @@
 			"dependsOn": ["transit"]
 		},
 		"check": {
-			"dependsOn": ["//#check:knip", "check:types", "check:tests"]
+			"dependsOn": ["build", "//#check:knip", "check:types", "check:tests"]
 		},
 		"//#fix:lint": {},
 		"//#fix:style": {},
@@ -22,7 +22,7 @@
 		"//#build:lint": {},
 		"build": {
 			"outputs": ["dist/**"],
-			"dependsOn": ["//#build:lint", "check", "^build"]
+			"dependsOn": ["^build"]
 		},
 		"dev": {
 			"persistent": true,
