@@ -19,6 +19,14 @@
 		"check": {
 			"dependsOn": ["//#check:knip", "check:types", "check:tests"]
 		},
+		"//#lint:style": {},
+		"//#lint:eslint": {},
+		"lint": {
+			"dependsOn": ["//#lint:style", "//#lint:eslint"]
+		},
+		"verify": {
+			"dependsOn": ["check", "lint"]
+		},
 		"dev": {
 			"persistent": true,
 			"cache": false
