@@ -1,9 +1,15 @@
-import cspellPlugin from '@cspell/eslint-plugin'
-import js from '@eslint/js'
+import cspell from '@cspell/eslint-plugin'
+import { includeIgnoreFile } from '@eslint/compat'
+import jsLint from '@eslint/js'
 import perfectionist from 'eslint-plugin-perfectionist'
+import react from 'eslint-plugin-react'
+import reactCompiler from 'eslint-plugin-react-compiler'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig } from 'eslint/config'
 import globals from 'globals'
-import tseslint from 'typescript-eslint'
+import { resolve } from 'node:path'
+import tsESLint from 'typescript-eslint'
 
 const perf = [
 	'warn',
@@ -13,18 +19,22 @@ const perf = [
 ]
 
 export default defineConfig(
-	tseslint.configs.recommended,
-	js.configs.recommended,
+	includeIgnoreFile(resolve('.prettierignore'), 'Imported .gitignore patterns'),
+	tsESLint.configs.recommended,
+	jsLint.configs.recommended,
 	{
 		files: ['**/*.{js,jsx,ts,tsx}'],
-		ignores: ['**/dist/**', '**/coverage/**'],
 		languageOptions: {
 			ecmaVersion: 2022,
 			globals: globals.browser,
 		},
 		plugins: {
-			'@cspell': cspellPlugin,
+			'@cspell': cspell,
 			perfectionist,
+			react,
+			'react-compiler': reactCompiler,
+			'react-hooks': reactHooks,
+			'react-refresh': reactRefresh,
 		},
 		rules: {
 			'@cspell/spellchecker': [
@@ -49,7 +59,6 @@ export default defineConfig(
 							'prncss',
 							'rambda',
 							'removables',
-							'tseslint',
 							'trush',
 						],
 					},
@@ -65,10 +74,10 @@ export default defineConfig(
 				},
 			],
 			'no-console': 'warn',
-			'no-constant-condition': 'off',
 			'no-else-return': 'warn',
 			'no-empty': 'warn',
 			'no-undef': 'off',
+			'no-unused-vars': 'off',
 			'no-useless-rename': ['warn'],
 			'object-shorthand': ['warn', 'always'],
 			'perfectionist/sort-array-includes': [

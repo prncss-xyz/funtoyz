@@ -1,0 +1,28 @@
+{
+	"name": "@funtoyz/config",
+	"type": "module",
+	"scripts": {
+		"check:types": "tsc --noEmit",
+		"build": "tsdown",
+		"dev": "tsdown --watch"
+	},
+	"dependencies": {
+		"vitest": "^3.2.4"
+	},
+	"devDependencies": {
+		"@types/node": "^24.5.1",
+		"tsdown": "^0.15.2",
+		"typescript": "^5.9.2",
+		"vite": "^7.1.5"
+	},
+	"exports": {
+		".": "./dist/index.js",
+		"./basePath": "./dist/basePath.js",
+		"./vitest": "./dist/vitest.js",
+		"./package.json": "./package.json",
+		"./tsconfig.base.json": "./tsconfig.base.json"
+	},
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts"
+}

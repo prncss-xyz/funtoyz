@@ -5,7 +5,7 @@
 			"dependsOn": ["^transit"]
 		},
 		"build": {
-			"outputs": ["dist"],
+			"outputs": ["dist", "out"],
 			"dependsOn": ["^build"]
 		},
 		"check:tests": {
