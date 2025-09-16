@@ -4,26 +4,19 @@
 		"transit": {
 			"dependsOn": ["^transit"]
 		},
+		"build": {
+			"outputs": ["dist"],
+			"dependsOn": ["^build"]
+		},
 		"check:tests": {
-			"outputs": ["coverage"],
-			"dependsOn": ["build"]
+			"outputs": ["coverage"]
 		},
 		"//#check:knip": {},
 		"check:types": {
 			"dependsOn": ["transit"]
 		},
 		"check": {
-			"dependsOn": ["build", "//#check:knip", "check:types", "check:tests"]
-		},
-		"//#fix:lint": {},
-		"//#fix:style": {},
-		"fix": {
-			"dependsOn": ["//#fix:lint", "//#fix:style", "check"]
-		},
-		"//#build:lint": {},
-		"build": {
-			"outputs": ["dist/**"],
-			"dependsOn": ["^build"]
+			"dependsOn": ["//#check:knip", "check:types", "check:tests"]
 		},
 		"dev": {
 			"persistent": true,
