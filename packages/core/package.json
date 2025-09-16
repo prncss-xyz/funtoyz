@@ -16,7 +16,7 @@
 	"type": "module",
 	"devDependencies": {
 		"@funtoyz/config": "workspace:*",
-		"@types/node": "^24.4.0",
+		"@types/node": "^24.5.0",
 		"tsdown": "^0.15.1",
 		"typescript": "^5.9.2",
 		"vitest": "^3.2.4"

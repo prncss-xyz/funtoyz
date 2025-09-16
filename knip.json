@@ -1,6 +1,5 @@
 {
 	"$schema": "https://unpkg.com/knip@5/schema.json",
 	"ignoreWorkspaces": ["turbo"],
-	"ignoreDependencies": ["@turbo/gen", "vite"],
-	"ignore": ["lint-only.config.js"]
+	"ignoreDependencies": ["@turbo/gen", "vite"]
 }

@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Lint
-        run: pnpm run lint:staged
+        run: pnpm run lint
       - name: Build
         run: pnpm run build
       - name: Check
@@ -33,3 +33,7 @@ jobs:
       - uses: codecov/codecov-action@v5
         with:
           use_oidc: true
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
