@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Lint
-        run: pnpm run lint:diff
+        run: pnpm run lint:staged
       - name: Build
         run: pnpm run build
       - name: Check
