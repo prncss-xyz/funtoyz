@@ -13,7 +13,7 @@
 		"lint:style": "prettier --check .",
 		"lint:eslint": "eslint",
 		"lint": "turbo run lint",
-		"verity": "turbo run verify",
+		"verify": "turbo run verify",
 		"fix": "prettier --write .; eslint --fix",
 		"prepare": "husky",
 		"commitlint": "commitlint --edit"
