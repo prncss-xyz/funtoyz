@@ -9,11 +9,12 @@
 			"dependsOn": ["^build"]
 		},
 		"check:tests": {
+			"dependsOn": ["build"],
 			"outputs": ["coverage"]
 		},
 		"//#check:knip": {},
 		"check:types": {
-			"dependsOn": ["transit"]
+			"dependsOn": ["transit", "build"]
 		},
 		"check": {
 			"dependsOn": ["//#check:knip", "check:types", "check:tests"]
