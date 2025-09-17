@@ -32,21 +32,9 @@ jobs:
         run: pnpm run verify
       - name: Verify
         run: pnpm run knip
-
-  repport:
-    needs:
-      - build
-    runs-on: ubuntu-latest
-    steps:
       - uses: codecov/codecov-action@v5
         with:
           use_oidc: true
-
-  publish:
-    needs:
-      - build
-    runs-on: ubuntu-latest
-    steps:
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
