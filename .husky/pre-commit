@@ -1,3 +1,4 @@
+pnpm run sherif
 pnpm exec lint-staged
 pnpm exec turbo run pre-commit
 pnpm run knip

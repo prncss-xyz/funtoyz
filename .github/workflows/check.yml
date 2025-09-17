@@ -30,9 +30,11 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+      - name: Sherif
+        run: pnpm run sherif
       - name: Verify
         run: pnpm run verify
-      - name: Verify
+      - name: Knip
         run: pnpm run knip
       - uses: codecov/codecov-action@v5
         with:
