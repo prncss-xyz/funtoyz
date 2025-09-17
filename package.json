@@ -7,7 +7,7 @@
 		"update": "pnpm update --latest --recursive",
 		"build": "turbo run build",
 		"check": "turbo run check",
-		"knip": "knip",
+		"knip": "knip --cache",
 		"check:tests": "vitest run --coverage",
 		"dev:tests": "vitest",
 		"lint:style": "prettier --check .",
