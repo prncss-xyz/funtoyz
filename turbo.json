@@ -6,6 +6,7 @@
 		},
 		"build": {
 			"outputs": ["dist", "out"],
+			"env": ["BASE_PATH"],
 			"dependsOn": ["^build"]
 		},
 		"check:tests": {
