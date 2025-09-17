@@ -13,13 +13,7 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Cache turbo
-        uses: actions/cache@v4
-        with:
-          path: .turbo apps/website/.next/cache ./node_modules/.cache/knip
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-turbo-
-      - name: Cache next
+      - name: Cache
         uses: actions/cache@v4
         with:
           path: |
