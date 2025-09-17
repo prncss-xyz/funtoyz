@@ -1,10 +1,13 @@
 import Image from 'next/image'
 
+import { basePath } from '@/../basePath.mjs'
+
 import styles from './page.module.css'
 
 export default function Home() {
 	return (
 		<div className={styles.page}>
+			<div>{basePath}</div>
 			<main className={styles.main}>
 				<Image
 					alt='Next.js logo'
