@@ -2,7 +2,7 @@
 	"$schema": "https://turborepo.com/schema.json",
 	"tasks": {
 		"build": {
-			"outputs": ["dist/**", "out/**"],
+			"outputs": ["dist/**"],
 			"env": ["BASE_PATH"],
 			"dependsOn": ["^build"]
 		},

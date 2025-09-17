@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "next dev --turbopack",
 		"build": "next build --turbopack",
-		"serve": "serve out"
+		"serve": "serve dist"
 	},
 	"dependencies": {
 		"@funtoyz/core": "workspace:*",

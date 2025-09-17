@@ -1,5 +1,4 @@
 import cspell from '@cspell/eslint-plugin'
-import { includeIgnoreFile } from '@eslint/compat'
 import jsLint from '@eslint/js'
 import perfectionist from 'eslint-plugin-perfectionist'
 import react from 'eslint-plugin-react'
@@ -8,7 +7,6 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig } from 'eslint/config'
 import globals from 'globals'
-import { resolve } from 'node:path'
 import tsESLint from 'typescript-eslint'
 
 const perf = [
@@ -19,11 +17,26 @@ const perf = [
 ]
 
 export default defineConfig(
-	includeIgnoreFile(resolve('.prettierignore'), 'Imported .gitignore patterns'),
 	tsESLint.configs.recommended,
 	jsLint.configs.recommended,
 	{
 		files: ['**/*.{js,jsx,ts,tsx}'],
+		ignores: [
+			'**/.cache/**',
+			'**/.turbo/**',
+			'**/node_modules/**',
+			'**/build/**',
+			'**/public/**',
+			'**/*.json',
+			'**/playwright-report/**',
+			'**/server-build/**',
+			'**/dist/**',
+			'**/coverage/**',
+			'**/*.tsbuildinfo',
+			'**/.react-router/**',
+			'**/.wrangler/**',
+			'**/worker-configuration.d.ts',
+		],
 		languageOptions: {
 			ecmaVersion: 2022,
 			globals: globals.browser,
