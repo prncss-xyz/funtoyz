@@ -24,8 +24,12 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
-      - name: Check
+      - name: Verify
         run: pnpm run verify
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+      - name: Verify
+        run: pnpm run knip
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
       - uses: codecov/codecov-action@v5

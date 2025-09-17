@@ -42,6 +42,7 @@ export default defineConfig(
 				{
 					cspell: {
 						words: [
+							'logomark',
 							'accs',
 							'LTAGS',
 							'callbags',
