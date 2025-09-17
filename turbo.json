@@ -1,20 +1,17 @@
 {
 	"$schema": "https://turborepo.com/schema.json",
 	"tasks": {
-		"transit": {
-			"dependsOn": ["^transit"]
-		},
 		"build": {
-			"outputs": ["dist", "out"],
+			"outputs": ["dist/**", "out/**"],
 			"env": ["BASE_PATH"],
 			"dependsOn": ["^build"]
 		},
 		"check:tests": {
 			"dependsOn": ["build"],
-			"outputs": ["coverage"]
+			"outputs": ["coverage/**"]
 		},
 		"check:types": {
-			"dependsOn": ["transit", "build"]
+			"dependsOn": ["build"]
 		},
 		"check": {
 			"dependsOn": ["check:types", "check:tests"]
@@ -24,8 +21,11 @@
 		"lint": {
 			"dependsOn": ["//#lint:style", "//#lint:eslint"]
 		},
+		"pre-commit": {
+			"dependsOn": ["check"]
+		},
 		"verify": {
-			"dependsOn": ["check", "lint"]
+			"dependsOn": ["lint", "pre-commit"]
 		},
 		"dev": {
 			"persistent": true,

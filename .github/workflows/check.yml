@@ -32,7 +32,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Verify
-        run: pnpm run verify
+        run: pnpm exec turbo run verify
       - name: Verify
         run: pnpm run knip
       - uses: codecov/codecov-action@v5
