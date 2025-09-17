@@ -1,8 +1,7 @@
-import { basePath } from './basePath.mjs'
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	basePath,
+	// eslint-disable-next-line no-undef
+	basePath: process.env.BASE_PATH,
 	output: 'export',
 }
 

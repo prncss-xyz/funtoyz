@@ -83,6 +83,9 @@ importers:
 
   apps/website:
     dependencies:
+      '@funtoyz/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       next:
         specifier: 15.5.3
         version: 15.5.3(@babel/core@7.28.4)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)

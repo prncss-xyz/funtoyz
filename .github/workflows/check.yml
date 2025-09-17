@@ -1,5 +1,7 @@
 on:
   push:
+env:
+  BASE_PATH: '/funtoyz'
 permissions:
   contents: read
   pages: write
@@ -28,8 +30,6 @@ jobs:
         run: pnpm install
       - name: Verify
         run: pnpm run verify
-        env:
-          GITHUB_REPOSITORY: ${{ github.repository }}
       - name: Verify
         run: pnpm run knip
       - uses: codecov/codecov-action@v5
