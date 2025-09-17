@@ -6,6 +6,9 @@ permissions:
   id-token: write
 jobs:
   build:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -32,8 +35,6 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
       - name: Verify
         run: pnpm run knip
-        env:
-          GITHUB_REPOSITORY: ${{ github.repository }}
       - uses: codecov/codecov-action@v5
         with:
           use_oidc: true
