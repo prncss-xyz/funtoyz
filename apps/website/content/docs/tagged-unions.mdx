@@ -1,0 +1,61 @@
+---
+title: Tagged Union
+description: How FunToyz handles tagged unions
+---
+
+Tagged union are the key to function data modeling and exhautive error handling. Having a standard way to deel with tagged union makes the code more simple and lowers the need for complicated data handling.
+
+We are following the Redux action convention,
+
+```typescript
+{
+  type: 'type',
+  payload: 'something'
+}
+```
+
+## Tagged
+
+To create a tagged union type, you can use the `Tags` type utility.
+
+```typescript
+type T = Tagged<{ a: string; b: number }>
+```
+
+which will create a type equivalent to:
+
+```typescript
+type T = { type: 'a'; payload: string } | { type: 'b'; payload: number }
+```
+
+## tag
+
+To create a simple value, use the `tag` function:
+
+```typescript
+const t = tag('a', 12) // t === {type: a, value: 12}
+```
+
+## match
+
+Finally, you can use the match utility to consume a value of this type union.
+
+```typescript
+const res = match(x, { a: (x) => x.length(), b: (x) => x })
+```
+
+If you don't write a matcher for every possible type, you also need to provide a default matcher:
+
+```typescript
+const res = match(x, { a: (x) => x.length() }, (x) => x)
+```
+
+You can also get a curried form by omitting the first argument:
+
+```typescript
+const res = match({ a: (x) => x.length(), b: (x) => x })(x)
+```
+
+```typescript
+const res = match({ a: (x) => x.length() }, (x) => x)(x)
+```

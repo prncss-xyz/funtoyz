@@ -1,28 +1,14 @@
 {
 	"extends": "@funtoyz/config/tsconfig.base.json",
 	"compilerOptions": {
-		"target": "ES2017",
-		"noEmit": true,
-		"module": "esnext",
+		"jsx": "react-jsx",
+		"module": "ESNext",
 		"moduleResolution": "bundler",
-		"jsx": "preserve",
-		"plugins": [
-			{
-				"name": "next"
-			}
-		],
+		"resolveJsonModule": true,
+		"noEmit": true,
 		"paths": {
 			"@/*": ["./src/*"]
-		},
-		"allowJs": true
+		}
 	},
-	"include": [
-		"next-env.d.ts",
-		"**/*.ts",
-		"**/*.tsx",
-		".next/types/**/*.ts",
-		"next.config.mjs"
-	],
-	"exclude": ["node_modules"],
-	"noUncheckedSideEffectImports": false
+	"exclude": ["node_modules", "dist"]
 }

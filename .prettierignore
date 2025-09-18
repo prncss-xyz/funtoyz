@@ -37,6 +37,7 @@ lerna-debug.log*
 # next.js
 .next
 out
+next-env.d.ts
 
 # production
 build
@@ -61,4 +62,8 @@ vite.config.ts.timestamp-*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+
+
+# Generated
+.gen.
+*generated*

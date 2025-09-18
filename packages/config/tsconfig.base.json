@@ -2,14 +2,15 @@
 	"compilerOptions": {
 		"incremental": true,
 		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
 		"skipLibCheck": true,
-		"target": "ESNext",
+		"target": "ES2022",
 		"moduleResolution": "bundler",
 		"useDefineForClassFields": true,
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"module": "preserve",
-		"lib": ["ESNext", "DOM", "DOM.Iterable", "DOM.AsyncIterable"],
+		"lib": ["ES2022", "DOM", "DOM.Iterable", "DOM.AsyncIterable"],
 		/* Bundler mode */
 		"verbatimModuleSyntax": false,
 		"moduleDetection": "force",

@@ -5,7 +5,7 @@ import react from 'eslint-plugin-react'
 import reactCompiler from 'eslint-plugin-react-compiler'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
-import { defineConfig } from 'eslint/config'
+import { defineConfig, globalIgnores } from 'eslint/config'
 import globals from 'globals'
 import tsESLint from 'typescript-eslint'
 
@@ -21,22 +21,6 @@ export default defineConfig(
 	jsLint.configs.recommended,
 	{
 		files: ['**/*.{js,jsx,ts,tsx}'],
-		ignores: [
-			'**/.cache/**',
-			'**/.turbo/**',
-			'**/node_modules/**',
-			'**/build/**',
-			'**/public/**',
-			'**/*.json',
-			'**/playwright-report/**',
-			'**/server-build/**',
-			'**/dist/**',
-			'**/coverage/**',
-			'**/*.tsbuildinfo',
-			'**/.react-router/**',
-			'**/.wrangler/**',
-			'**/worker-configuration.d.ts',
-		],
 		languageOptions: {
 			ecmaVersion: 2022,
 			globals: globals.browser,
@@ -55,6 +39,8 @@ export default defineConfig(
 				{
 					cspell: {
 						words: [
+							'waku',
+							'fumadocs',
 							'logomark',
 							'accs',
 							'LTAGS',
@@ -74,6 +60,7 @@ export default defineConfig(
 							'rambda',
 							'removables',
 							'trush',
+							'orama',
 						],
 					},
 				},
@@ -119,4 +106,24 @@ export default defineConfig(
 			'prefer-const': 'off',
 		},
 	},
+	globalIgnores([
+		'**/dist/',
+		'**/.cache/',
+		'**/.turbo/',
+		'**/.next/',
+		'**/node_modules/',
+		'**/build/',
+		'**/public/',
+		'**/*.json',
+		'**/playwright-report/',
+		'**/server-build/',
+		'**/coverage/',
+		'**/*.tsbuildinfo',
+		'**/.react-router/',
+		'**/*generated*',
+		'**/*.gen.*',
+		'**/.wrangler/',
+		'**/worker-configuration.d.ts',
+		'**/next-env.d.ts',
+	]),
 )

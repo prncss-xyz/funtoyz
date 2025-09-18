@@ -10,10 +10,10 @@
 		"vitest": "^3.2.4"
 	},
 	"devDependencies": {
-		"@types/node": "^24.5.1",
+		"@types/node": "^24.5.2",
 		"tsdown": "^0.15.2",
 		"typescript": "^5.9.2",
-		"vite": "^7.1.5"
+		"vite": "^7.1.6"
 	},
 	"exports": {
 		".": "./dist/index.js",
