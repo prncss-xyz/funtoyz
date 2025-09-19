@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "waku dev",
-		"build": "waku build --with-netlify-static",
+		"build": "waku build --with-vercel-static",
 		"serve": "serve dist/public"
 	},
 	"dependencies": {
