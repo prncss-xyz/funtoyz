@@ -39,6 +39,7 @@ export default defineConfig(
 				{
 					cspell: {
 						words: [
+							'funtoyz',
 							'waku',
 							'fumadocs',
 							'logomark',
