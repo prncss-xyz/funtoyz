@@ -1,7 +1,7 @@
 on:
   push:
 env:
-  BASE_PATH: '/funtoyz'
+  BASE_PATH: '/funtoyz/'
 permissions:
   contents: read
   pages: write
