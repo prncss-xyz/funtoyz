@@ -3,9 +3,9 @@ title: Tagged Union
 description: How FunToyz handles tagged unions
 ---
 
-Tagged union are the key to function data modeling and exhautive error handling. Having a standard way to deel with tagged union makes the code more simple and lowers the need for complicated data handling.
+Tagged unions provide the basis for functional data modeling and exhautive error handling. Having a standard way to deal with tagged unions makes code simpler and lowers the need for complex pattern matching.
 
-We are following the Redux action convention,
+We express tagged union by following the Redux action convention.
 
 ```typescript
 {
@@ -20,28 +20,50 @@ To create a tagged union type, you can use the `Tags` type utility.
 
 ```typescript
 type T = Tagged<{ a: string; b: number }>
+// { type: 'a'; payload: string } | { type: 'b'; payload: number }
 ```
 
-which will create a type equivalent to:
+To represent a singleton type (a type with no value), simply use the type `void`:
 
 ```typescript
-type T = { type: 'a'; payload: string } | { type: 'b'; payload: number }
+type T = Tagged<{a: void, b: number}
+```
+
+If every payload is an object with shared fields, you can use a second type parameter:
+
+```typescript
+type T = Tagged<{ a: { p: string }; b: { q: string } }, { z: string }>
+// | { type: 'a'; payload: {p: string, z: string} }
+// | { type: 'b'; payload: {q: string, z: string} }
 ```
 
 ## tag
 
-To create a simple value, use the `tag` function:
+To create a value, use the `tag` function:
 
 ```typescript
-const t = tag('a', 12) // t === {type: a, value: 12}
+const t = tag('a', 12) // t === {type: a, payload: 12}
+```
+
+For a singleton tag (a tag without payload information), use undefined as a second parameter. (You could use any placeholder value, but undefined is our standard and will work better with other parts of the library.)
+
+```typescript
+const t = tag('a') // t === {type: a, payload: undefined}
+```
+
+Tag is autocurried.
+
+```typescript
+const a = tag('a')
+const t = a(12) // t === {type: a, payload: 12}
 ```
 
 ## match
 
-Finally, you can use the match utility to consume a value of this type union.
+You can use the match utility to consume a value of this type union.
 
 ```typescript
-const res = match(x, { a: (x) => x.length(), b: (x) => x })
+const res: number = match(x, { a: (x) => x.length(), b: (x) => x })
 ```
 
 If you don't write a matcher for every possible type, you also need to provide a default matcher:
@@ -55,6 +77,8 @@ You can also get a curried form by omitting the first argument:
 ```typescript
 const res = match({ a: (x) => x.length(), b: (x) => x })(x)
 ```
+
+or
 
 ```typescript
 const res = match({ a: (x) => x.length() }, (x) => x)(x)

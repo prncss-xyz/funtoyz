@@ -1,0 +1,12 @@
+---
+title: Errors
+description: How FunToyz handles errors
+---
+
+We represent errors as a special case of tagged unions.
+
+```typescript
+type Result<S, F extends Tagged<any, any>> = Tagged<{success: S, failure: F}
+```
+
+Failure is often a singleton.
