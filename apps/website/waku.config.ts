@@ -6,9 +6,7 @@ import { defineConfig } from 'waku/config'
 import * as MdxConfig from './source.config.js'
 
 export default defineConfig({
-	basePath: '/funtoyz/',
-	distDir: 'dist',
-	// basePath: process.env.BASE_PATH ?? '/funtoyz/',
+	basePath: process.env.BASE_PATH ?? '/funtoyz/',
 	vite: {
 		plugins: [tailwindcss(), mdx(MdxConfig), tsconfigPaths()] as any,
 	},

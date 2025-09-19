@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "waku dev",
-		"build": "waku build --with-vercel-static",
+		"build": "waku build",
 		"serve": "serve dist/public"
 	},
 	"dependencies": {
