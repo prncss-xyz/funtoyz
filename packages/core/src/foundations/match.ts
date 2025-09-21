@@ -14,12 +14,12 @@ export function matcher<Value extends AnyTag, O extends Pattern<Value>>(
 export function matcher<
 	Value extends AnyTag,
 	O extends Partial<Pattern<Value>>,
-	R2,
+	R,
 >(
 	patterns: Exclude<Bound<Value, O>, Pattern<Value>>,
-	otherwise: Init<R2, Exclude<Value, { type: keyof O }>>,
+	otherwise: Init<R, Exclude<Value, { type: keyof O }>>,
 ): (value: Value) =>
-	| R2
+	| R
 	| {
 			[K in keyof O]: O[K] extends (...args: any[]) => infer I ? I : never
 	  }[keyof O]
@@ -36,13 +36,13 @@ export function match<Value extends AnyTag, O extends Pattern<Value>>(
 export function match<
 	Value extends AnyTag,
 	O extends Partial<Pattern<Value>>,
-	R2,
+	R,
 >(
 	value: Value,
 	patterns: Exclude<Bound<Value, O>, Pattern<Value>>,
-	otherwise: Init<R2, Exclude<Value, { type: keyof O }>>,
+	otherwise: Init<R, Exclude<Value, { type: keyof O }>>,
 ):
-	| R2
+	| R
 	| {
 			[K in keyof O]: O[K] extends (...args: any[]) => infer I ? I : never
 	  }[keyof O]

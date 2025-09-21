@@ -5,12 +5,12 @@ import {
 	forbidden,
 	successful,
 } from './assertions'
-import { isNonNullish, isNullish } from './guards'
+import { isNonNullable, isNullish } from './guards'
 import { nothing, Nothing, result, Result } from './results'
 
 describe('assertion', () => {
 	function t(x: number | undefined) {
-		assertion(isNonNullish(x), 'message')
+		assertion(isNonNullable(x), 'message')
 		expectTypeOf(x).toEqualTypeOf<number>()
 	}
 	test('pass', () => {
@@ -31,9 +31,9 @@ describe('assertion', () => {
 describe('asserted', () => {
 	test('pass', () => {
 		const v: number | undefined = 3
-		const res = asserted(isNonNullish)(v)
+		const res = asserted(isNonNullable)(v)
 		expectTypeOf(res).toEqualTypeOf<number>()
-		const r2 = asserted(isNonNullish, 'message')
+		const r2 = asserted(isNonNullable, 'message')
 		expect(() => r2(undefined)).toThrow('message')
 	})
 	test('fail', () => {

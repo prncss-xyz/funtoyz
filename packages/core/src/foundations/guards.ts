@@ -1,6 +1,8 @@
+import { AnyFunction } from './types'
+
 /* c8 ignore start */
-export function isFunction<T>(x: T): x is ((...args: any[]) => any) & T {
-	return typeof x === 'function'
+export function isFunction(u: unknown): u is AnyFunction {
+	return typeof u === 'function'
 }
 
 export function isNumber(u: unknown) {
@@ -27,11 +29,11 @@ export function isNullish(u: unknown) {
 	return u === null || u === undefined
 }
 
-export function isNonNullish(u: unknown) {
+export function isNonNullable(u: unknown) {
 	return !isNullish(u)
 }
 
-export function isUnknown(u: unknown): u is unknown {
+export function isUnknown(_u: unknown): _u is unknown {
 	return true
 }
 /* c8 ignore stop */
