@@ -1,2 +1,2 @@
-export * from './basePath'
+export * from './eslint'
 export * from './vitest'
