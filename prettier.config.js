@@ -1,11 +1,3 @@
-/** @type {import("prettier").Options} */
-const config = {
-	arrowParens: 'always',
-	jsxSingleQuote: true,
-	semi: false,
-	singleQuote: true,
-	trailingComma: 'all',
-	useTabs: true,
-}
+import { sharedPrettier } from '@funtoyz/config'
 
-export default config
+export default sharedPrettier

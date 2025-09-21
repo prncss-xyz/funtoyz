@@ -1,8 +1,6 @@
 {
 	"name": "@funtoyz/core",
 	"version": "0.0.0",
-	"description": "",
-	"main": "./dist/hello.js",
 	"scripts": {
 		"check:types": "tsc --noEmit",
 		"check:tests": "vitest run --coverage",
@@ -33,7 +31,5 @@
 		"./tags": "./dist/tags.js",
 		"./types": "./dist/types.js",
 		"./package.json": "./package.json"
-	},
-	"module": "./dist/hello.js",
-	"types": "./dist/hello.d.ts"
+	}
 }

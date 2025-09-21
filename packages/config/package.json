@@ -11,8 +11,6 @@
 	"types": "./dist/index.d.ts",
 	"exports": {
 		".": "./dist/index.js",
-		"./eslint": "./dist/eslint.js",
-		"./vitest": "./dist/vitest.js",
 		"./tsconfig.base.json": "./tsconfig.base.json"
 	},
 	"devDependencies": {
