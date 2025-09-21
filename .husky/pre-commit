@@ -1,4 +1,5 @@
-pnpm run sherif
 pnpm exec lint-staged
 pnpm exec turbo run pre-commit
+pnpm run sherif
+git update-index --again
 pnpm run knip

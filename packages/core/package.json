@@ -21,7 +21,17 @@
 		"vitest": "^3.2.4"
 	},
 	"exports": {
-		".": "./dist/hello.js",
+		"./assertions": "./dist/assertions.js",
+		"./brands": "./dist/brands.js",
+		"./functions/basics": "./dist/functions/basics.js",
+		"./functions/flow": "./dist/functions/flow.js",
+		"./functions/init": "./dist/functions/init.js",
+		"./functions/pipe": "./dist/functions/pipe.js",
+		"./guards": "./dist/guards.js",
+		"./match": "./dist/match.js",
+		"./results": "./dist/results.js",
+		"./tags": "./dist/tags.js",
+		"./types": "./dist/types.js",
 		"./package.json": "./package.json"
 	},
 	"module": "./dist/hello.js",
