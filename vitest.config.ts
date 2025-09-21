@@ -5,5 +5,6 @@ export default defineConfig({
 	...sharedVitest,
 	test: {
 		...sharedVitest.test,
+		include: ['**/src/**/*.test.{js,ts,jsx,tsx}'],
 	},
 })
