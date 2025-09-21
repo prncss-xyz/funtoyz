@@ -5,7 +5,7 @@ import { AnyTag } from './tags'
 export declare const BRAND: unique symbol
 
 export type Branded<Brand extends PropertyKey, Value = unknown> = Value & {
-	[BRAND]: Record<Brand, Value>
+	readonly [BRAND]: { readonly [K in Brand]: true }
 }
 
 export function brandCaster<Brand extends PropertyKey, Value = unknown>() {
