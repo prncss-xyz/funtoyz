@@ -6,7 +6,7 @@ import {
 	successful,
 } from './assertions'
 import { isNonNullable, isNullish } from './guards'
-import { nothing, Nothing, result, Result } from './results'
+import { nothing, Nothing, result, Result } from './tags/results'
 
 describe('assertion', () => {
 	function t(x: number | undefined) {

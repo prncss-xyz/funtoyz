@@ -1,4 +1,4 @@
-import { AnyTag, Tag, tags, Tags } from './tags'
+import { AnyTag, Tag, tags, Tags } from './core'
 
 export type Result<S, F extends Tag<any, any>> = Tags<{
 	failure: F

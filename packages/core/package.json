@@ -19,17 +19,20 @@
 		"vitest": "^3.2.4"
 	},
 	"exports": {
-		"./assertions": "./dist/assertions.js",
-		"./brands": "./dist/brands.js",
-		"./functions/basics": "./dist/functions/basics.js",
-		"./functions/flow": "./dist/functions/flow.js",
-		"./functions/init": "./dist/functions/init.js",
-		"./functions/pipe": "./dist/functions/pipe.js",
-		"./guards": "./dist/guards.js",
-		"./match": "./dist/match.js",
-		"./results": "./dist/results.js",
-		"./tags": "./dist/tags.js",
-		"./types": "./dist/types.js",
+		"./foundations/assertions": "./dist/foundations/assertions.js",
+		"./foundations/brands": "./dist/foundations/brands.js",
+		"./foundations/functions/basics": "./dist/foundations/functions/basics.js",
+		"./foundations/functions/flow": "./dist/foundations/functions/flow.js",
+		"./foundations/functions/init": "./dist/foundations/functions/init.js",
+		"./foundations/functions/pipe": "./dist/foundations/functions/pipe.js",
+		"./foundations/guards": "./dist/foundations/guards.js",
+		"./foundations/objects": "./dist/foundations/objects.js",
+		"./foundations/tags/core": "./dist/foundations/tags/core.js",
+		"./foundations/tags/match": "./dist/foundations/tags/match.js",
+		"./foundations/tags/results": "./dist/foundations/tags/results.js",
+		"./foundations/tags/sender": "./dist/foundations/tags/sender.js",
+		"./foundations/types": "./dist/foundations/types.js",
+		"./machines/direct": "./dist/machines/direct.js",
 		"./package.json": "./package.json"
 	}
 }

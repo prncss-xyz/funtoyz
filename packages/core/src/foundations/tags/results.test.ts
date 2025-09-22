@@ -1,4 +1,4 @@
-import { assertion } from './assertions'
+import { assertion } from '../assertions'
 import { nothing, Result, result } from './results'
 
 const { failure, success } = result

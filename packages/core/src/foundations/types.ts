@@ -40,7 +40,9 @@ type LastOf<T> =
 		? R
 		: never
 
-// TODO: remove
+export type Modify<T> = (t: T) => T
+
+// TODO: maybe remove
 export type FromResulter<T> = T extends (u: any) => u is infer R
 	? R
 	: T extends (u: any) => infer R

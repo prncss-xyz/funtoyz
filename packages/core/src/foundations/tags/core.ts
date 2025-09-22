@@ -1,4 +1,4 @@
-import { Equals, Prettify, ValueUnion } from './types'
+import { Equals, Prettify, ValueUnion } from '../types'
 
 export type Tag<Type extends PropertyKey, Payload> = {
 	payload: Payload
@@ -16,6 +16,10 @@ export type PayloadOf<T extends AnyTag, Type extends TypeIn<T>> = (T & {
 export type Tags<O, Context = unknown> = Prettify<
 	ValueUnion<{ [K in keyof O]: Tag<K, Context & O[K]> }>
 >
+
+export type UnTags<T extends AnyTag> = {
+	[K in T['type']]: PayloadOf<T, K>
+}
 
 function get(v: Tag<any, any>) {
 	return v.payload

@@ -1,4 +1,7 @@
 // types from https://github.com/selfrefactor/rambda/blob/master/index.d.ts
+
+import { pipe2 } from './basics'
+
 // types from rambda
 export function pipe<TArgs extends any[], R1, R2, R3, R4, R5, R6, R7, TResult>(
 	...funcs: [
@@ -52,7 +55,6 @@ export function pipe<TArgs extends any[], R1, R2>(
 	f1: (...args: TArgs) => R1,
 	f2: (a: R1) => R2,
 ): (...args: TArgs) => R2
-// definition here: https://blog.logrocket.com/how-to-create-compose-function-typescript
-export function pipe<T>(fn1: (a: T) => T, ...fns: Array<(a: T) => T>) {
-	return fns.reduce((prevFn, nextFn) => (value) => nextFn(prevFn(value)), fn1)
+export function pipe<T>(...fns: Array<(a: T) => T>) {
+	return fns.reduce(pipe2)
 }

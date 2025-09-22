@@ -1,18 +1,16 @@
-import { successful } from './assertions'
-import { brandCaster, Branded, brandParser } from './brands'
+import { Brand, brandCast, brandGuard } from './brands'
 import { flow } from './functions/flow'
-import { nothing, result } from './results'
 
 describe('brandCaster', () => {
-	const pos = brandCaster<'positive', number>()
-	const odd = brandCaster<'odd', number>()
+	const pos = brandCast<'positive', number>()
+	const odd = brandCast<'odd', number>()
 	const x = flow(1, pos, odd)
 	test('compose brands', () => {
 		expect(x).toBe(1)
-		function fromPos(n: Branded<'positive', number>) {
+		function fromPos(n: Brand<'positive'> & number) {
 			return n
 		}
-		function fromOdd(n: Branded<'odd', number>) {
+		function fromOdd(n: Brand<'odd'> & number) {
 			return n
 		}
 		fromPos(x)
@@ -26,21 +24,22 @@ describe('brandCaster', () => {
 })
 
 describe('brandParser', () => {
-	const odd = brandCaster<'odd', number>()
-	const pos = brandParser('positive', (n: number) =>
-		n > 0 ? result.success.of(undefined) : result.failure.of(nothing.of()),
-	)
+	const toOdd = brandCast<'odd', number>()
+	const isPos = brandGuard('positive', (n: number) => n > 0)
 	test('compose brands', () => {
-		const x = successful(pos(odd(1)))
-		expect(x).toBe(1)
-		function fromPos(n: Branded<'positive', number>) {
+		function fromPos(n: Brand<'positive'> & number) {
 			return n
 		}
-		function fromOdd(n: Branded<'odd', number>) {
+		function fromOdd(n: Brand<'odd'> & number) {
 			return n
 		}
-		fromPos(x)
-		fromOdd(x)
+		;((x: number) => {
+			const p = toOdd(x)
+			if (isPos(p)) {
+				fromPos(p)
+				fromOdd(p)
+			}
+		})(1)
 
 		// @ts-expect-error should be rejected
 		fromPos(1)
@@ -48,7 +47,7 @@ describe('brandParser', () => {
 		fromOdd(1)
 	})
 	test('failure', () => {
-		const x = pos(-1)
-		expect(result.failure.is(x)).toBeTruthy()
+		const x = isPos(-1)
+		expect(x).toBeFalsy()
 	})
 })

@@ -1,5 +1,5 @@
-import { Result, result } from './results'
-import { AnyTag } from './tags'
+import { AnyTag } from './tags/core'
+import { Result, result } from './tags/results'
 
 /**
  * Use to assert all cases are covered.

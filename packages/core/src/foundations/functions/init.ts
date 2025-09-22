@@ -1,8 +1,16 @@
 import { isFunction } from '../guards'
-import { NonFunction } from '../types'
 
-export type Init<T, P = void> = ((p: P) => T) | NonFunction<T>
+export type Init<R, Args extends any[] = []> = ((...args: Args) => R) | R
 
-export function fromInit<T, P = void>(init: Init<T, P>, p: P): T {
-	return isFunction(init) ? init(p) : init
+export function fromInit<R, Args extends any[] = []>(
+	init: Init<R, Args>,
+	...args: Args
+): R {
+	return isFunction(init) ? init(...args) : init
+}
+
+export function toInit<R, Args extends any[] = []>(
+	init: Init<R, Args>,
+): (...args: Args) => R {
+	return isFunction(init) ? init : () => init
 }
