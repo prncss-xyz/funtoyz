@@ -1,8 +1,12 @@
 /* c8 ignore next 1 */
-export const noop = () => {}
+export function noop() {}
 
 export function id<T>(t: T) {
 	return t
+}
+
+export function always<T>(t: T) {
+	return () => t
 }
 
 export function pipe2<P, Q, R>(f: (p: P) => Q, g: (q: Q) => R): (p: P) => R {

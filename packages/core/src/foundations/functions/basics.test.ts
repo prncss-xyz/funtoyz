@@ -1,8 +1,14 @@
-import { id, pipe2 } from './basics'
+import { always, id, pipe2 } from './basics'
 
 describe('id', () => {
-	test('identity', () => {
+	test('base', () => {
 		expect(id(1)).toBe(1)
+	})
+})
+
+describe('always', () => {
+	test('base', () => {
+		expect(always(1)()).toBe(1)
 	})
 })
 

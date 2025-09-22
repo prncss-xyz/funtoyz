@@ -1,7 +1,7 @@
 import { id } from '../foundations/functions/basics'
 import { fromInit, Init, toInit } from '../foundations/functions/init'
 import { merge } from '../foundations/objects'
-import { AnyTag, Tags } from '../foundations/tags/core'
+import { AnyTag, PAYLOAD, Tags, TYPE } from '../foundations/tags/core'
 import { nothing, Nothing, Result } from '../foundations/tags/results'
 
 type ExtractEvent<O> = Tags<{
@@ -32,10 +32,10 @@ export function directMachine<
 	}>,
 ) {
 	function next(e: AnyTag, s: State, c: Context) {
-		const f = transitions[e.type]
+		const f = transitions[e[TYPE]]
 		// this is forbidden by the type system but will be needed for composition
 		if (f === undefined) return s
-		return fromInit(f, e.payload, s, c)
+		return fromInit(f, e[PAYLOAD], s, c)
 	}
 	return {
 		extract: opts?.extract ?? (id as never),

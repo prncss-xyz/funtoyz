@@ -1,5 +1,5 @@
 import { fromInit, Init } from '../functions/init'
-import { AnyTag, PayloadOf, TypeIn } from './core'
+import { AnyTag, PAYLOAD, PayloadOf, TYPE, TypeIn } from './core'
 
 type Bound<T extends AnyTag, O> = keyof O extends TypeIn<T> ? O : never
 type Pattern<Value extends AnyTag> = {
@@ -17,7 +17,7 @@ export function matcher<
 	R,
 >(
 	patterns: Exclude<Bound<Value, O>, Pattern<Value>>,
-	otherwise: Init<R, [Exclude<Value, { type: keyof O }>]>,
+	otherwise: Init<R, [Exclude<Value, { [TYPE]: keyof O }>]>,
 ): (value: Value) =>
 	| R
 	| {
@@ -40,14 +40,14 @@ export function match<
 >(
 	value: Value,
 	patterns: Exclude<Bound<Value, O>, Pattern<Value>>,
-	otherwise: Init<R, [Exclude<Value, { type: keyof O }>]>,
+	otherwise: Init<R, [Exclude<Value, { [TYPE]: keyof O }>]>,
 ):
 	| R
 	| {
 			[K in keyof O]: O[K] extends (...args: any[]) => infer I ? I : never
 	  }[keyof O]
 export function match(value: any, patterns: any, otherwise?: any) {
-	if (value.type in patterns)
-		return (patterns as any)[value.type](value.payload)
+	if (value[TYPE] in patterns)
+		return (patterns as any)[value[TYPE]](value[PAYLOAD])
 	return fromInit(otherwise, value)
 }

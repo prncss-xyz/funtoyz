@@ -6,8 +6,7 @@ export type Result<S, F extends Tag<any, any>> = Tags<{
 }>
 
 export type AnyResult = Result<any, AnyTag>
-
-export const result = tags<Result<unknown, AnyTag>>()('failure', 'success')
+export const result = tags<AnyResult>()('failure', 'success')
 
 export type Nothing = Tag<'nothing', void>
 export const { nothing } = tags<Nothing>()('nothing')

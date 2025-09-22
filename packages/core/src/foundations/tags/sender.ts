@@ -1,5 +1,5 @@
 import { ValueUnion } from '../types'
-import { AnyTag, PayloadOf, TypeIn } from './core'
+import { AnyTag, PAYLOAD, PayloadOf, TYPE, TypeIn } from './core'
 
 export type Send<T extends AnyTag> =
 	| T
@@ -7,9 +7,6 @@ export type Send<T extends AnyTag> =
 			[K in TypeIn<T>]: undefined extends PayloadOf<T, K> ? K : never
 	  }>
 
-export function sender<T extends AnyTag>(t: Send<T>) {
-	if (typeof t === 'string') {
-		return { payload: undefined, type: t }
-	}
-	return t
+export function sender<T extends AnyTag>(t: Send<T>): T {
+	return typeof t === 'string' ? ({ [PAYLOAD]: undefined, [TYPE]: t } as T) : t
 }
