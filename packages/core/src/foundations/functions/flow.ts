@@ -299,7 +299,6 @@ export function flow(
 	hi?: Function,
 ): unknown {
 	switch (arguments.length) {
-		/* c8 ignore start */
 		case 1:
 			return a
 		case 2:
@@ -318,7 +317,6 @@ export function flow(
 			return gh!(fg!(ef!(de!(cd!(bc!(ab!(a)))))))
 		case 9:
 			return hi!(gh!(fg!(ef!(de!(cd!(bc!(ab!(a))))))))
-		/* c8 ignore stop */
 		default: {
 			let ret = arguments[0]
 			for (let i = 1; i < arguments.length; i++) {
