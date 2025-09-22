@@ -57,3 +57,4 @@ vite.config.ts.timestamp-*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.eslintcache

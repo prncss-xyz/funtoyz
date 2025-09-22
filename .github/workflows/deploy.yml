@@ -20,6 +20,7 @@ jobs:
             .turbo
             apps/website/.next/cache
             node_modules/.cache
+            .eslintcache
           key: ${{ runner.os }}-cache-${{ github.sha }}
           restore-keys: ${{ runner.os }}-cache-
       - name: Install pnpm
