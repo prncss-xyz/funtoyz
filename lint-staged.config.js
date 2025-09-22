@@ -7,5 +7,5 @@ export default {
 		'eslint --fix --max-warnings 0 --no-warn-ignored',
 	],
 	'*.{json,jsonc,json5,md,mdx,markdown,yaml,yml,css,less,scss,html,gql,graphql,hbs,handlebars,vue}':
-		'prettier --write',
+		'prettier --write --cache --cache-strategy metadata .',
 }

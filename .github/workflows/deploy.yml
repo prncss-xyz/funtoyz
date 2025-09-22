@@ -19,7 +19,7 @@ jobs:
           path: |
             .turbo
             apps/website/.next/cache
-            node_modules/.cache/knip
+            node_modules/.cache
           key: ${{ runner.os }}-cache-${{ github.sha }}
           restore-keys: ${{ runner.os }}-cache-
       - name: Install pnpm
