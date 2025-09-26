@@ -68,14 +68,13 @@ export function modalMachine<EventO extends object, StateO extends object>() {
 		Param,
 		ExtractDerive<O, Tags<StateO>>
 	> {
-		function auto(s: any, c: any) {
+		function transient(s: any, c: any) {
 			while (true) {
 				const state = (states as any)[s[TYPE]]
 				if (isFunction(state)) s = state(s[TYPE], c)
 				else return s
 			}
 		}
-
 		return {
 			derive(s) {
 				const state = (states as any)[s[TYPE]]
@@ -87,10 +86,9 @@ export function modalMachine<EventO extends object, StateO extends object>() {
 			init: toInit(init),
 			send(e, s, c) {
 				const state = (states as any)[s[TYPE]]
-				const event = state.events[e[TYPE]]
-				if (event) return auto(fromInit(event, e[PAYLOAD], s[PAYLOAD], c), c)
-				if (state.otherwise)
-					return auto(fromInit(state.otherwise, e, s[PAYLOAD], c), c)
+				const transition = state.events[e[TYPE]] ?? state.otherwise
+				if (transition)
+					return transient(fromInit(transition, e[PAYLOAD], s[PAYLOAD], c), c)
 				return s
 			},
 		}

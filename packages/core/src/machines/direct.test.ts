@@ -1,8 +1,9 @@
-import { tag } from '../foundations/tags/core'
+import { always } from '../foundations/functions/basics'
+import { Tag, tag } from '../foundations/tags/core'
 import { directMachine } from './direct'
 
 describe('directMachine', () => {
-	const { derive, init, makeSend } = directMachine(
+	const { derive, init, send } = directMachine(
 		{ a: 0 },
 		{
 			a: (_n: number, s) => s,
@@ -13,11 +14,11 @@ describe('directMachine', () => {
 			d: { a: 5 },
 		},
 		{
-			derive: (s) => (s.a > 5 ? tag('final', 'toto') : tag('pending', s)),
+			derive: ({ a }) => a * 2,
+			isFinal: (s) => s.a > 5,
 		},
 	)
 
-	const send = makeSend()
 	describe('send', () => {
 		test('basic', () => {
 			expect(send(tag('a', 1), init())).toEqual({ a: 0 })
@@ -32,11 +33,27 @@ describe('directMachine', () => {
 		})
 	})
 	test('derive', () => {
-		expect(derive({ a: 3 })).toEqual(tag('pending', { a: 3 }))
+		expect(derive({ a: 3 })).toEqual(tag('pending', 6))
+		expect(derive({ a: 6 })).toEqual(tag('final', 12))
+		expectTypeOf(derive({ a: 6 })).toEqualTypeOf<
+			Tag<'final' | 'pending', number>
+		>()
 	})
-
 	test('derive, default', () => {
 		const m = directMachine((a: number) => ({ a }), {})
 		expect(m.derive({ a: 1 })).toEqual(tag('pending', { a: 1 }))
+		expectTypeOf(m.derive({ a: 6 })).toEqualTypeOf<
+			Tag<'pending', { a: number }>
+		>()
+	})
+	test('derive, always final', () => {
+		const m = directMachine(
+			(a: number) => ({ a }),
+			{},
+			{ isFinal: always(true) },
+		)
+		expectTypeOf(m.derive({ a: 6 })).toEqualTypeOf<
+			Tag<'final', { a: number }>
+		>()
 	})
 })

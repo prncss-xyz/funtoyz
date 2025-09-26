@@ -2,7 +2,7 @@ import { AnyTag } from '../foundations/tags/core'
 
 export type Machine<
 	Event extends AnyTag,
-	State extends AnyTag,
+	State,
 	Context,
 	Param,
 	Derive extends AnyTag,
