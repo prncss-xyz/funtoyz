@@ -13,6 +13,11 @@ export type Tag<Type extends PropertyKey, Payload> = {
 export type AnyTag = Tag<any, any>
 
 export type TypeIn<T extends AnyTag> = T[Type]
+export type TagOf<T extends AnyTag, Type extends TypeIn<T>> = Prettify<
+	T & {
+		[TYPE]: Type
+	}
+>
 
 export type PayloadOf<T extends AnyTag, Type extends TypeIn<T>> = (T & {
 	[TYPE]: Type
@@ -24,6 +29,17 @@ export type Tags<O, Context = unknown> = Prettify<
 
 function get(v: Tag<any, any>) {
 	return v.payload
+}
+
+export function tag<Type extends PropertyKey>(
+	type: Exclude<Type, ''>,
+): Prettify<Tag<Type, undefined>>
+export function tag<Type extends PropertyKey, const Payload>(
+	type: Exclude<Type, ''>,
+	payload: Payload,
+): Prettify<Tag<Type, Payload>>
+export function tag<Type extends PropertyKey>(type: Type, payload?: any) {
+	return { payload, type }
 }
 
 export function tags<Ta extends AnyTag>() {

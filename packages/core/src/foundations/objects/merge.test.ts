@@ -1,4 +1,4 @@
-import { merge } from './objects'
+import { merge } from './merge'
 
 describe('merge', () => {
 	test('basic', () => {

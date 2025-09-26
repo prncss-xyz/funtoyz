@@ -26,13 +26,15 @@
 		"./foundations/functions/init": "./dist/foundations/functions/init.js",
 		"./foundations/functions/pipe": "./dist/foundations/functions/pipe.js",
 		"./foundations/guards": "./dist/foundations/guards.js",
-		"./foundations/objects": "./dist/foundations/objects.js",
+		"./foundations/objects/merge": "./dist/foundations/objects/merge.js",
+		"./foundations/objects/shallowEqual": "./dist/foundations/objects/shallowEqual.js",
 		"./foundations/tags/core": "./dist/foundations/tags/core.js",
 		"./foundations/tags/match": "./dist/foundations/tags/match.js",
 		"./foundations/tags/results": "./dist/foundations/tags/results.js",
-		"./foundations/tags/sender": "./dist/foundations/tags/sender.js",
 		"./foundations/types": "./dist/foundations/types.js",
+		"./machines/core": "./dist/machines/core.js",
 		"./machines/direct": "./dist/machines/direct.js",
+		"./machines/modal": "./dist/machines/modal.js",
 		"./package.json": "./package.json"
 	}
 }

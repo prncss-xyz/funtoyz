@@ -8,16 +8,18 @@ export type Equals<T, U> = [T] extends [U]
 		: never
 	: never
 
-export type ValueUnion<T> = T[keyof T]
+export type ValueUnion<T> = Prettify<T[keyof T]>
 // Type of the intersection of the values
 
-export type ValueIntersection<T> = {
-	[K in keyof T]: (x: T[K]) => void
-} extends {
-	[K: PropertyKey]: (x: infer I) => void
-}
-	? I
-	: never
+export type ValueIntersection<T> = Prettify<
+	{
+		[K in keyof T]: (x: T[K]) => void
+	} extends {
+		[K: PropertyKey]: (x: infer I) => void
+	}
+		? I
+		: never
+>
 
 export type AnyFunction = (...args: any[]) => any
 export type NonFunction<T> = T extends AnyFunction ? never : T

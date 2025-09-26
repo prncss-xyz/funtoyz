@@ -58,17 +58,17 @@ describe('successful', () => {
 	})
 	test('fail', () => {
 		expect(() => {
-			t(result.failure.of(nothing.of()))
+			t(nothing())
 		}).toThrowError()
 	})
 	test('message', () => {
 		expect(() => {
-			successful(result.failure.of(nothing.of()), 'message')
+			successful(nothing(), 'message')
 		}).toThrowError('message')
 	})
 	test('curried', () => {
 		expect(() => {
-			successful('message')(result.failure.of(nothing.of()))
+			successful('message')(nothing())
 		}).toThrowError('message')
 	})
 })

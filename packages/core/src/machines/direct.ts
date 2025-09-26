@@ -1,8 +1,6 @@
-import { id } from '../foundations/functions/basics'
 import { fromInit, Init, toInit } from '../foundations/functions/init'
-import { merge } from '../foundations/objects'
-import { AnyTag, PAYLOAD, Tags, TYPE } from '../foundations/tags/core'
-import { nothing, Nothing, Result } from '../foundations/tags/results'
+import { merge } from '../foundations/objects/merge'
+import { AnyTag, PAYLOAD, tag, Tags, TYPE } from '../foundations/tags/core'
 
 type ExtractEvent<O> = Tags<{
 	[K in keyof O]: O[K] extends () => any
@@ -20,15 +18,16 @@ export function directMachine<
 	>,
 	Param = void,
 	Context = void,
-	Extract = State,
-	Success = never,
+	Derive extends Tags<{ final: any; pending: any }> = Tags<{
+		final: never
+		pending: State
+	}>,
 >(
 	init: Init<State, [Param]>,
 	transitions: Transitions,
 	opts?: Partial<{
 		context: (...args: any[]) => Context
-		extract: (s: State, c: Context) => Extract
-		result: (s: State, c: Context) => Result<Success, Nothing>
+		derive: (s: State, c: Context) => Derive
 	}>,
 ) {
 	function next(e: AnyTag, s: State, c: Context) {
@@ -38,11 +37,9 @@ export function directMachine<
 		return fromInit(f, e[PAYLOAD], s, c)
 	}
 	return {
-		extract: opts?.extract ?? (id as never),
+		derive: opts?.derive ?? ((s) => tag('pending', s)),
 		init: toInit(init),
-		result: opts?.result ?? (nothing.of as never),
-		send(e: ExtractEvent<Transitions>, s: State, c: Context) {
-			return merge(s, next(e, s, c))
-		},
+		makeSend: (c: Context) => (e: ExtractEvent<Transitions>, s: State) =>
+			merge(s, next(e, s, c)),
 	}
 }
