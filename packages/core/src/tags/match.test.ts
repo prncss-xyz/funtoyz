@@ -1,6 +1,7 @@
 import { flow } from '../functions/flow'
-import { Tags, tags } from './core'
 import { match, matcher } from './match'
+import { tags } from './tags'
+import { Tags } from './types'
 
 type T = Tags<{ a: number; b: string; c: string }>
 const type = tags<T>()('a', 'b', 'c')

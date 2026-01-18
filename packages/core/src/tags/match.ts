@@ -1,5 +1,5 @@
 import { fromInit, Init } from '../functions/init'
-import { AnyTag, PAYLOAD, PayloadOf, TYPE, TypeIn } from './core'
+import { AnyTag, PAYLOAD, PayloadOf, TYPE, TypeIn } from './types'
 
 type Bound<T extends AnyTag, O> = keyof O extends TypeIn<T> ? O : never
 type Pattern<Value extends AnyTag> = {

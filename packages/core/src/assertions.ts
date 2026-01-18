@@ -1,6 +1,3 @@
-import { AnyTag } from './tags/core'
-import { Result, result } from './tags/results'
-
 /**
  * Use to assert all cases are covered.
  */
@@ -13,29 +10,6 @@ export function exhaustive(v: never): never {
  */
 export function forbidden(message?: string): never {
 	throw new Error(message ?? 'Reached forbidden code')
-}
-
-function successful_<T>(value: Result<T, AnyTag>, message?: string) {
-	if (result.success.is(value)) return result.success.get(value)
-	forbidden(message ?? 'Unexpected failure')
-}
-
-export function successful(message?: string): <T>(value: Result<T, AnyTag>) => T
-export function successful<T>(value: Result<T, AnyTag>, message?: string): T
-export function successful(...args: any[]): any {
-	switch (args.length) {
-		case 1:
-			if (typeof args[0] === 'string')
-				return function (a0: any) {
-					return successful_(a0, args[0])
-				}
-			return successful_(args[0])
-		case 2:
-			return successful_(args[0], args[1])
-		/* c8 ignore next 2 */
-		default:
-			return forbidden()
-	}
 }
 
 export function asserted<U, V extends U>(

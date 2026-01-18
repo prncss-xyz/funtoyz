@@ -26,11 +26,7 @@ export function isNull(u: unknown) {
 }
 
 export function isNullish(u: unknown) {
-	return u === null || u === undefined
-}
-
-export function isNonNullable(u: unknown) {
-	return !isNullish(u)
+	return u == null
 }
 
 export function isUnknown(_u: unknown): _u is unknown {
