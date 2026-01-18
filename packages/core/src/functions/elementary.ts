@@ -1,4 +1,4 @@
-import { curry2 } from '../foundations/functions/arguments'
+import { curry2, curry3 } from './arguments'
 
 export const mul = curry2((a: number, b: number) => b * a)
 export const div = curry2((a: number, b: number) => a / b)
@@ -14,6 +14,8 @@ export const and = curry2((a: unknown, b: unknown) => a && b)
 export const or = curry2((a: unknown, b: undefined) => a || b)
 export const xor = curry2((a: unknown, b: unknown) => (!a && b) || (!b && a))
 export const iDiv = curry2((a: number, b: number) => Math.floor(a / b))
+export const min = curry2((a: number, b: number) => Math.min(a, b))
+export const max = curry2((a: number, b: number) => Math.max(a, b))
 export function always<T>(a: T) {
 	return function () {
 		return a
@@ -29,11 +31,9 @@ export const modulo = curry2((a: number, b: number) => {
 	return a % b
 })
 
-export function clamp(min: number, max = Infinity) {
-	return function (source: number) {
-		return Math.max(Math.min(source, max), min)
-	}
-}
+export const clamp = curry3((min: number, max: number, source: number) =>
+	Math.max(Math.min(source, max), min),
+)
 
 export function tuple<const Args extends unknown[]>(...args: Args) {
 	return args

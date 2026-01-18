@@ -1,4 +1,4 @@
-import { always, id, pipe2 } from './basics'
+import { always, id, pipe2, setState } from './basics'
 
 describe('id', () => {
 	test('base', () => {
@@ -26,5 +26,14 @@ describe('pipe2', () => {
 	})
 	test('right identity', () => {
 		expect(pipe2((x: number) => x * 2, id)(1)).toBe(2)
+	})
+})
+
+describe('setState', () => {
+	test('function', () => {
+		expect(setState((x: number) => x + 1, 1)).toBe(2)
+	})
+	test('value', () => {
+		expect(setState(2, 1)).toBe(2)
 	})
 })

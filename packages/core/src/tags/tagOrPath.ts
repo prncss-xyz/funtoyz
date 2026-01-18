@@ -1,7 +1,9 @@
 import { tag } from './tag'
 import { type AnyTag, PAYLOAD, TYPE } from './types'
 
-export type PathFromTag<I extends AnyTag> = PathFromTagOpt<I> | PathFromTagRec<I>
+export type PathFromTag<I extends AnyTag> =
+	| PathFromTagOpt<I>
+	| PathFromTagRec<I>
 type PathFromTagOpt<I extends AnyTag> = I extends {
 	[PAYLOAD]?: unknown
 	[TYPE]: infer T

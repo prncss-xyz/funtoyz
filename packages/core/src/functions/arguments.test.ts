@@ -1,5 +1,6 @@
-import { eq } from '../../functions/elementary'
-import { curry2, fromInit, Init, negate } from './arguments'
+import { curry2, fromInit, Init, negate, toInit } from './arguments'
+import { id } from './basics'
+import { eq } from './elementary'
 
 describe('fromInit', () => {
 	type I = Init<number, [number, string]>
@@ -10,6 +11,15 @@ describe('fromInit', () => {
 	test('with function', () => {
 		const f: I = (x: number, y: string) => x + y.length
 		expect(fromInit<number, [number, string]>(f, 2, 'toto')).toBe(6)
+	})
+})
+
+describe('toInit', () => {
+	test('value', () => {
+		expect(toInit(1)()).toBe(1)
+	})
+	test('function', () => {
+		expect(toInit(id<number>)(1)).toBe(1)
 	})
 })
 

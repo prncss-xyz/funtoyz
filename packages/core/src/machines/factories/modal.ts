@@ -1,0 +1,40 @@
+import { Init } from '../../functions/arguments'
+import { AnyTag, PayloadOf, TypeIn } from '../../tags/types'
+import { Exit, MachineFactory } from '../core'
+import { baseMachine } from './base'
+
+export function modalMachine<EventOut = never, Final = never>() {
+	return function <
+		EventIn extends AnyTag,
+		State extends AnyTag,
+		Props = void,
+		Result = State,
+	>(
+		init: Init<State, [Props]>,
+		states: {
+			[S in TypeIn<State>]: Partial<{
+				[E in TypeIn<EventIn>]: (
+					event: PayloadOf<EventIn, E>,
+					state: PayloadOf<State, S>,
+					send: (event: EventOut) => void,
+				) => Exit<Final> | State
+			}>
+		},
+		result?: {
+			[S in TypeIn<State>]: {
+				result: (state: PayloadOf<State, S>) => Result
+			}
+		},
+	): MachineFactory<Props, EventIn, State, Result, EventOut, Final> {
+		return baseMachine<EventOut, Final>()<EventIn, State, Props, Result>(
+			init,
+			(event: any, state, send) => {
+				const s = (states as any)[state.type]
+				const handler = s[event.type]
+				if (!handler) return state
+				return handler(event, state, send, close)
+			},
+			result ? (state) => (result as any)[state.type].result(state) : undefined,
+		)
+	}
+}
