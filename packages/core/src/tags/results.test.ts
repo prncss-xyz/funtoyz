@@ -1,4 +1,4 @@
-import { assertion } from '../assertions'
+import { isoAssert } from '../assertions'
 import { Nothing, nothing, Result, result, successful } from './results'
 
 const { success } = result
@@ -18,7 +18,7 @@ describe('is', () => {
 	})
 	test('type guard', () => {
 		function f(x: Result<number, any>) {
-			assertion(success.is(x))
+			isoAssert(success.is(x))
 			expectTypeOf(x).toEqualTypeOf<ReturnType<typeof success.of<number>>>()
 			return x
 		}
@@ -37,17 +37,17 @@ describe('successful', () => {
 	})
 	test('fail', () => {
 		expect(() => {
-			t(nothing())
+			t(result.failure.of(nothing()))
 		}).toThrowError()
 	})
 	test('message', () => {
 		expect(() => {
-			successful(nothing(), 'message')
+			successful(result.failure.of(nothing()), 'message')
 		}).toThrowError('message')
 	})
 	test('curried', () => {
 		expect(() => {
-			successful('message')(nothing())
+			successful('message')(result.failure.of(nothing()))
 		}).toThrowError('message')
 	})
 })

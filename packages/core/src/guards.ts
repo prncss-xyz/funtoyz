@@ -1,11 +1,10 @@
 import { AnyFunction } from './types'
 
-/* c8 ignore start */
 export function isFunction(u: unknown): u is AnyFunction {
 	return typeof u === 'function'
 }
 
-export function isNullish(u: unknown) {
+export function isNullish(u: unknown): u is null | undefined {
 	return u == null
 }
 
@@ -17,4 +16,6 @@ export function isPromise(u: unknown): u is Promise<unknown> {
 	return typeof u === 'object' && u !== null && isFunction((u as any).then)
 }
 
-/* c8 ignore stop */
+export function isArray(v: unknown): v is unknown[] {
+	return Array.isArray(v)
+}

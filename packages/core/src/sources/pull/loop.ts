@@ -1,0 +1,33 @@
+import { fromInit, Init } from '../../functions/arguments'
+import { add, gt, lt } from '../../functions/elementary'
+import { Source } from '../core/types'
+
+export function loop<Value>(
+	init: Init<Value, []>,
+	cond: (value: Value) => boolean,
+	step: (value: Value) => Value,
+): Source<Value, never> {
+	return function (next, _err, complete) {
+		let closed = false
+		return {
+			start() {
+				for (let acc = fromInit(init); cond(acc); acc = step(acc)) {
+					next(acc)
+					if (closed) return
+				}
+				complete()
+			},
+			unmount() {
+				closed = true
+			},
+		}
+	}
+}
+
+export function range(start: number, end: number, step = 1) {
+	return loop<number>(start, step > 0 ? lt(end) : gt(end), add(step))
+}
+
+export function times(n: number) {
+	return range(0, n)
+}

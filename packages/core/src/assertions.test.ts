@@ -1,26 +1,26 @@
-import { asserted, assertion, exhaustive, forbidden } from './assertions'
+import { asserted, exhaustive, forbidden, isoAssert } from './assertions'
 import { isNullish } from './guards'
 
-describe('assertion', () => {
+describe('isoAssert', () => {
 	test('type', () => {
 		function t(x: number | undefined) {
-			assertion(isNullish(x))
+			isoAssert(isNullish(x))
 			return x
 		}
 		const x = t(undefined)
 		expectTypeOf(x).toEqualTypeOf<undefined>()
 	})
 	test('pass', () => {
-		assertion(true)
+		isoAssert(true)
 	})
 	test('fail, message', () => {
 		expect(() => {
-			assertion(false, 'message')
+			isoAssert(false, 'message')
 		}).toThrowError('message')
 	})
 	test('fail, default message', () => {
 		expect(() => {
-			assertion(false)
+			isoAssert(false)
 		}).toThrowError()
 	})
 })

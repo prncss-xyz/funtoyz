@@ -37,6 +37,8 @@ export default defineConfig(
 				{
 					cspell: {
 						words: [
+							'async',
+							'todo',
 							'funtoyz',
 							'waku',
 							'fumadocs',

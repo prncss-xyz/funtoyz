@@ -30,7 +30,7 @@ export function asserted<T>(
 	}
 }
 
-export function assertion(
+export function isoAssert(
 	condition: boolean,
 	message?: string,
 ): asserts condition {

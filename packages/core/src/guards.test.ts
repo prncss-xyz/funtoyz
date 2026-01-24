@@ -1,4 +1,4 @@
-import { isFunction, isNullish, isPromise, isUnknown } from './guards'
+import { isArray, isFunction, isNullish, isPromise, isUnknown } from './guards'
 
 describe('guards', () => {
 	it('checks types correctly', () => {
@@ -13,5 +13,8 @@ describe('guards', () => {
 
 		expect(isPromise(Promise.resolve())).toBe(true)
 		expect(isPromise({})).toBe(false)
+
+		expect(isArray([])).toBe(true)
+		expect(isArray({})).toBe(false)
 	})
 })
