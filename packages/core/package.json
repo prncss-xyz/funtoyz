@@ -40,6 +40,7 @@
 		"./objects/merge": "./dist/objects/merge.js",
 		"./objects/shallowEqual": "./dist/objects/shallowEqual.js",
 		"./objects/toInit": "./dist/objects/toInit.js",
+		"./objects/types": "./dist/objects/types.js",
 		"./tags/match": "./dist/tags/match.js",
 		"./tags/results": "./dist/tags/results.js",
 		"./tags/tag": "./dist/tags/tag.js",
