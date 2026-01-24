@@ -21,9 +21,7 @@ export function modalMachine<EventOut = never, Final = never>() {
 			}>
 		},
 		result?: {
-			[S in TypeIn<State>]: {
-				result: (state: PayloadOf<State, S>) => Result
-			}
+			[S in TypeIn<State>]: (state: PayloadOf<State, S>) => Result
 		},
 	): MachineFactory<Props, EventIn, State, Result, EventOut, Final> {
 		return baseMachine<EventOut, Final>()<EventIn, State, Props, Result>(
@@ -32,9 +30,11 @@ export function modalMachine<EventOut = never, Final = never>() {
 				const s = (states as any)[state.type]
 				const handler = s[event.type]
 				if (!handler) return state
-				return handler(event, state, send, close)
+				return handler(event.payload, state.payload, send)
 			},
-			result ? (state) => (result as any)[state.type].result(state) : undefined,
+			result
+				? (state) => (result as any)[state.type](state.payload)
+				: undefined,
 		)
 	}
 }

@@ -1,11 +1,37 @@
-import { insert, insertCmp, remove, replace } from './arrays'
+import {
+	insert,
+	insertCmp,
+	insertSorted,
+	remove,
+	replace,
+	symmetricDiff,
+} from './arrays'
+
+describe('insertSorted', () => {
+	it('inserts sorted', () => {
+		expect(insertSorted(2)([1, 3])).toEqual([1, 2, 3])
+	})
+	it('keeps the reference when possible', () => {
+		const xs = [0, 3]
+		expect(insertSorted(3)(xs)).toBe(xs)
+	})
+})
+
+describe('symmetricDiff', () => {
+	it('returns symmetric difference', () => {
+		expect(symmetricDiff([1, 2], [2, 3])).toEqual([[1], [3]])
+	})
+})
 
 describe('insertCmp', () => {
 	it('inserts an element', () => {
 		expect(insertCmp()(0)([1, 3])).toEqual([0, 1, 3])
-		expect(insertCmp()(1)([1, 3])).toEqual([1, 3])
 		expect(insertCmp()(2)([1, 3])).toEqual([1, 2, 3])
 		expect(insertCmp()(4)([1, 3])).toEqual([1, 3, 4])
+	})
+	it('keeps the reference when possible', () => {
+		const xs = [0, 3]
+		expect(insertCmp()(3)(xs)).toBe(xs)
 	})
 })
 
@@ -30,6 +56,7 @@ describe('replace', () => {
 		expect(replace(3, -1)([0, 1, 2])).toEqual([0, 1, 3])
 		expect(replace(3, 3)([0, 1, 2])).toEqual([0, 1, 2])
 		expect(replace(-4, 3)([0, 1, 2])).toEqual([0, 1, 2])
+		expect(replace(3, -5)([0, 1, 2])).toEqual([0, 1, 2])
 	})
 	it('keeps the reference when possible', () => {
 		const xs = [0, 1, 2]

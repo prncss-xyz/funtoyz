@@ -24,7 +24,6 @@ It contains a website application (using **Waku** and **React 19**) and core pac
 - **Fix lint issues:** `pnpm fix:eslint`
 - **Fix formatting:** `pnpm fix:prettier`
 
-
 ## 2. Code Style & Guidelines
 
 ### General
@@ -45,6 +44,9 @@ It contains a website application (using **Waku** and **React 19**) and core pac
 - **Imports:** Use named imports where possible.
 - **Formatting:** Prettier handles all formatting (indentation, quotes, semicolons).
   - _Action:_ Run `pnpm fix:prettier` on changed files.
+- **Tests**:
+  - Write as few tests as necessary.
+  - Vitest methods are part of the global scope, never import them.
 
 ### TypeScript Rules
 

@@ -1,6 +1,6 @@
+import { Empty } from './objects/types'
 import { Prettify } from './types'
 
-export type Empty = Record<never, unknown>
 type Schema<O> = {
 	[K in keyof O]: (o: O) => O[K]
 }
@@ -16,18 +16,16 @@ export function dependency<Key extends PropertyKey, Value>(
 	key: Key,
 	value: Value,
 ) {
-	return function <O>(
-		o: Key extends keyof O ? never : O,
-	): Prettify<O & Record<Key, Value>> {
+	return function <O>(o: O): Prettify<O & Record<Key, Value>> {
 		return { ...o, [key]: value } as any
 	}
 }
 
-export function createContainer<C>(fn: (source: Schema<Empty>) => Schema<C>): C
 export function createContainer<C, P = Empty>(
 	fn: (source: Schema<P>) => Schema<C>,
 	parent: P,
 ): C
+export function createContainer<C>(fn: (source: Schema<Empty>) => Schema<C>): C
 export function createContainer(fn: (s: any) => any, parent?: any) {
 	const cache: any = {}
 	const proxy = new Proxy(fn({}), {

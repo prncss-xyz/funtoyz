@@ -4,10 +4,11 @@ import { pipe } from './functions/pipe'
 type A = Dependencies<{ a: number }>
 
 describe('container', () => {
+	const a = dependency('a', () => 1) satisfies A
 	const parent = createContainer(
 		pipe(
 			dependency('b', ({ a }: { a: number }) => a * 2),
-			dependency('a', () => 1) satisfies A,
+			a,
 		),
 	)
 	const c = createContainer(
@@ -23,10 +24,17 @@ describe('container', () => {
 		expect(c.b).toBe(2)
 		expect(c.c).toBe(3)
 	})
-	it('should keep reference stable', () => {
+	it('should return the same value', () => {
 		expect(c.d).toBe(c.d)
 	})
-	it('should not keep reference stable', () => {
+	it('should not return the same value', () => {
 		expect(c.$d).not.toBe(c.$d)
 	})
+
+	const missing = pipe(
+		dependency('b', ({ c }: { c: number }) => c * 2),
+		dependency('a', () => 1),
+	)
+	// @ts-expect-error we have a type error si some dependency is missing
+	createContainer(missing)
 })

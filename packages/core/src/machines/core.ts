@@ -28,7 +28,7 @@ export interface Machine<
 		state: State,
 		send: (event: EventOut) => void,
 	) => Exit<Final> | State
-	result?: (state: State) => Result
+	result: (state: State) => Result
 }
 
 export type Reducer<Value, State = Value, Result = State> = Machine<

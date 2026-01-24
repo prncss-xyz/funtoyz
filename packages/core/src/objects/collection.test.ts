@@ -1,5 +1,3 @@
-import { describe, expect, it, vi } from 'vitest'
-
 import { clearCollectionEntries, collection } from './collection'
 
 describe('collection', () => {
@@ -32,10 +30,7 @@ describe('collection', () => {
 			expect(payload.id).toBe(key)
 		})
 
-		expect(keys).toContain('a')
-		expect(keys).toContain('b')
-		expect(keys).toContain('c')
-		expect(keys.length).toBe(3)
+		expect(keys).toEqual(['a', 'b', 'c'])
 	})
 
 	it('should clear entries based on filter', () => {
@@ -61,5 +56,57 @@ describe('collection', () => {
 		// 'c' should be re-created
 		col.get('c')
 		expect(factory).toHaveBeenCalledTimes(5)
+	})
+
+	it('should hydrate', () => {
+		const values = new Map<string, string>()
+		// Use raw key because collection iterates values and calls getHash(key)
+		values.set('a', JSON.stringify({ hydrated: true, id: 'a' }))
+
+		const factory = vi.fn()
+		const col = collection(factory, {
+			hydrate: {
+				decode: (val, _key) => JSON.parse(val),
+				values: values.entries(),
+			},
+		})
+
+		const item = col.get('a')
+		expect(item).toEqual({ hydrated: true, id: 'a' })
+		expect(factory).not.toHaveBeenCalled()
+	})
+
+	it('should handle TTL', async () => {
+		vi.useFakeTimers()
+		const factoryWithMount = vi.fn((_key: string, mount: any) => {
+			const release = mount!()
+			return { release }
+		})
+		const col2 = collection(factoryWithMount, { ttl: 100 })
+
+		const item2 = col2.get('a')
+		item2.release()
+
+		// Advance time slightly to let microtasks/promises run, but less than TTL
+		await vi.advanceTimersByTimeAsync(1)
+
+		// Now timer should be set.
+		// If we get it again before timer fires, it should clear timer.
+		vi.advanceTimersByTime(50)
+		col2.get('a')
+		// Should still be cached (factory not called again)
+		expect(factoryWithMount).toHaveBeenCalledTimes(1)
+
+		// Now we release again to restart TTL
+		item2.release()
+
+		// Advance past TTL
+		await vi.advanceTimersByTimeAsync(101)
+
+		// Should be gone
+		col2.get('a')
+		expect(factoryWithMount).toHaveBeenCalledTimes(2)
+
+		vi.useRealTimers()
 	})
 })
