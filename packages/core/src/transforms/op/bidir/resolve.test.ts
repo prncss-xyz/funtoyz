@@ -1,0 +1,49 @@
+import { flow } from '../../../functions/flow'
+import { pipe } from '../../../functions/pipe'
+import { result } from '../../../tags/results'
+import { eq } from '../../core/eq'
+import { preview } from '../../extractors/preview'
+import { update } from '../../extractors/update'
+import { prop } from './prop'
+import { resolve } from './resolve'
+
+describe('resolve', () => {
+	type S = {
+		current: string
+		items: Partial<Record<string, { name: string }>>
+	}
+	const o = flow(
+		eq<S>(),
+		prop('current'),
+		resolve((k) => pipe(prop('items'), prop(k))),
+		prop('name'),
+	)
+	it('view', () => {
+		expect(
+			preview(o)({
+				current: 'a',
+				items: {
+					a: { name: 'toto' },
+					b: { name: 'titi' },
+				},
+			}),
+		).toEqual(result.success.of('toto'))
+	})
+	it('update', () => {
+		expect(
+			update(o)((u) => u.toUpperCase())({
+				current: 'a',
+				items: {
+					a: { name: 'toto' },
+					b: { name: 'titi' },
+				},
+			}),
+		).toEqual({
+			current: 'a',
+			items: {
+				a: { name: 'TOTO' },
+				b: { name: 'titi' },
+			},
+		})
+	})
+})

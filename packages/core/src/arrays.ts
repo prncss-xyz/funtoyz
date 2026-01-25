@@ -48,11 +48,15 @@ export function replace<T>(x: T, index: number) {
 	}
 }
 
-export function remove<T>(index: number) {
-	return function (xs: T[]) {
+export function remove(index: number) {
+	return function <T>(xs: T[]) {
 		if (index < 0) index += xs.length
 		if (index < 0) return xs
 		if (index >= xs.length) return xs
 		return [...xs.slice(0, index), ...xs.slice(index + 1)]
 	}
+}
+
+export function append<T>(x: T) {
+	return (xs: T[]) => [...xs, x]
 }

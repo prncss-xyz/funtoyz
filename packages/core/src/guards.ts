@@ -19,3 +19,7 @@ export function isPromise(u: unknown): u is Promise<unknown> {
 export function isArray(v: unknown): v is unknown[] {
 	return Array.isArray(v)
 }
+
+export function isNumber(u: unknown): u is number {
+	return typeof u === 'number'
+}
