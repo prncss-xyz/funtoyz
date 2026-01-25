@@ -2,15 +2,14 @@
 import { forbidden } from '../assertions'
 import { noop, pipe2 } from '../functions/basics'
 import { once } from './sources/pull/once'
+import { LTAGS, TAGS } from './symbols'
 import {
 	type _OpticArg,
 	type _SetterArg,
 	type Emitter,
 	type Getter,
-	LTAGS,
 	type Modifier,
 	type Optic,
-	TAGS,
 } from './types'
 
 export const apply = <V>(

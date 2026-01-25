@@ -28,17 +28,17 @@ function resolveObserver<T, E>(observer: Observer<T, E>, unmount: () => void) {
 	] as const
 }
 
-export function _get<T, S, EG, EF, ES, F>(
+export function get_<T, S, EG, EF, ES, F>(
 	o: Optic<T, S, EG, EF, F>,
 	s: S | Source<S, ES>,
 	success: (t: T) => void,
 	err: (e: EF | EG | ES) => void,
 ) {
-	if (isFunction(s)) _first(s, o, success, err)
+	if (isFunction(s)) first_(s, o, success, err)
 	else getGetter(o)(s, success, err)
 }
 
-export function _first<T, S, ES, EG, EF, F>(
+export function first_<T, S, ES, EG, EF, F>(
 	source: Source<S, ES>,
 	o: Init<Optic<T, S, EG, EF, F>, [Eq<S>]>,
 	success: (t: T) => void,
@@ -55,7 +55,7 @@ export function _first<T, S, ES, EG, EF, F>(
 	start()
 }
 
-export function _observe<T, S, ES, EG, EF, F>(
+export function observe_<T, S, ES, EG, EF, F>(
 	source: Source<S, ES>,
 	o: Init<Optic<T, S, EG, EF, F>, [Eq<S>]>,
 	next: (t: T) => void,

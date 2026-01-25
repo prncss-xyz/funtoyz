@@ -44,7 +44,7 @@ export function update<T, S, E, F>(
 	return function (m: Modify<T> | NonFunction<T>) {
 		return function (s: S): S {
 			let res: S
-			_update(o, s, m, (r) => (res = r))
+			update_(o, s, m, (r) => (res = r))
 			return res!
 		}
 	}
@@ -85,7 +85,7 @@ export function updateAsync<T, S, E, F>(
 	return function (m: Modify<T> | NonFunction<T>) {
 		return function (s: S): Promise<S> {
 			return new Promise<S>((resolve) => {
-				_update(o, s, m, resolve)
+				update_(o, s, m, resolve)
 			})
 		}
 	}
@@ -99,7 +99,7 @@ function modToCPS<T>(m: ModifyAsync<T>) {
 	}
 }
 
-function _update<T, S, EG, EF, F>(
+function update_<T, S, EG, EF, F>(
 	o: Optic<T, S, EG, EF, Exclude<F, { getter: true }>>,
 	s: S,
 	m: ModifyAsync<T> | T | typeof REMOVE,

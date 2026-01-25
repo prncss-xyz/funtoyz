@@ -6,7 +6,7 @@ import { Optic, Source } from '../types'
 export function collect<Value, S, EG, EF, F>(o: Optic<Value, S, EG, EF, F>) {
 	return function (s: S | Source<S, never>) {
 		let res: Value[]
-		_collect(o, (r) => (res = r), s)
+		collect_(o, (r) => (res = r), s)
 		return res!
 	}
 }
@@ -16,12 +16,12 @@ export function collectAsync<Value, S, EG, EF, F>(
 ) {
 	return function (s: S | Source<S, never>) {
 		return new Promise<Value[]>((resolve) => {
-			_collect(o, resolve, s)
+			collect_(o, resolve, s)
 		})
 	}
 }
 
-export function _collect<Value, S, EG, EF, F>(
+function collect_<Value, S, EG, EF, F>(
 	o: Optic<Value, S, EG, EF, F>,
 	resolve: (values: Value[]) => void,
 	s: S | Source<S, never>,

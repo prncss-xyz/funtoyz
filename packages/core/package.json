@@ -87,6 +87,7 @@
 		"./transforms/sources/pull/until": "./dist/transforms/sources/pull/until.js",
 		"./transforms/sources/push/interval": "./dist/transforms/sources/push/interval.js",
 		"./transforms/sources/push/iter": "./dist/transforms/sources/push/iter.js",
+		"./transforms/symbols": "./dist/transforms/symbols.js",
 		"./transforms/types": "./dist/transforms/types.js",
 		"./types": "./dist/types.js",
 		"./package.json": "./package.json"
