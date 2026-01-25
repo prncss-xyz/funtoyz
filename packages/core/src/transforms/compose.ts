@@ -12,13 +12,11 @@ import {
 	type Optic,
 } from './types'
 
-export const apply = <V>(
+const apply = <V>(
 	m: (v: V, next: (v: V) => void) => void,
 	next: (v: V) => void,
 	v: V,
 ) => m(v, next)
-
-export const inert = <V, M>(_m: M, next: (v: V) => void, v: V) => next(v)
 
 export const trush = <V>(v: V, cb: (v: V) => void) => cb(v)
 
@@ -141,15 +139,6 @@ export function _compo<U, T, E1G, E1F, F1 = {}, LF = {}>(
 ) => Optic<U, S, E1G | E2G, E1F | E2F> & { [LTAGS]: LF } & { [TAGS]: F1 & F2 }
 
 export function _compo(o1: any) {
-	return _compose(o1) as any
-}
-
-export function compose<U, T, E1G, E1F, F1>(
-	o1: Optic<U, T, E1G, E1F> & { [TAGS]: F1 },
-): <S, E2G, E2F, F2>(
-	o2: Optic<T, S, E2G, E2F> & { [TAGS]: F2 },
-) => Optic<U, S, E1G | E2G, E1F | E2F> & { [TAGS]: F1 & F2 }
-export function compose<U, T, E1G, E1F>(o1: Optic<U, T, E1G, E1F>) {
 	return _compose(o1) as any
 }
 

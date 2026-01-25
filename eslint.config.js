@@ -37,6 +37,9 @@ export default defineConfig(
 				{
 					cspell: {
 						words: [
+							'unidir',
+							'bidir',
+							'combinators',
 							'async',
 							'todo',
 							'funtoyz',

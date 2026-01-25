@@ -1,5 +1,4 @@
 import { flow } from '../../../functions/flow'
-import { isNumber } from '../../../guards'
 import { result, Result } from '../../../tags/results'
 import { eq } from '../../eq'
 import { preview } from '../../extractors/preview'
@@ -7,6 +6,10 @@ import { review } from '../../extractors/review'
 import { update } from '../../extractors/update'
 import { view } from '../../extractors/view'
 import { filter } from './filter'
+
+function isNumber(u: unknown): u is number {
+	return typeof u === 'number'
+}
 
 describe('filter', () => {
 	type S = number

@@ -1,4 +1,5 @@
 import { Init } from '../functions/arguments'
+import { noop } from '../functions/basics'
 
 export type MachineFactory<
 	Props,
@@ -44,3 +45,41 @@ export type Reducer<Value, State = Value, Result = State> = Machine<
 	State,
 	Result
 >
+
+export function canSend<EventIn, State, EventOut>(
+	{
+		reduce,
+	}: {
+		reduce: (
+			event: EventIn,
+			state: State,
+			send: (event: EventOut) => void,
+		) => void
+	},
+	state: State,
+) {
+	return (event: EventIn) => {
+		let called = false
+		return (
+			!Object.is(
+				state,
+				reduce(event, state, () => (called = true)),
+			) || called
+		)
+	}
+}
+
+export function getNext<EventIn, State, EventOut>(
+	{
+		reduce,
+	}: {
+		reduce: (
+			event: EventIn,
+			state: State,
+			send: (event: EventOut) => void,
+		) => void
+	},
+	state: State,
+) {
+	return (event: EventIn) => reduce(event, state, noop)
+}

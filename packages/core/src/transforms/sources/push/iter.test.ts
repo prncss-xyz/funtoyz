@@ -1,5 +1,3 @@
-import { describe } from 'node:test'
-
 import { eq } from '../../eq'
 import { collectAsync } from '../../extractors/collect'
 import { iterAsync } from './iter'

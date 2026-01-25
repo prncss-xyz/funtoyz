@@ -1,9 +1,9 @@
 import { negate } from './combinators'
-import { equals } from './elementary'
+import { eeq } from './elementary'
 
 describe('negate', () => {
 	test('base', () => {
-		const n = negate(equals(3))
+		const n = negate(eeq(3))
 		expect(n(3)).toBeFalsy()
 	})
 })
