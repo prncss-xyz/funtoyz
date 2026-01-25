@@ -1,8 +1,14 @@
 import { Init } from '../functions/arguments'
 
-export type MachineFactory<Props, EventIn, State, Result, EventOut, Final> = (
-	props: Props,
-) => Machine<EventIn, State, Result, EventOut, Final>
+export type MachineFactory<
+	Props,
+	EventIn,
+	State,
+	Result,
+	EventOut,
+	Final,
+	Finish extends boolean,
+> = (props: Props) => Machine<EventIn, State, Result, EventOut, Final, Finish>
 
 export class Exit<T> {
 	value: T
@@ -21,7 +27,9 @@ export interface Machine<
 	Result = State,
 	EventOut = never,
 	Final = never,
+	Finish extends boolean = false,
 > {
+	finish: Finish
 	init: Init<State>
 	reduce: (
 		event: EventIn,

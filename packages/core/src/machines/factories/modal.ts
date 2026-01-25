@@ -9,6 +9,7 @@ export function modalMachine<EventOut = never, Final = never>() {
 		State extends AnyTag,
 		Props = void,
 		Result = State,
+		Finish extends boolean = false,
 	>(
 		init: Init<State, [Props]>,
 		states: {
@@ -23,8 +24,15 @@ export function modalMachine<EventOut = never, Final = never>() {
 		result?: {
 			[S in TypeIn<State>]: (state: PayloadOf<State, S>) => Result
 		},
-	): MachineFactory<Props, EventIn, State, Result, EventOut, Final> {
-		return baseMachine<EventOut, Final>()<EventIn, State, Props, Result>(
+		finish?: Finish,
+	): MachineFactory<Props, EventIn, State, Result, EventOut, Final, Finish> {
+		return baseMachine<EventOut, Final>()<
+			EventIn,
+			State,
+			Props,
+			Result,
+			Finish
+		>(
 			init,
 			(event: any, state, send) => {
 				const s = (states as any)[state.type]
@@ -35,6 +43,7 @@ export function modalMachine<EventOut = never, Final = never>() {
 			result
 				? (state) => (result as any)[state.type](state.payload)
 				: undefined,
+			finish,
 		)
 	}
 }

@@ -2,25 +2,33 @@
 
 ## Prelude
 
-On error, should collect return an empty array or emit an error (will depend on the use case, needs to be clarified).
-
-Possibly add a map to tags.
+Possibly add a map method to tags.
 
 Figure out unique symbol issue.
 
 ## Machines
 
-Sum, Product, Map. Higher-order machines (undo-redo etc., see xstate)
+Sum, Slice, Map. Higher-order machines (undo-redo etc., see xstate)
 
 ## Transforms
 
-Extend scan and fold to use with machines.
+Replace 'empty' with Nothing
+
+Import all folds.
 
 Exclude `packages/core/src/transforms/compose.ts` from exports.
 
-It would be great to unify sync and async extractors, however, this would require to wrap source in an object with a field indicating if the source is async.
-
 Add relation utils.
+
+On error, should `collect` return an empty array or emit an error (will depend on the use case, needs to be clarified).
+
+Validation.
+
+- change in protocol: close must be called after error
+
+Errors should always be tags.
+
+It would be great to unify sync and async extractors, however, this would require to wrap source in an object with a field indicating if the source is async.
 
 Improve resolve. Possibly enhance using indexation utils.
 

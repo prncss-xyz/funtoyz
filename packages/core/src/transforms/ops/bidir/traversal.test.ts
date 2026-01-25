@@ -1,4 +1,5 @@
 import { flow } from '../../../functions/flow'
+import { reducer } from '../../../machines/factories/base'
 import { result } from '../../../tags/results'
 import { eq } from '../../eq'
 import { preview } from '../../extractors/preview'
@@ -72,10 +73,7 @@ describe('fold', () => {
 		eq<number[]>(),
 		elems(),
 		filter((x) => x % 2 === 0),
-		fold({
-			fold: (x, y) => x + y,
-			init: 100,
-		}),
+		fold(reducer(100, (x, y) => x + y)),
 	)
 	it('view', () => {
 		// @ts-expect-error TODO:
