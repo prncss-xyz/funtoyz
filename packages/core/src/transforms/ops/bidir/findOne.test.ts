@@ -1,5 +1,5 @@
 import { flow } from '../../../functions/flow'
-import { result } from '../../../tags/results'
+import { nothing, result } from '../../../tags/results'
 import { eq } from '../../eq'
 import { preview } from '../../extractors/preview'
 import { REMOVE, update } from '../../extractors/update'
@@ -28,7 +28,7 @@ describe('findOne', () => {
 			)
 		})
 		it('undefined', () => {
-			expect(preview(o)(sourceUndefined)).toEqual(result.failure.of('empty'))
+			expect(preview(o)(sourceUndefined)).toEqual(result.failure.of(nothing()))
 		})
 	})
 	describe('put', () => {

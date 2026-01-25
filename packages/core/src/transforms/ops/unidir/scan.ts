@@ -16,7 +16,7 @@ export function scan<EventIn, State, Result = State, Final = never>(
 	o2: Optic<EventIn, S, E2G, E2F> & {
 		TAGS: F2
 	},
-) => Optic<Final | Result, S, 'empty' | E2G, E2F> & {
+) => Optic<Final | Result, S, E2G | Nothing, E2F> & {
 	LTAGS: {}
 } & {
 	TAGS: F2 & {
@@ -38,7 +38,7 @@ export function scan<
 	o2: Optic<EventIn, S, E2G, E2F> & {
 		TAGS: F2
 	},
-) => Optic<Final | Result, S, 'empty' | E2G, E2F> & {
+) => Optic<Final | Result, S, E2G | Nothing, E2F> & {
 	LTAGS: {}
 } & {
 	TAGS: F2 & {
@@ -67,7 +67,7 @@ export function fold<EventIn, State, Result = State, Final = never>(
 	o2: Optic<EventIn, S, E2G, E2F> & {
 		TAGS: F2
 	},
-) => Optic<Final | Result, S, 'empty' | E2G, E2F> & {
+) => Optic<Final | Result, S, E2G | Nothing, E2F> & {
 	LTAGS: {}
 } & {
 	TAGS: F2 & {
@@ -89,7 +89,7 @@ export function fold<
 	o2: Optic<EventIn, S, E2G, E2F> & {
 		TAGS: F2
 	},
-) => Optic<Final | Result, S, 'empty' | E2G, E2F> & {
+) => Optic<Final | Result, S, E2G | Nothing, E2F> & {
 	LTAGS: {}
 } & {
 	TAGS: F2 & {

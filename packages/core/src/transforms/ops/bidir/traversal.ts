@@ -1,5 +1,6 @@
 import { fromInit, Init } from '../../../functions/arguments'
 import { id, noop } from '../../../functions/basics'
+import { nothing, Nothing } from '../../../tags/results'
 import { _compo } from '../../compose'
 import { Source } from '../../types'
 
@@ -44,7 +45,7 @@ export function traversal<Acc, Value, Res>({
 	return _compo<
 		Value,
 		Res,
-		'empty',
+		Nothing,
 		never,
 		{
 			prims: true
@@ -77,7 +78,7 @@ export function traversal<Acc, Value, Res>({
 		},
 		modifier,
 		remover: (_s, next) => next((result ?? (id as any))(fromInit(init))),
-		toEmpty: () => 'empty',
+		toEmpty: () => nothing(),
 	})
 }
 

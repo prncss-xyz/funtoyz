@@ -1,7 +1,8 @@
+import { nothing, Nothing } from '../../../tags/results'
 import { _compo } from '../../compose'
 import { Modifier } from '../../types'
 
-export function removableOpt<Part, Whole, EG = 'empty'>({
+export function removableOpt<Part, Whole, EG = Nothing>({
 	error,
 	get,
 	modifier,
@@ -24,7 +25,7 @@ export function removableOpt<Part, Whole, EG = 'empty'>({
 	>({
 		getter: (w, next, err) => {
 			const res = get(w)
-			if (res === undefined) return err(error ?? ('empty' as EG))
+			if (res === undefined) return err(error ?? (nothing() as EG))
 			return next(res)
 		},
 		modifier,

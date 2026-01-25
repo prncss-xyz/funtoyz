@@ -1,3 +1,4 @@
+import { nothing, Nothing } from '../../../tags/results'
 import { _compo } from '../../compose'
 import { Emitter } from '../../types'
 
@@ -5,7 +6,7 @@ export function sequence<Part, Whole, E>(emitter: Emitter<Part, Whole, E>) {
 	return _compo<
 		Part,
 		Whole,
-		'empty',
+		Nothing,
 		E,
 		{
 			getter: true
@@ -14,6 +15,6 @@ export function sequence<Part, Whole, E>(emitter: Emitter<Part, Whole, E>) {
 		}
 	>({
 		emitter,
-		toEmpty: () => 'empty',
+		toEmpty: () => nothing(),
 	})
 }

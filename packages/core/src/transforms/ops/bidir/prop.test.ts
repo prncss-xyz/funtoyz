@@ -1,5 +1,5 @@
 import { flow } from '../../../functions/flow'
-import { result } from '../../../tags/results'
+import { nothing, result } from '../../../tags/results'
 import { eq } from '../../eq'
 import { preview } from '../../extractors/preview'
 import { REMOVE, update } from '../../extractors/update'
@@ -25,9 +25,13 @@ describe('prop', () => {
 		expect(view(focusA)(sourceDefined)).toBe('A')
 		expect(view(focusA)(sourceUndefined)).toBe('A')
 		expect(preview(focusB)(sourceDefined)).toEqual(result.success.of('B'))
-		expect(preview(focusB)(sourceUndefined)).toEqual(result.failure.of('empty'))
+		expect(preview(focusB)(sourceUndefined)).toEqual(
+			result.failure.of(nothing()),
+		)
 		expect(preview(focusC)(sourceDefined)).toEqual(result.success.of('C'))
-		expect(preview(focusC)(sourceUndefined)).toEqual(result.failure.of('empty'))
+		expect(preview(focusC)(sourceUndefined)).toEqual(
+			result.failure.of(nothing()),
+		)
 	})
 	it('put', () => {
 		expect(update(focusA)('C')(sourceDefined)).toEqual({
