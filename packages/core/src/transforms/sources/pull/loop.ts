@@ -1,6 +1,6 @@
 import { fromInit, Init } from '../../../functions/arguments'
 import { add, gt, lt } from '../../../functions/elementary'
-import { Source } from '../../core/types'
+import { Source } from '../../types'
 
 export function loop<Value>(
 	init: Init<Value, []>,

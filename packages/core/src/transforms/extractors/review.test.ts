@@ -1,4 +1,4 @@
-import { eq } from '../core/eq'
+import { eq } from '../eq'
 import { review, reviewAsync } from './review'
 
 describe('review', () => {

@@ -1,4 +1,4 @@
-import type { Optic } from '../core/types'
+import type { Optic } from '../types'
 
 import { isoAssert } from '../../assertions'
 

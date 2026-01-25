@@ -1,4 +1,4 @@
-import { Source } from '../../core/types'
+import { Source } from '../../types'
 
 export function iter<Value>(values: Iterable<Value>): Source<Value, never> {
 	return function (next, _err, complete) {

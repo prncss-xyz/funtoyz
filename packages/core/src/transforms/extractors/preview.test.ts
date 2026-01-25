@@ -1,6 +1,6 @@
 import { result } from '../../tags/results'
-import { eq } from '../core/eq'
-import { once } from '../core/once'
+import { eq } from '../eq'
+import { once } from '../sources/pull/once'
 import { preview, previewAsync } from './preview'
 
 describe('preview', () => {

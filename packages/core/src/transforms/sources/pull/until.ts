@@ -1,5 +1,5 @@
 import { fromInit, Init } from '../../../functions/arguments'
-import { Source } from '../../core/types'
+import { Source } from '../../types'
 
 export function until<Value>(
 	init: Init<Value, []>,

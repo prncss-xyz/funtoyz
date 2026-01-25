@@ -1,5 +1,5 @@
 import { add, lt } from '../../../functions/elementary'
-import { eq } from '../../core/eq'
+import { eq } from '../../eq'
 import { collect } from '../../extractors/collect'
 import { loop, range, times } from './loop'
 

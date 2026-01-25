@@ -1,4 +1,4 @@
-import { Source } from '../../core/types'
+import { Source } from '../../types'
 
 export function iterAsync<Value>(
 	values: AsyncIterable<Value>,

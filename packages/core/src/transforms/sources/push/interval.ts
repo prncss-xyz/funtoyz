@@ -1,6 +1,6 @@
 // AGENT: do not write tests for this file
 
-import { Source } from '../../core/types'
+import { Source } from '../../types'
 
 type Handler = ReturnType<typeof setInterval>
 

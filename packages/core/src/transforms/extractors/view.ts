@@ -1,4 +1,4 @@
-import type { Optic, Source } from '../core/types'
+import type { Optic, Source } from '../types'
 
 import { exhaustive } from '../../assertions'
 import { _first, _get, _observe } from './observe'

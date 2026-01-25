@@ -1,4 +1,4 @@
-import type { Optic, Source } from '../core/types'
+import type { Optic, Source } from '../types'
 
 import { Result, toResult } from '../../tags/results'
 import { _first, _get } from './observe'

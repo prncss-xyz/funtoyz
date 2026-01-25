@@ -1,7 +1,7 @@
 import { isFunction } from '../../guards'
-import { getEmitter } from '../core/compose'
-import { once } from '../core/once'
-import { Optic, Source } from '../core/types'
+import { getEmitter } from '../compose'
+import { once } from '../sources/pull/once'
+import { Optic, Source } from '../types'
 
 export function collect<Value, S, EG, EF, F>(o: Optic<Value, S, EG, EF, F>) {
 	return function (s: S | Source<S, never>) {

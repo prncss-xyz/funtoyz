@@ -1,4 +1,4 @@
-import { eq } from '../../core/eq'
+import { eq } from '../../eq'
 import { collect } from '../../extractors/collect'
 import { iter } from './iter'
 

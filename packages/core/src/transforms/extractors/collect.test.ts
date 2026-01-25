@@ -1,5 +1,5 @@
-import { eq } from '../core/eq'
-import { Source } from '../core/types'
+import { eq } from '../eq'
+import { Source } from '../types'
 import { collect } from './collect'
 
 describe('collect', () => {

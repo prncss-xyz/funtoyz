@@ -1,6 +1,6 @@
 import { fromInit, Init } from '../../../functions/arguments'
 import { Result, result } from '../../../tags/results'
-import { Source } from '../../core/types'
+import { Source } from '../../types'
 
 export function unfold<Value>(
 	init: Init<Value>,

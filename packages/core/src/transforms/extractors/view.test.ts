@@ -1,5 +1,5 @@
-import { eq } from '../core/eq'
-import { once } from '../core/once'
+import { eq } from '../eq'
+import { once } from '../sources/pull/once'
 import { view, viewAsync } from './view'
 
 describe('view', () => {

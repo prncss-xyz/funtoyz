@@ -1,9 +1,9 @@
 import { fromInit, Init } from '../../functions/arguments'
 import { noop } from '../../functions/basics'
 import { isFunction } from '../../guards'
-import { getEmitter, getGetter } from '../core/compose'
-import { Eq, eq } from '../core/eq'
-import { Optic, Source } from '../core/types'
+import { getEmitter, getGetter } from '../compose'
+import { Eq, eq } from '../eq'
+import { Optic, Source } from '../types'
 
 type Observer<T, E> =
 	| ((t: T) => void)
