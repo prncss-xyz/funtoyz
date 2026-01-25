@@ -5,6 +5,7 @@ import { eq } from '../../core/eq'
 import { preview } from '../../extractors/preview'
 import { review } from '../../extractors/review'
 import { update } from '../../extractors/update'
+import { view } from '../../extractors/view'
 import { filter } from './filter'
 
 describe('filter', () => {

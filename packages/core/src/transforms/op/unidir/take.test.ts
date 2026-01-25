@@ -1,7 +1,7 @@
-/*
-import { flow } from '../../functions/flow'
-import { eq } from '../core/eq'
-import { collect } from '../extractors/collect'
+import { flow } from '../../../functions/flow'
+import { eq } from '../../core/eq'
+import { collect } from '../../extractors/collect'
+import { elems } from '../bidir/traversal'
 import { take } from './take'
 
 describe('take', () => {
@@ -16,4 +16,3 @@ describe('take', () => {
 		expect(collect(o)([0, 1, 2, 3])).toEqual([])
 	})
 })
-*/

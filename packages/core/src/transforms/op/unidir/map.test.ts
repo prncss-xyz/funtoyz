@@ -1,5 +1,7 @@
 import { flow } from '../../../functions/flow'
 import { eq } from '../../core/eq'
+import { review } from '../../extractors/review'
+import { update } from '../../extractors/update'
 import { view } from '../../extractors/view'
 import { map } from './map'
 
