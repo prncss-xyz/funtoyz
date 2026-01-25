@@ -36,9 +36,3 @@ export function curry3<A, B, C, R>(fn: (a: A, b: B, c: C) => R) {
 	}
 	return res
 }
-
-export function negate<T>(f: (v: T) => unknown) {
-	return function (v: T) {
-		return !f(v)
-	}
-}

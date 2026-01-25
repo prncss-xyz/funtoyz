@@ -1,6 +1,5 @@
-import { curry2, curry3, fromInit, Init, negate, toInit } from './arguments'
+import { curry2, curry3, fromInit, Init, toInit } from './arguments'
 import { id } from './basics'
-import { eq } from './elementary'
 
 describe('fromInit', () => {
 	type I = Init<number, [number, string]>
@@ -33,12 +32,5 @@ describe('curry', () => {
 		const fn = curry3((a: number, b: number, c: number) => a + b + c)
 		expect(fn(1, 2, 3)).toBe(6)
 		expect(fn(1, 2)(3)).toBe(6)
-	})
-})
-
-describe('negate', () => {
-	test('base', () => {
-		const n = negate(eq(3))
-		expect(n(3)).toBeFalsy()
 	})
 })

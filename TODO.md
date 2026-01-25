@@ -14,12 +14,16 @@ Sum, Product, Map. Higher-order machines (undo-redo etc., see xstate)
 
 ## Transforms
 
-Rename folder.
+Extend scan and fold to use with machines.
+
+Exclude `packages/core/src/transforms/compose.ts` from exports.
 
 It would be great to unify sync and async extractors, however, this would require to wrap source in an object with a field indicating if the source is async.
 
-Add indexation utils.
+Add relation utils.
 
-Improve, resolve. Possibly ehance using indexation utils.
+Improve resolve. Possibly enhance using indexation utils.
+
+Do notation.
 
 Logic (microkanren)

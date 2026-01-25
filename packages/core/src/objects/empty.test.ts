@@ -1,4 +1,4 @@
-import { isEmpty } from './toInit'
+import { isEmpty } from './empty'
 
 describe('isEmpty', () => {
 	test('should return true for undefined', () => {
