@@ -1,5 +1,5 @@
 import { Result, result } from '../../../tags/results'
-import { _compo } from '../../compose'
+import { compo_ } from '../../compose_'
 
 export function optional<Part, Whole, E>({
 	get,
@@ -8,7 +8,7 @@ export function optional<Part, Whole, E>({
 	get: (w: Whole) => Result<Part, E>
 	set: (p: Part, w: Whole) => Whole
 }) {
-	return _compo<Part, Whole, E, never, { optional: true }>({
+	return compo_<Part, Whole, E, never, { optional: true }>({
 		getter: (w, next, err) => {
 			const res = get(w)
 			if (result.failure.is(res)) return err(result.failure.get(res))

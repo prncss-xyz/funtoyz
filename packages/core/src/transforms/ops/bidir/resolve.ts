@@ -1,17 +1,17 @@
 import { noop } from '../../../functions/basics'
-import { getGetter, getSetter, trush } from '../../compose'
+import { getGetter, getSetter, trush } from '../../compose_'
 import { Eq, eq } from '../../eq'
-import { _OpticArg, Optic } from '../../types'
+import { Optic, OpticArg_ } from '../../types'
 
 export function resolve<K, T, S, E1G, E1F, F1, T1>(
 	r: (k: K) => (eq: Eq<S>) => Optic<T, S, E1G, E1F, F1, T1>,
 ): <E2G, E2F>(t: Optic<K, S, E2G, E2F>) => Optic<T, S, E1G | E2G, E1F | E2F>
 export function resolve<K, T, S, E1G, E1F>(
-	r: (k: K) => (eq: Eq<S>) => _OpticArg<T, S, E1G, E1F>,
+	r: (k: K) => (eq: Eq<S>) => OpticArg_<T, S, E1G, E1F>,
 ) {
 	return function <E2G, E2F>(
 		t: Optic<K, S, E2G, E2F>,
-	): _OpticArg<T, S, E1G | E2G, E1F | E2F> {
+	): OpticArg_<T, S, E1G | E2G, E1F | E2F> {
 		const opt = (k: K) => r(k)(eq()) // TODO: cache
 		if ('getter' in t)
 			return {

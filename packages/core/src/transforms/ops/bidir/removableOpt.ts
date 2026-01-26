@@ -1,5 +1,5 @@
 import { nothing, Nothing } from '../../../tags/results'
-import { _compo } from '../../compose'
+import { compo_ } from '../../compose_'
 import { Modifier } from '../../types'
 
 export function removableOpt<Part, Whole, EG = Nothing>({
@@ -15,7 +15,7 @@ export function removableOpt<Part, Whole, EG = Nothing>({
 	remove: (w: Whole) => Whole
 	set: (p: Part, w: Whole) => Whole
 }) {
-	return _compo<
+	return compo_<
 		Part,
 		Whole,
 		EG,

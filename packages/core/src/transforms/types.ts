@@ -45,13 +45,13 @@ export type Optional<T, S, EG, EF> = OpticCore<S> & {
 	setter: (t: T, next: (s: S) => void, s: S) => void
 }
 
-export type _SetterArg<T, S, EG, EF> =
+export type SetterArg_<T, S, EG, EF> =
 	| Optional<T, S, EF, EG>
 	| Prism<T, S, EF, EG>
 	| Traversable<T, S, EG, EF>
 
-export type _OpticArg<T, S, EG, EF> =
-	| _SetterArg<T, S, EG, EF>
+export type OpticArg_<T, S, EG, EF> =
+	| SetterArg_<T, S, EG, EF>
 	| {
 			emitter: Emitter<T, S, EF>
 			toEmpty: () => EG
@@ -61,6 +61,6 @@ export type _OpticArg<T, S, EG, EF> =
 	  }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export type Optic<T, S, EG, EF, F = {}, LF = {}> = _OpticArg<T, S, EG, EF> & {
+export type Optic<T, S, EG, EF, F = {}, LF = {}> = OpticArg_<T, S, EG, EF> & {
 	[LTAGS]: LF
 } & { [TAGS]: F }

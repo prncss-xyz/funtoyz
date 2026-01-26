@@ -1,5 +1,5 @@
 import { noop } from '../../../functions/basics'
-import { _compo } from '../../compose'
+import { compo_ } from '../../compose_'
 
 export function iso<There, Here>({
 	get,
@@ -8,7 +8,7 @@ export function iso<There, Here>({
 	get: (w: Here) => There
 	set: (p: There) => Here
 }) {
-	return _compo<
+	return compo_<
 		There,
 		Here,
 		never,

@@ -4,12 +4,12 @@ import { noop, pipe2 } from '../functions/basics'
 import { once } from './sources/pull/once'
 import { LTAGS, TAGS } from './symbols'
 import {
-	type _OpticArg,
-	type _SetterArg,
 	type Emitter,
 	type Getter,
 	type Modifier,
 	type Optic,
+	type OpticArg_,
+	type SetterArg_,
 } from './types'
 
 const apply = <V>(
@@ -59,7 +59,7 @@ function composeModify<T, S, U>(
 }
 
 // TODO: make sure EmptyError is in Multi
-export function getGetter<T, S, EG, EF>(o: _OpticArg<T, S, EG, EF>) {
+export function getGetter<T, S, EG, EF>(o: OpticArg_<T, S, EG, EF>) {
 	if ('getter' in o) return o.getter
 	return (r: S, next: (t: T) => void, error: (e: EF | EG) => void) => {
 		let dirty = false
@@ -83,7 +83,7 @@ export function getGetter<T, S, EG, EF>(o: _OpticArg<T, S, EG, EF>) {
 }
 
 export function getModifier<T, S, EG, EF>(
-	o: _SetterArg<T, S, EG, EF>,
+	o: SetterArg_<T, S, EG, EF>,
 ): Modifier<T, S> {
 	if (o.modifier) return o.modifier
 	if ('getter' in o) {
@@ -105,7 +105,7 @@ export function getModifier<T, S, EG, EF>(
 	throw new Error('unreachable')
 }
 
-export function getSetter<T, S, EG, ES>(o: _SetterArg<T, S, EG, ES>) {
+export function getSetter<T, S, EG, ES>(o: SetterArg_<T, S, EG, ES>) {
 	if ('setter' in o) return o.setter
 	if ('reviewer' in o) return o.reviewer
 	return (t: T, next: (s: S) => void, s: S) =>
@@ -113,7 +113,7 @@ export function getSetter<T, S, EG, ES>(o: _SetterArg<T, S, EG, ES>) {
 }
 
 export function getEmitter<T, S, EG, ES>(
-	o: _OpticArg<T, S, EG, ES>,
+	o: OpticArg_<T, S, EG, ES>,
 ): Emitter<T, S, ES> {
 	if ('emitter' in o) return o.emitter
 	return (source) => (next, err, complete) =>
@@ -121,8 +121,8 @@ export function getEmitter<T, S, EG, ES>(
 }
 
 export function isSetter<U, T, ES, EG>(
-	o: _OpticArg<U, T, ES, EG>,
-): o is _SetterArg<U, T, ES, EG> {
+	o: OpticArg_<U, T, ES, EG>,
+): o is SetterArg_<U, T, ES, EG> {
 	return 'modifier' in o || 'setter' in o || 'reviewer' in o
 }
 
@@ -132,20 +132,20 @@ export type Compo<U, T, E1G, E1F, F1 = {}, LF = {}> = <S, E2G, E2F, F2>(
 ) => Optic<U, S, E1G | E2G, E1F | E2F> & { [LTAGS]: LF } & { [TAGS]: F1 & F2 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export function _compo<U, T, E1G, E1F, F1 = {}, LF = {}>(
-	o1: _OpticArg<U, T, E1G, E1F>,
+export function compo_<U, T, E1G, E1F, F1 = {}, LF = {}>(
+	o1: OpticArg_<U, T, E1G, E1F>,
 ): <S, E2G, E2F, F2>(
 	o2: Optic<T, S, E2G, E2F> & { [TAGS]: F2 },
 ) => Optic<U, S, E1G | E2G, E1F | E2F> & { [LTAGS]: LF } & { [TAGS]: F1 & F2 }
 
-export function _compo(o1: any) {
-	return _compose(o1) as any
+export function compo_(o1: any) {
+	return compose_(o1) as any
 }
 
-function _compose<U, T, E1G, E1F>(o1: _OpticArg<U, T, E1G, E1F>) {
+function compose_<U, T, E1G, E1F>(o1: OpticArg_<U, T, E1G, E1F>) {
 	return function <S, E2G, E2F>(
-		o2: _OpticArg<T, S, E2G, E2F>,
-	): _OpticArg<U, S, E1G | E2G, E1F | E2F> {
+		o2: OpticArg_<T, S, E2G, E2F>,
+	): OpticArg_<U, S, E1G | E2G, E1F | E2F> {
 		if ('emitter' in o1 || 'emitter' in o2) {
 			const emitter = composeEmitter(getEmitter(o1), getEmitter(o2))
 			const toEmpty =

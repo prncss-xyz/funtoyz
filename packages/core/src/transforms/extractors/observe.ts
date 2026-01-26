@@ -1,7 +1,7 @@
 import { fromInit, Init } from '../../functions/arguments'
 import { noop } from '../../functions/basics'
 import { isFunction } from '../../guards'
-import { getEmitter, getGetter } from '../compose'
+import { getEmitter, getGetter } from '../compose_'
 import { Eq, eq } from '../eq'
 import { Optic, Source } from '../types'
 

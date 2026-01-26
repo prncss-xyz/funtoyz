@@ -1,7 +1,7 @@
 import { fromInit, Init } from '../../../functions/arguments'
 import { id, noop } from '../../../functions/basics'
 import { nothing, Nothing } from '../../../tags/results'
-import { _compo } from '../../compose'
+import { compo_ } from '../../compose_'
 import { Source } from '../../types'
 
 export type Traversal<Acc, Value, Res> = {
@@ -42,7 +42,7 @@ export function traversal<Acc, Value, Res>({
 		)
 		start()
 	}
-	return _compo<
+	return compo_<
 		Value,
 		Res,
 		Nothing,

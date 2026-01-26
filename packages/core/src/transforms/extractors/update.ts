@@ -2,7 +2,7 @@ import { isoAssert } from '../../assertions'
 import { Modify } from '../../functions/types'
 import { isFunction, isPromise } from '../../guards'
 import { NonFunction } from '../../types'
-import { getModifier, getSetter, isSetter } from '../compose'
+import { getModifier, getSetter, isSetter } from '../compose_'
 import { Optic } from '../types'
 
 type ModifyAsync<T> = (t: T) => Promise<T> | T

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
 import { nothing, Nothing } from '../../../tags/results'
-import { _compo } from '../../compose'
+import { compo_ } from '../../compose_'
 
 type OptionalKeys<T> = {
 	[K in keyof T]: object extends Pick<T, K> ? K : never
@@ -10,7 +10,7 @@ type OptionalKeys<T> = {
 type OptionalValue<T> = (null | undefined) & T extends never ? never : Nothing
 
 export function prop<Key extends keyof O, O>(key: Key) {
-	return _compo<
+	return compo_<
 		Exclude<O[Key], null | undefined>,
 		O,
 		OptionalValue<O[Key]>,

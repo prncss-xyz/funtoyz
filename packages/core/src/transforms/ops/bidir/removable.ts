@@ -1,5 +1,5 @@
 import { Result, result } from '../../../tags/results'
-import { _compo } from '../../compose'
+import { compo_ } from '../../compose_'
 
 export function removable<Part, Whole, E>({
 	get,
@@ -10,7 +10,7 @@ export function removable<Part, Whole, E>({
 	remove: (w: Whole) => Whole
 	set: (p: Part, w: Whole) => Whole
 }) {
-	return _compo<Part, Whole, E, never, { optional: true }, { removable: true }>(
+	return compo_<Part, Whole, E, never, { optional: true }, { removable: true }>(
 		{
 			getter: (w, next, err) => {
 				const res = get(w)

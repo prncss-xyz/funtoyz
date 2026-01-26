@@ -1,9 +1,9 @@
 import { nothing, Nothing } from '../../../tags/results'
-import { _compo } from '../../compose'
+import { compo_ } from '../../compose_'
 import { Emitter } from '../../types'
 
 export function sequence<Part, Whole, E>(emitter: Emitter<Part, Whole, E>) {
-	return _compo<
+	return compo_<
 		Part,
 		Whole,
 		Nothing,

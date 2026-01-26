@@ -1,7 +1,7 @@
 // AGENT: do not write tests for this file
 import type { Optic } from './types'
 
-import { trush } from './compose'
+import { trush } from './compose_'
 
 export type Eq<T, EF = never> = Optic<T, T, never, EF>
 

@@ -4,7 +4,8 @@ import { eq } from '../../eq'
 import { preview } from '../../extractors/preview'
 import { chars } from '../bidir/traversal'
 import { map } from './map'
-import { fold, transduce } from './scan'
+import { fold } from './scan'
+import { transduce } from './transduce'
 
 const sample = 'hello my friends'
 

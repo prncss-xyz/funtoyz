@@ -1,5 +1,5 @@
 import { isFunction } from '../../guards'
-import { getEmitter } from '../compose'
+import { getEmitter } from '../compose_'
 import { once } from '../sources/pull/once'
 import { Optic, Source } from '../types'
 

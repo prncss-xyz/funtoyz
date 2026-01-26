@@ -1,7 +1,7 @@
-import { _compo } from '../../compose'
+import { compo_ } from '../../compose_'
 
 export function map<A, B>(fn: (w: A) => B) {
-	return _compo<
+	return compo_<
 		B,
 		A,
 		never,
