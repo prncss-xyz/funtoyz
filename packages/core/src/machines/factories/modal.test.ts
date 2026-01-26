@@ -61,6 +61,6 @@ describe('machines/factories/modal', () => {
 			},
 		)
 		const instance = machine()
-		expect(instance.result(tag('done', 10))).toBe(20)
+		expect(instance.result?.(tag('done', 10))).toBe(20)
 	})
 })

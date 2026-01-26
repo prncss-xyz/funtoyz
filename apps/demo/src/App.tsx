@@ -1,18 +1,17 @@
-import { reducer } from '@funtoyz/core'
-
-import reactLogo from './assets/react.svg'
 import './App.css'
+import reactLogo from './assets/react.svg'
 import { useMachine } from './useMachine'
 
 import viteLogo from '/vite.svg'
 
 function App() {
 	const { result, send } = useMachine(
-		reducer(
-			0,
-			(_: void, last) => last + 1,
-			(last) => (last % 2 ? 'even' : 'odd'),
-		),
+		{
+			init: 0,
+			reduce: (_: void, last) => last + 1,
+			result: (last) => (last % 2 ? 'even' : 'odd'),
+		},
+		{},
 	)
 
 	return (

@@ -5,20 +5,20 @@ import { _compo } from '../../compose'
 import { Source } from '../../types'
 
 export type Traversal<Acc, Value, Res> = {
-	fold: (value: Value, acc: Acc) => Acc
 	init: Init<Acc>
+	reduce: (value: Value, acc: Acc) => Acc
 	result?: (acc: Acc) => Res
 	source: (r: Res) => Source<Value, never>
 }
 
 export function traversal<Acc, Value, Res>({
-	fold,
 	init,
+	reduce,
 	result,
 	source,
 }: {
-	fold: (value: Value, acc: Acc) => Acc
 	init: Init<Acc>
+	reduce: (value: Value, acc: Acc) => Acc
 	result?: (acc: Acc) => Res
 	source: (r: Res) => Source<Value, never>
 }) {
@@ -32,7 +32,7 @@ export function traversal<Acc, Value, Res>({
 		const { start, unmount } = source(s)(
 			(value) =>
 				m(value, (t) => {
-					acc = fold(t, acc)
+					acc = reduce(t, acc)
 				}),
 			noop,
 			() => {
@@ -84,8 +84,8 @@ export function traversal<Acc, Value, Res>({
 
 export function inArray<Value>(): Traversal<Value[], Value, Value[]> {
 	return {
-		fold: (t, acc) => [...acc, t],
 		init: () => [],
+		reduce: (t, acc) => [...acc, t],
 		source: (acc) => (next, _error, complete) => {
 			let done = false
 			return {
@@ -106,4 +106,30 @@ export function inArray<Value>(): Traversal<Value[], Value, Value[]> {
 
 export function elems<T>() {
 	return traversal(inArray<T>())
+}
+
+export function inString(): Traversal<string, string, string> {
+	return {
+		init: '',
+		reduce: (t, acc) => acc + t,
+		source: (acc) => (next, _error, complete) => {
+			let done = false
+			return {
+				start: () => {
+					for (const t of acc) {
+						if (done) break
+						next(t)
+					}
+					complete()
+				},
+				unmount: () => {
+					done = true
+				},
+			}
+		},
+	}
+}
+
+export function chars() {
+	return traversal(inString())
 }

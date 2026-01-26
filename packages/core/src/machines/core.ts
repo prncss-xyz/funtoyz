@@ -30,14 +30,14 @@ export interface Machine<
 	Final = never,
 	Finish extends boolean = false,
 > {
-	finish: Finish
+	finish?: Finish
 	init: Init<State>
 	reduce: (
 		event: EventIn,
 		state: State,
 		send: (event: EventOut) => void,
 	) => Exit<Final> | State
-	result: (state: State) => Result
+	result?: (state: State) => Result
 }
 
 export type Reducer<Value, State = Value, Result = State> = Machine<

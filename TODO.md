@@ -12,6 +12,8 @@ Sum, Slice, Map. Higher-order machines (undo-redo etc., see x-state)
 
 ## Transforms
 
+Optics should be runtime aware of their type.
+
 Errors should always be tags.
 
 `discard` optic (negative `when`), mostly useful with type guards. (then remove negate)

@@ -2,12 +2,12 @@ import { canSend, exhaustive, Exit, getNext, type Machine } from '@funtoyz/core'
 import { useState } from 'react'
 
 export function useMachine<
-	EventIn,
 	State,
-	Result,
-	EventOut,
-	Final,
-	Finish extends boolean,
+	EventIn = State,
+	Result = State,
+	EventOut = never,
+	Final = never,
+	Finish extends boolean = false,
 >(
 	machine: Machine<EventIn, State, Result, EventOut, Final, Finish>,
 	...args: [EventOut] extends [never]
@@ -50,7 +50,7 @@ export function useMachine<
 		} else setState(nextState)
 		events.forEach(onSend)
 	}
-	const result = machine.result(state)
+	const result = machine.result ? machine.result(state) : (state as never)
 	return {
 		canSend: canSend(machine, state),
 		getNext: getNext(machine, state),

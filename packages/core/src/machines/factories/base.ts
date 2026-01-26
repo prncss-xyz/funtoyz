@@ -1,6 +1,6 @@
 import { fromInit, Init } from '../../functions/arguments'
 import { id } from '../../functions/basics'
-import { Exit, Machine, MachineFactory } from '../core'
+import { Exit, MachineFactory } from '../core'
 
 export function baseMachine<EventOut = never, Final = never>() {
 	return function <
@@ -24,20 +24,7 @@ export function baseMachine<EventOut = never, Final = never>() {
 			init: fromInit(init, props),
 			reduce: (event: any, state, send) =>
 				fromInit(reduce(event, state, send), state),
-			result: result ?? id<any>,
+			result: result ?? (id as never),
 		})
-	}
-}
-
-export function reducer<State, EventIn = State, Result = State>(
-	init: Init<State, []>,
-	reduce: (event: EventIn, state: State) => State,
-	result?: (state: State) => Result,
-): Machine<EventIn, State, Result, never, never, false> {
-	return {
-		finish: false,
-		init,
-		reduce: reduce as any,
-		result: result ?? (id as never),
 	}
 }
