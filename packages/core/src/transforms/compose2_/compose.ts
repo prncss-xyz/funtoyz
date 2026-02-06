@@ -1,7 +1,7 @@
+import { composeRead } from './compose/read_'
+import { composeWrite } from './compose/write_'
 import { Optic } from './core'
 import { Flags, mergeFlags } from './flags'
-import { composeRead } from './read_'
-import { composeWrite } from './write_'
 
 export function compose<T, S, U, E1, E2, F1 extends Flags, F2 extends Flags>(
 	o1: Optic<U, T, E1, F1>,
