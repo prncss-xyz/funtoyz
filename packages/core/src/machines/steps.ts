@@ -35,7 +35,10 @@ export function steps<Final = void>() {
 				}) =>
 				(state: State) =>
 					(opts.implementation as any)[state.type]((e: any) => {
-						const next = (flow.states as any)[state.type][e.type]?.(e[PAYLOAD], state[PAYLOAD])
+						const next = (flow.states as any)[state.type][e.type]?.(
+							e[PAYLOAD],
+							state[PAYLOAD],
+						)
 						if (next instanceof Exit) return handlers.onExit(next.value)
 						handlers.setState(next)
 					}, state[PAYLOAD]),
