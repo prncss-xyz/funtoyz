@@ -38,7 +38,6 @@ export * from './tags/types'
 // Transforms
 // export * from './transforms/compose'
 
-export * from './transforms/eq'
 // Transforms - Extractors
 export * from './transforms/extractors/collect'
 export * from './transforms/extractors/observe'
