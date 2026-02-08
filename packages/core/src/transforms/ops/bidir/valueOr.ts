@@ -3,7 +3,7 @@ import { Empty } from '../../../objects/types'
 import { ISource } from '../../core'
 import { apply, trush } from '../../methods'
 
-class Once<S> implements ISource<S, S, never, never, Empty> {
+class ValueOr<S> implements ISource<S, S, never, never, Empty> {
 	flags = {}
 	getter = trush
 	modifier = apply
@@ -26,6 +26,6 @@ class Once<S> implements ISource<S, S, never, never, Empty> {
 	}
 }
 
-export function once<S>(): ISource<S, S, never, never, Empty> {
-	return new Once<S>()
+export function valueOr<S>(): ISource<S, S, never, never, Empty> {
+	return new ValueOr<S>()
 }

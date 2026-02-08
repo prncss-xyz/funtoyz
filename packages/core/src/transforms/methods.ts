@@ -23,14 +23,6 @@ export const apply = <V>(
 	v: V,
 ) => m(v, next)
 
-export function noModify<T, S>(
-	_m: (t: T, next: (t: T) => void) => void,
-	next: (s: S) => void,
-	s: S,
-) {
-	return next(s)
-}
-
 export type Setter<T, S> = (t: T, next: (s: S) => void, s: S) => void
 
 export type Remover<S> = (s: S, next: (s: S) => void) => void

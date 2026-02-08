@@ -40,7 +40,7 @@ export interface Machine<
 	result?: (state: State) => Result
 }
 
-export type Reducer<Value, State = Value, Result = State> = Machine<
+export type MachineReducer<Value, State = Value, Result = State> = Machine<
 	Value,
 	State,
 	Result
