@@ -1,0 +1,19 @@
+import { flow } from '../../../../functions/flow'
+import { update, view } from '../../../extractors'
+import { once } from '../../../sources/sync/once'
+import { reread } from './reread'
+
+describe('reread', () => {
+	const o = flow(
+		once<string>(),
+		reread((s) => s.toUpperCase()),
+	)
+	it('view', () => {
+		expect(view(o)('foo')).toBe('FOO')
+	})
+	it('update', () => {
+		// TODO: which behavior is better?
+		expect(update(o)('', 'foo')).toBe('')
+		/* expect(update(focus)('', 'foo')).toBe('foo') */
+	})
+})

@@ -1,7 +1,7 @@
-import { flow } from '../../../functions/flow'
-import { review, view } from '../../extractors'
-import { once } from '../../sources/sync/once'
-import { iso } from './iso'
+import { iso } from '.'
+import { flow } from '../../../../functions/flow'
+import { review, view } from '../../../extractors'
+import { once } from '../../../sources/sync/once'
 
 describe('iso', () => {
 	type S = { a: number }

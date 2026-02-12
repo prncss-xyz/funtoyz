@@ -16,6 +16,7 @@ class ValueOr<S> implements ISource<S, S, never, never, Empty> {
 		_error: (e: never) => void,
 		complete: () => void,
 	) {
+    let dirty = false
 		return {
 			abort: noop,
 			start: () => {

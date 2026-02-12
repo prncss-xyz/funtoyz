@@ -54,10 +54,17 @@ export class Compose<
 		this.o1.reviewer(t, (t) => this.o2.reviewer(t, next))
 	}
 	setter(t: U, next: (s: S) => void, s: S) {
-		this.o2.getter(
+		if (this.o1.flags.CONSTRUCT)
+			return this.o1.reviewer(t, (t) => this.o2.setter(t, next, s))
+		if (this.o2.flags.CONSTRUCT)
+			return this.o2.getter(
+				s,
+				(u) => this.o1.setter(t, (t) => this.o2.reviewer(t, next), u),
+				() => next(s),
+			)
+		return this.o2.getter(
 			s,
-			// FIXME:
-			(u) => this.o1.setter(t, (t) => this.o2.reviewer(t, next), u),
+			(u) => this.o1.setter(t, (t) => this.o2.setter(t, next, s), u),
 			() => next(s),
 		)
 	}
