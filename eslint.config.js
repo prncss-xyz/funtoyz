@@ -79,7 +79,7 @@ export default defineConfig(
 					varsIgnorePattern: '^_',
 				},
 			],
-			'func-style': ['error', 'declaration', { allowArrowFunctions: true }],
+			'func-style': ['error', 'declaration'],
 			'no-console': 'warn',
 			'no-else-return': 'warn',
 			'no-empty': 'warn',
