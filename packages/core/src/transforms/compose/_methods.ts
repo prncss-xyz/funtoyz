@@ -1,5 +1,5 @@
-import { fromInit, Init } from '../functions/arguments'
-import { nothing, Nothing } from '../tags/results'
+import { fromInit, Init } from '../../functions/arguments'
+import { nothing, Nothing } from '../../tags/results'
 
 export const trush = <V>(v: V, cb: (v: V) => void) => cb(v)
 

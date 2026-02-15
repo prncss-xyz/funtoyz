@@ -1,4 +1,5 @@
 import { forbidden } from '../assertions'
+import { match } from './match'
 import { tag } from './tag'
 import { tags } from './tags'
 import { Tag, Tags } from './types'
@@ -36,12 +37,5 @@ export function successful(...args: any[]): any {
 		/* c8 ignore next 2 */
 		default:
 			return forbidden()
-	}
-}
-
-export function toResult<S, E>(next: (value: Result<S, E>) => void) {
-	return {
-		error: (e: E) => next(result.failure.of(e)),
-		next: (s: S) => next(result.success.of(s)),
 	}
 }

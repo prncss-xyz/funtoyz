@@ -1,6 +1,6 @@
 import { noop } from '../../../../functions/basics'
 import { Empty } from '../../../../objects/types'
-import { compose } from '../../../core'
+import { compose } from '../../../compose'
 
 export function iso<T, S>({
 	get,

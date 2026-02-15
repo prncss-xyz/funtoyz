@@ -3,9 +3,9 @@ import { pipe2 } from '../../functions/basics'
 import { Modify } from '../../functions/types'
 import { isFunction } from '../../guards'
 import { result, Result } from '../../tags/results'
-import { ISource } from '../core'
-import { Flags, HasFlag } from '../flags'
-import { reduce, toArray } from '../methods'
+import { ISource } from '../compose'
+import { Flags, HasFlag } from '../compose/_flags'
+import { reduce, toArray } from '../compose/_methods'
 
 function extract<R, Args extends any[]>(
 	sync: boolean | undefined,
@@ -77,8 +77,7 @@ export function review<T, S, G, E, F extends Flags>(
 }
 
 export const REMOVE = Symbol('REMOVE')
-// type Remove = typeof REMOVE
-type Update<T> = Modify<T> | T
+type Update<T> = Modify<T> | T | typeof REMOVE
 
 export function update<T, S, G, E, F extends { SYNC: false }>(
 	o: ISource<T, S, G, E, F>,
@@ -90,9 +89,32 @@ export function update<T, S, G, E, F extends Flags>(
 	o: ISource<T, S, G, E, HasFlag<'WRITE', F>>,
 ) {
 	return extract<S, [Update<T>, S]>(o.flags.SYNC, (next, t, s) => {
-		if (isFunction(t)) return o.modifier((v, n) => n(t(v)), next, s)
-		// TODO:
+		if (isFunction(t))
+			return o.modifier(
+				(v, n) => {
+					console.log('modifier')
+					return n(t(v))
+				},
+				next,
+				s,
+			)
+		console.log('missed')
 		if (t === REMOVE) return o.remover(s, next)
 		return o.setter(t, next, s)
+	})
+}
+
+export function over<T, S, G, E, F extends Flags>(
+	o: ISource<T, S, G, E, HasFlag<'WRITE', F>>,
+) {
+	return extract<S, [Modify<T>, S]>(o.flags.SYNC, (next, t, s) => {
+		return o.modifier(
+			(v, n) => {
+				console.log('modifier')
+				return n(t(v))
+			},
+			next,
+			s,
+		)
 	})
 }

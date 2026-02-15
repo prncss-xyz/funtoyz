@@ -5,10 +5,10 @@ export type Type = typeof TYPE
 export const PAYLOAD = 'payload'
 export type Payload = typeof PAYLOAD
 
-export type Tag<Type extends PropertyKey, Payload> = OptionalUndefined<{
+export type Tag<Type extends PropertyKey, Payload> = {
 	[PAYLOAD]: Payload
 	[TYPE]: Type
-}>
+}
 
 export type AnyTag = Tag<any, any>
 

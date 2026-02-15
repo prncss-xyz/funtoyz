@@ -1,7 +1,7 @@
 import { noop } from '../../../functions/basics'
 import { Empty } from '../../../objects/types'
-import { ISource } from '../../core'
-import { apply, trush } from '../../methods'
+import { ISource } from '../../compose'
+import { apply, trush } from '../../compose/_methods'
 
 class ValueOr<S> implements ISource<S, S, never, never, Empty> {
 	flags = {}
