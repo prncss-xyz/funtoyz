@@ -65,13 +65,13 @@ export function collect<T, S, G, F extends Flags>(
 }
 
 export function review<T, S, G, E, F extends { SYNC: false }>(
-	o: ISource<T, S, G, E, F>,
+	o: ISource<T, S, G, E, HasFlag<'CONSTRUCT' | 'WRITE', F>>,
 ): (t: T) => Promise<S>
 export function review<T, S, G, E, F extends Flags>(
-	o: ISource<T, S, G, E, HasFlag<'SYNC', F>>,
+	o: ISource<T, S, G, E, HasFlag<'CONSTRUCT' | 'SYNC' | 'WRITE', F>>,
 ): (t: T) => S
 export function review<T, S, G, E, F extends Flags>(
-	o: ISource<T, S, G, E, HasFlag<'CONSTRUCT', F>>,
+	o: ISource<T, S, G, E, HasFlag<'CONSTRUCT' | 'WRITE', F>>,
 ) {
 	return extract<S, [T]>(o.flags.SYNC, (next, t) => o.reviewer(t, next))
 }
@@ -80,25 +80,16 @@ export const REMOVE = Symbol('REMOVE')
 type Update<T> = Modify<T> | T | typeof REMOVE
 
 export function update<T, S, G, E, F extends { SYNC: false }>(
-	o: ISource<T, S, G, E, F>,
+	o: ISource<T, S, G, E, HasFlag<'WRITE', F>>,
 ): (t: Update<T>, s: S) => Promise<S>
 export function update<T, S, G, E, F extends Flags>(
-	o: ISource<T, S, G, E, HasFlag<'SYNC', F>>,
+	o: ISource<T, S, G, E, HasFlag<'SYNC' | 'WRITE', F>>,
 ): (t: Update<T>, s: S) => S
 export function update<T, S, G, E, F extends Flags>(
 	o: ISource<T, S, G, E, HasFlag<'WRITE', F>>,
 ) {
 	return extract<S, [Update<T>, S]>(o.flags.SYNC, (next, t, s) => {
-		if (isFunction(t))
-			return o.modifier(
-				(v, n) => {
-					console.log('modifier')
-					return n(t(v))
-				},
-				next,
-				s,
-			)
-		console.log('missed')
+		if (isFunction(t)) return o.modifier((v, n) => n(t(v)), next, s)
 		if (t === REMOVE) return o.remover(s, next)
 		return o.setter(t, next, s)
 	})
@@ -108,13 +99,6 @@ export function over<T, S, G, E, F extends Flags>(
 	o: ISource<T, S, G, E, HasFlag<'WRITE', F>>,
 ) {
 	return extract<S, [Modify<T>, S]>(o.flags.SYNC, (next, t, s) => {
-		return o.modifier(
-			(v, n) => {
-				console.log('modifier')
-				return n(t(v))
-			},
-			next,
-			s,
-		)
+		return o.modifier((v, n) => n(t(v)), next, s)
 	})
 }

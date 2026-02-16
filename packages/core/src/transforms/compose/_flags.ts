@@ -3,6 +3,6 @@ type FlagName = 'CONSTRUCT' | 'EXISTS' | 'READ' | 'SYNC' | 'UNIQUE' | 'WRITE'
 export type HasFlag<
 	Name extends FlagName,
 	Target extends Flags,
-> = Target[Name] extends false ? never : Target
+> = { [K in Name]: Target[K] extends false ? K : never }[Name] extends never ? Target : never
 
 export type Flags = Partial<Record<FlagName, false>>

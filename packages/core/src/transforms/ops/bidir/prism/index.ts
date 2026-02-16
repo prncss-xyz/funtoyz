@@ -32,7 +32,7 @@ export function prism<Part, Whole, EG>({
 				success: (res) => m(res, (s) => next(set(s))),
 			}),
 		remover: (w, next) =>
-			match(get(w), { failure: noop, success: () => next(w) }),
+			match(get(w), { failure: () => next(w), success: noop }),
 		reviewer: (p, next) => next(set(p)),
 		setter: (p, next) => next(set(p)),
 	})

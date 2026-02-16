@@ -18,18 +18,17 @@ describe('elems', () => {
 		expect(update(o)(REMOVE, [1, 2, 3])).toEqual([])
 	})
 })
-describe.only('compose with prism', () => {
+describe('compose with prism', () => {
 	const o = flow(
 		once<number[]>(),
 		elems(),
 		filter((x) => x % 2 === 0),
 	)
-	it.only('modify', () => {
+	it('modify', () => {
 		expect(over(o)((x) => x * 2, [1, 2, 3])).toEqual([1, 4, 3])
 	})
 	it('remove', () => {
-		// @ts-expect-error REMOVE is not a valid modify
-		expect(update(o)(REMOVE)([1, 2, 3])).toEqual([1, 3])
+		expect(update(o)(REMOVE, [1, 2, 3])).toEqual([1, 3])
 	})
 })
 describe('compose with lens', () => {

@@ -25,47 +25,32 @@ function getModifier<T, U, S, E2, G2, F2 extends Flags>(
 	o1: IOptic<U, T, any, any, any>,
 	o2: ISource<T, S, E2, G2, F2>,
 ): Modifier<U, S> {
-	if (o2.flags.CONSTRUCT === undefined) {
-		return (m, next, s) =>
-			o2.getter(
-				s,
-				(u) => o1.modifier(m, (t) => o2.reviewer(t, next), u),
-				() => next(s),
-			)
-	}
-	return (m, next, s) =>
-		o2.getter(
-			s,
-			(u) => o1.modifier(m, (t) => o2.setter(t, next, s), u),
-			() => next(s),
-		)
+	return (
+		m: (t: U, next: (t: U) => void) => void,
+		next: (s: S) => void,
+		s: S,
+	) => o2.modifier((t, on) => o1.modifier(m, on, t), next, s)
 }
 
 function getSetter<T, U, S, E2, G2, F2 extends Flags>(
 	o1: IOptic<U, T, any, any, any>,
 	o2: ISource<T, S, E2, G2, F2>,
 ): Setter<U, S> {
-	if (o1.flags.UNIQUE && o2.flags.UNIQUE) {
-		if (o1.flags.CONSTRUCT === undefined) {
-			return (t, next, s) => o1.reviewer(t, (t) => o2.setter(t, next, s))
-		}
-		if (o2.flags.CONSTRUCT === undefined) {
-			return (t, next, s) =>
-				o2.getter(
-					s,
-					(u) => o1.setter(t, (t) => o2.reviewer(t, next), u),
-					() => next(s),
-				)
-		}
+	if (o1.flags.CONSTRUCT === undefined)
+		return (t, next, s) => o1.reviewer(t, (t) => o2.setter(t, next, s))
+	if (o2.flags.CONSTRUCT === undefined)
 		return (t, next, s) =>
 			o2.getter(
 				s,
-				(u) => o1.setter(t, (t) => o2.setter(t, next, s), u),
+				(u) => o1.setter(t, (t) => o2.reviewer(t, next), u),
 				() => next(s),
 			)
-	}
-	const modifier = getModifier(o1, o2)
-	return (t, next, s) => modifier((_, n) => n(t), next, s)
+	return (t, next, s) =>
+		o2.getter(
+			s,
+			(u) => o1.setter(t, (t) => o2.setter(t, next, s), u),
+			() => next(s),
+		)
 }
 
 export function compose<T, U, E1, G1, F1 extends Flags>(
