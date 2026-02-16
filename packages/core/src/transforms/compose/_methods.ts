@@ -81,7 +81,7 @@ export function reduce<T, S, U, E, R>(
 	return (s, next, error) => {
 		let done = false
 		let acc = fromInit(reducer.init)
-    const reduce = reducer.reduceDest ?? reducer.reduce
+		const reduce = reducer.reduceDest ?? reducer.reduce
 		let res: ReturnType<Emit<T, S, E>>
 		res = o.emit(
 			s,
