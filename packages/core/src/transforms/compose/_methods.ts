@@ -81,26 +81,26 @@ export function reduce<T, S, U, E, R>(
 	return (s, next, error) => {
 		let done = false
 		let acc = fromInit(reducer.init)
+    const reduce = reducer.reduceDest ?? reducer.reduce
 		let res: ReturnType<Emit<T, S, E>>
-		const abort = () => res?.abort()
 		res = o.emit(
 			s,
 			(t) => {
 				if (!done) {
-					acc = reducer.reduce(t, acc)
+					acc = reduce(t, acc)
 				}
 			},
 			(e) => {
 				if (!done) {
 					done = true
-					abort()
+					res.abort()
 					error(e)
 				}
 			},
 			() => {
 				if (!done) {
 					done = true
-					abort()
+					res.abort()
 					next(reducer.result ? reducer.result(acc) : (acc as never))
 				}
 			},
@@ -112,13 +112,17 @@ export function reduce<T, S, U, E, R>(
 export interface Reducer<T, S, R = S> {
 	init: Init<S>
 	reduce: (event: T, state: S) => S
+	reduceDest?: (event: T, state: S) => S
 	result?: (state: S) => R
 }
 
-// TODO: destructive option
 export function toArray<T>(): Reducer<T, T[]> {
 	return {
 		init: () => [],
 		reduce: (event, state) => [...state, event],
+		reduceDest: (event, state) => {
+			state.push(event)
+			return state
+		},
 	}
 }
