@@ -6,13 +6,13 @@ import { take } from './take'
 
 describe('take', () => {
 	test('2', () => {
-		const o = flow(once<number[]>(), elems(), take(20))
+		const o = flow(once<number[]>(), elems(), take(2))
 		expect(collect(o)([0, 1, 2, 3])).toEqual([0, 1])
 		// it should be idempotent
 		expect(collect(o)([0, 1, 2, 3])).toEqual([0, 1])
 	})
 	test('0', () => {
-		const o = flow(once<number[]>(), elems(), take(30))
+		const o = flow(once<number[]>(), elems(), take(0))
 		expect(collect(o)([0, 1, 2, 3])).toEqual([])
 	})
 })

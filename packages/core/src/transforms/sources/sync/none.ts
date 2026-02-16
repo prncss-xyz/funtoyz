@@ -18,7 +18,7 @@ export function none<S>(): ISource<S, S, never, Nothing, Empty> {
 			start,
 		}),
 		flags,
-		getter: (_s, _n, e) => (e(nothing())),
+		getter: (_s, _n, e) => e(nothing()),
 		modifier: apply,
 		remover: trush,
 		reviewer: trush,

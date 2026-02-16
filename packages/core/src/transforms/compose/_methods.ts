@@ -81,7 +81,9 @@ export function reduce<T, S, U, E, R>(
 	return (s, next, error) => {
 		let done = false
 		let acc = fromInit(reducer.init)
-		const res = o.emit(
+		let res: ReturnType<Emit<T, S, E>>
+		const abort = () => res?.abort()
+		res = o.emit(
 			s,
 			(t) => {
 				if (!done) {
@@ -91,14 +93,14 @@ export function reduce<T, S, U, E, R>(
 			(e) => {
 				if (!done) {
 					done = true
-					res.abort()
+					abort()
 					error(e)
 				}
 			},
 			() => {
 				if (!done) {
 					done = true
-					res.abort()
+					abort()
 					next(reducer.result ? reducer.result(acc) : (acc as never))
 				}
 			},
