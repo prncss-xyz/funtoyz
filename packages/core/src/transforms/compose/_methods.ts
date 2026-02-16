@@ -1,7 +1,9 @@
 import { fromInit, Init } from '../../functions/arguments'
 import { nothing, Nothing } from '../../tags/results'
 
-export const trush = <V>(v: V, cb: (v: V) => void) => cb(v)
+export function trush<V>(v: V, cb: (v: V) => void) {
+	return cb(v)
+}
 
 export type Getter<T, S, E> = (
 	s: S,
@@ -17,11 +19,13 @@ export type Modifier<T, S> = (
 	s: S,
 ) => void
 
-export const apply = <V>(
+export function apply<V>(
 	m: (v: V, next: (v: V) => void) => void,
 	next: (v: V) => void,
 	v: V,
-) => m(v, next)
+) {
+	return m(v, next)
+}
 
 export type Setter<T, S> = (t: T, next: (s: S) => void, s: S) => void
 
@@ -77,7 +81,7 @@ export function reduce<T, S, U, E, R>(
 	return (s, next, error) => {
 		let done = false
 		let acc = fromInit(reducer.init)
-		const { abort, start } = o.emit(
+		const res = o.emit(
 			s,
 			(t) => {
 				if (!done) {
@@ -87,19 +91,19 @@ export function reduce<T, S, U, E, R>(
 			(e) => {
 				if (!done) {
 					done = true
-					abort()
+					res.abort()
 					error(e)
 				}
 			},
 			() => {
 				if (!done) {
 					done = true
-					abort()
+					res.abort()
 					next(reducer.result ? reducer.result(acc) : (acc as never))
 				}
 			},
 		)
-		start()
+		res.start()
 	}
 }
 

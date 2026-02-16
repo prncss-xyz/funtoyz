@@ -3,7 +3,7 @@ import { fromInit, Init } from '../../../../functions/arguments'
 import { id, noop } from '../../../../functions/basics'
 import { Nothing } from '../../../../tags/results'
 import { compose } from '../../../compose'
-import { Emit, first } from '../../../compose/_methods'
+import { Emit, first, Modifier } from '../../../compose/_methods'
 
 export type Traversal<Acc, Value, Res> = {
 	emit: Emit<Value, Res, never>
@@ -18,11 +18,7 @@ export function traversal<Acc, Value, Res = Acc>({
 	reduce,
 	result,
 }: Traversal<Acc, Value, Res>) {
-	const modifier = (
-		m: (t: Value, next: (t: Value) => void) => void,
-		next: (s: Res) => void,
-		s: Res,
-	) => {
+	const modifier: Modifier<Value, Res> = (m, next, s) => {
 		let acc: Acc
 		acc = fromInit(init)
 		const { abort, start } = emit(
@@ -32,10 +28,7 @@ export function traversal<Acc, Value, Res = Acc>({
 					acc = reduce(t, acc)
 				}),
 			noop,
-			() => {
-				next(result ? result(acc) : (acc as any))
-				abort()
-			},
+			() => next(result ? result(acc) : (acc as any)),
 		)
 		start()
 	}

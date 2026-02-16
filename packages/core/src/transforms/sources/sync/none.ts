@@ -1,30 +1,24 @@
 import { noop } from '../../../functions/basics'
 import { Empty } from '../../../objects/types'
+import { Nothing, nothing } from '../../../tags/results'
 import { ISource } from '../../compose'
 import { apply, trush } from '../../compose/_methods'
 
 const flags = {}
 
-function emit<S>(
-	s: S,
-	next: (s: S) => void,
-	_error: (e: never) => void,
-	complete: () => void,
-) {
+export function none<S>(): ISource<S, S, never, Nothing, Empty> {
 	return {
-		abort: noop,
-		start: () => {
-			next(s)
-			complete()
-		},
-	}
-}
-
-export function once<S>(): ISource<S, S, never, never, Empty> {
-	return {
-		emit,
+		emit: (
+			_s: S,
+			_n: (s: S) => void,
+			_e: (e: never) => void,
+			start: () => void,
+		) => ({
+			abort: noop,
+			start,
+		}),
 		flags,
-		getter: trush,
+		getter: (_s, _n, e) => (e(nothing())),
 		modifier: apply,
 		remover: trush,
 		reviewer: trush,
