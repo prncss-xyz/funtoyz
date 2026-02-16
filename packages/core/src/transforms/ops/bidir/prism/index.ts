@@ -1,8 +1,10 @@
+import { forbidden } from '../../../../assertions'
 import { fromInit } from '../../../../functions/arguments'
 import { noop } from '../../../../functions/basics'
 import { match } from '../../../../tags/match'
-import { Result } from '../../../../tags/results'
+import { nothing, Result } from '../../../../tags/results'
 import { compose } from '../../../compose'
+import { neverNothing } from '../../../compose/_methods'
 
 export function prism<Part, Whole, EG>({
 	get,
@@ -23,6 +25,7 @@ export function prism<Part, Whole, EG>({
 				err,
 				complete,
 			),
+
 		flags: { EXISTS: false },
 		getter: (w, next, error) =>
 			match(get(w), { failure: (e) => error(fromInit(e, w)), success: next }),
@@ -31,6 +34,7 @@ export function prism<Part, Whole, EG>({
 				failure: () => next(t),
 				success: (res) => m(res, (s) => next(set(s))),
 			}),
+		nothing: neverNothing,
 		remover: (w, next) =>
 			match(get(w), { failure: () => next(w), success: noop }),
 		reviewer: (p, next) => next(set(p)),

@@ -1,9 +1,9 @@
 import { forbidden } from '../../../../assertions'
 import { fromInit, Init } from '../../../../functions/arguments'
 import { id, noop } from '../../../../functions/basics'
-import { Nothing } from '../../../../tags/results'
+import { nothing, Nothing } from '../../../../tags/results'
 import { compose } from '../../../compose'
-import { Emit, first, Modifier } from '../../../compose/_methods'
+import { Emit, Modifier } from '../../../compose/_methods'
 
 export type Traversal<Acc, Value, Res> = {
 	emit: Emit<Value, Res, never>
@@ -21,7 +21,8 @@ export function traversal<Acc, Value, Res = Acc>({
 	const modifier: Modifier<Value, Res> = (m, next, s) => {
 		let acc: Acc
 		acc = fromInit(init)
-		const { abort, start } = emit(
+		// FIX:
+		const { start } = emit(
 			s,
 			(value) =>
 				m(value, (t) => {
@@ -35,8 +36,8 @@ export function traversal<Acc, Value, Res = Acc>({
 	return compose<Res, Value, never, Nothing, { CONSTRUCT: false }>({
 		emit,
 		flags: { CONSTRUCT: false },
-		getter: first(emit),
 		modifier,
+		nothing,
 		remover: (_s, next) => next((result ?? (id as any))(fromInit(init))),
 		reviewer: () => forbidden('reviewer') as never,
 		setter: (value, next, res) => modifier((_, next) => next(value), next, res),

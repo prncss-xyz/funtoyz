@@ -1,5 +1,4 @@
 import { fromInit, Init } from '../../functions/arguments'
-import { nothing, Nothing } from '../../tags/results'
 
 export function trush<V>(v: V, cb: (v: V) => void) {
 	return cb(v)
@@ -43,10 +42,15 @@ export type Emit<T, S, E> = (
 
 export type Emitter<U, T, E> = <S, E1>(e1: Emit<T, S, E1>) => Emit<U, S, E | E1>
 
-export function first<T, S, E>(emit: Emit<T, S, E>): Getter<T, S, E | Nothing> {
+export function first<T, S, E extends G, G>(o: {
+	emit: Emit<T, S, E>
+	getter?: Getter<T, S, G>
+	nothing: () => G
+}): Getter<T, S, G> {
+	if (o.getter) return o.getter
 	return (s, next, error) => {
 		let done = false
-		const { abort, start } = emit(
+		const { abort, start } = o.emit(
 			s,
 			(t) => {
 				if (!done) {
@@ -66,7 +70,7 @@ export function first<T, S, E>(emit: Emit<T, S, E>): Getter<T, S, E | Nothing> {
 				if (!done) {
 					done = true
 					abort()
-					error(nothing())
+					error(o.nothing())
 				}
 			},
 		)
@@ -74,15 +78,19 @@ export function first<T, S, E>(emit: Emit<T, S, E>): Getter<T, S, E | Nothing> {
 	}
 }
 
+export function neverNothing(): never {
+  throw new Error('Should always emit at least one value')
+}
+
 // TODO: share code with fold and scan
 export function reduce<T, S, U, E, R>(
-	reducer: ReducerDest<T, U, R>,
+	reducer: Reducer<T, U, R>,
 	o: { emit: Emit<T, S, E> },
 ): Getter<R, S, E> {
 	return (s, next, error) => {
 		let done = false
 		let acc = fromInit(reducer.init)
-		const reduce = reducer.reduceDest ?? reducer.reduce
+		const reduce = 'reduceDest' in reducer ? reducer.reduceDest : reducer.reduce
 		let res: ReturnType<Emit<T, S, E>>
 		res = o.emit(
 			s,
@@ -124,9 +132,17 @@ export interface ReducerNonDest<Event, State, Result = State> {
 	result?: (state: State) => Result
 }
 
-export type Reducer<Event, State, Result = State> =
-	| ReducerDest<Event, State, Result>
-	| ReducerNonDest<Event, State, Result>
+export type Reducer<Event, State, Result = State> = {
+	init: Init<State>
+	result?: (state: State) => Result
+} & (
+	| {
+			reduce: (event: Event, state: State) => State
+	  }
+	| {
+			reduceDest: (event: Event, state: State) => State
+	  }
+)
 
 export function toArray<T>(): Reducer<T, T[]> {
 	return {

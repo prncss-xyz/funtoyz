@@ -23,7 +23,6 @@ export function composeEmit<T, S, U, E1, E2>(
 				if (unmounts.size == 0) c()
 			},
 		)
-		start1()
 		return {
 			abort() {
 				unmounts.forEach((cb) => cb())

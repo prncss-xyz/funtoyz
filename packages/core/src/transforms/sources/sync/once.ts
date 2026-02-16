@@ -1,7 +1,8 @@
+import { exhaustive } from '../../../assertions'
 import { noop } from '../../../functions/basics'
 import { Empty } from '../../../objects/types'
 import { ISource } from '../../compose'
-import { apply, trush } from '../../compose/_methods'
+import { apply, neverNothing, trush } from '../../compose/_methods'
 
 const flags = {}
 
@@ -26,6 +27,7 @@ export function once<S>(): ISource<S, S, never, never, Empty> {
 		flags,
 		getter: trush,
 		modifier: apply,
+		nothing: neverNothing,
 		remover: trush,
 		reviewer: trush,
 		setter: trush,

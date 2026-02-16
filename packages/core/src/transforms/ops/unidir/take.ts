@@ -1,6 +1,6 @@
 import { forbidden } from '../../../assertions'
 import { compose } from '../../compose'
-import { trush } from '../../compose/_methods'
+import { neverNothing, trush } from '../../compose/_methods'
 import { none } from '../../sources/sync/none'
 
 export function take<A>(n: number) {
@@ -21,6 +21,7 @@ export function take<A>(n: number) {
 		flags: { CONSTRUCT: false, WRITE: false },
 		getter: trush,
 		modifier: forbidden as never,
+		nothing: neverNothing,
 		remover: trush,
 		reviewer: forbidden as never,
 		setter: forbidden as never,

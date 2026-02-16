@@ -1,8 +1,8 @@
-import { forbidden } from '../../../assertions'
+import { exhaustive, forbidden } from '../../../assertions'
 import { fromInit } from '../../../functions/arguments'
 import { id } from '../../../functions/basics'
 import { compose } from '../../compose'
-import { ReducerDest, trush } from '../../compose/_methods'
+import { neverNothing, ReducerDest, trush } from '../../compose/_methods'
 
 export function fold<Event, State, Result>(
 	props: ReducerDest<Event, State, Result>,
@@ -31,8 +31,8 @@ export function fold<Event, State, Result>(
 			)
 		},
 		flags: { CONSTRUCT: false, WRITE: false },
-		getter: forbidden as never,
 		modifier: forbidden as never,
+		nothing: neverNothing,
 		remover: trush,
 		reviewer: forbidden as never,
 		setter: forbidden as never,

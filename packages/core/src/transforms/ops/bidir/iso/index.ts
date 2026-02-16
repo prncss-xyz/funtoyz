@@ -1,3 +1,4 @@
+import { forbidden } from '../../../../assertions'
 import { noop } from '../../../../functions/basics'
 import { Empty } from '../../../../objects/types'
 import { compose } from '../../../compose'
@@ -16,6 +17,7 @@ export function iso<T, S>({
 		flags: {},
 		getter: (t, next) => next(get(t)),
 		modifier: (m, next, t) => m(get(t), (s) => next(set(s))),
+		nothing: forbidden as never,
 		remover: noop,
 		reviewer,
 		setter: reviewer,

@@ -38,6 +38,7 @@ export function optional<Part, Whole, EG = Nothing>({
 			if (res == undefined) return next(t)
 			return m(res, (s) => next(set(s, t)))
 		},
+		nothing: () => fromInit(err),
 		remover: remove ? (s, next) => next(remove(s)) : noop,
 		reviewer: forbidden as never,
 		setter: (p, next, w) => next(set(p, w)),

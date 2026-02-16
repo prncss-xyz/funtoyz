@@ -5,7 +5,7 @@ import { isFunction } from '../../guards'
 import { result, Result } from '../../tags/results'
 import { ISource } from '../compose'
 import { Flags, HasFlag } from '../compose/_flags'
-import { reduce, toArray } from '../compose/_methods'
+import { first, reduce, toArray } from '../compose/_methods'
 
 function extract<R, Args extends any[]>(
 	sync: boolean | undefined,
@@ -32,21 +32,21 @@ export function view<T, S, F extends Flags>(
 ): (s: S) => T
 export function view<T, S, F extends Flags>(o: ISource<T, S, never, never, F>) {
 	return extract<T, [S]>(o.flags.SYNC, (next, s) =>
-		o.getter(s, next, exhaustive),
+		first(o)(s, next, exhaustive),
 	)
 }
 
-export function preview<T, S, E, G, F extends { SYNC: false }>(
+export function preview<T, S, E extends G, G, F extends { SYNC: false }>(
 	o: ISource<T, S, E, G, F>,
 ): (s: S) => Promise<Result<T, G>>
-export function preview<T, S, E, G, F extends Flags>(
+export function preview<T, S, E extends G, G, F extends Flags>(
 	o: ISource<T, S, E, G, HasFlag<'SYNC', F>>,
 ): (s: S) => Result<T, G>
-export function preview<T, S, E, G, F extends Flags>(
+export function preview<T, S, E extends G, G, F extends Flags>(
 	o: ISource<T, S, E, G, F>,
 ) {
 	return extract<Result<T, G>, [S]>(o.flags.SYNC, (next, s) =>
-		o.getter(s, pipe2(result.success.of, next), pipe2(result.failure.of, next)),
+		first(o)(s, pipe2(result.success.of, next), pipe2(result.failure.of, next)),
 	)
 }
 

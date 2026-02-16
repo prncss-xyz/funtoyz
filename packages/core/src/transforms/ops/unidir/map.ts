@@ -1,6 +1,6 @@
 import { forbidden } from '../../../assertions'
 import { compose } from '../../compose'
-import { trush } from '../../compose/_methods'
+import { neverNothing, trush } from '../../compose/_methods'
 
 export function map<A, B>(mapper: (w: A) => B) {
 	return compose<A, B, never, never, { CONSTRUCT: false; WRITE: false }>({
@@ -9,6 +9,7 @@ export function map<A, B>(mapper: (w: A) => B) {
 		flags: { CONSTRUCT: false, WRITE: false },
 		getter: (w, next) => next(mapper(w)),
 		modifier: forbidden as never,
+		nothing: neverNothing,
 		remover: trush,
 		reviewer: forbidden as never,
 		setter: forbidden as never,

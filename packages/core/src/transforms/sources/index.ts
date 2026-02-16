@@ -1,7 +1,7 @@
 import { forbidden } from '../../assertions'
-import { Nothing } from '../../tags/results'
+import { nothing, Nothing } from '../../tags/results'
 import { ISource } from '../compose'
-import { Emit, first, trush } from '../compose/_methods'
+import { Emit, trush } from '../compose/_methods'
 
 export function sourceSync<T, S, E>(
 	emit: Emit<T, S, E>,
@@ -9,9 +9,8 @@ export function sourceSync<T, S, E>(
 	return {
 		emit,
 		flags: { UNIQUE: false },
-		getter: (s: S, next: (t: T) => void, error: (e: E | Nothing) => void) =>
-			first(emit)(s, next, error),
 		modifier: forbidden as never,
+		nothing,
 		remover: trush,
 		reviewer: forbidden as never,
 		setter: forbidden as never,
@@ -24,9 +23,8 @@ export function sourceAsync<T, S, E>(
 	return {
 		emit,
 		flags: { SYNC: false, UNIQUE: false },
-		getter: (s: S, next: (t: T) => void, error: (e: E | Nothing) => void) =>
-			first(emit)(s, next, error),
 		modifier: forbidden as never,
+		nothing,
 		remover: trush,
 		reviewer: forbidden as never,
 		setter: forbidden as never,
