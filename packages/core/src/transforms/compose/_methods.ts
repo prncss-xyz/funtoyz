@@ -74,8 +74,9 @@ export function first<T, S, E>(emit: Emit<T, S, E>): Getter<T, S, E | Nothing> {
 	}
 }
 
+// TODO: share code with fold and scan
 export function reduce<T, S, U, E, R>(
-	reducer: Reducer<T, U, R>,
+	reducer: ReducerDest<T, U, R>,
 	o: { emit: Emit<T, S, E> },
 ): Getter<R, S, E> {
 	return (s, next, error) => {
@@ -109,12 +110,23 @@ export function reduce<T, S, U, E, R>(
 	}
 }
 
-export interface Reducer<T, S, R = S> {
-	init: Init<S>
-	reduce: (event: T, state: S) => S
-	reduceDest?: (event: T, state: S) => S
-	result?: (state: S) => R
+export interface ReducerDest<Event, State, Result = State> {
+	init: Init<State>
+	reduce?: (event: Event, state: State) => State
+	reduceDest: (event: Event, state: State) => State
+	result?: (state: State) => Result
 }
+
+export interface ReducerNonDest<Event, State, Result = State> {
+	init: Init<State>
+	reduce: (event: Event, state: State) => State
+	reduceDest?: (event: Event, state: State) => State
+	result?: (state: State) => Result
+}
+
+export type Reducer<Event, State, Result = State> =
+	| ReducerDest<Event, State, Result>
+	| ReducerNonDest<Event, State, Result>
 
 export function toArray<T>(): Reducer<T, T[]> {
 	return {
