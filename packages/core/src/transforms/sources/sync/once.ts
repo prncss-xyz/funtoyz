@@ -1,29 +1,11 @@
-import { exhaustive } from '../../../assertions'
-import { noop } from '../../../functions/basics'
 import { Empty } from '../../../objects/types'
-import { ISource } from '../../compose'
+import { IOptic } from '../../compose'
 import { apply, neverNothing, trush } from '../../compose/_methods'
 
 const flags = {}
 
-function emit<S>(
-	s: S,
-	next: (s: S) => void,
-	_error: (e: never) => void,
-	complete: () => void,
-) {
+export function once<S>(): IOptic<S, S, never, never, Empty> {
 	return {
-		abort: noop,
-		start: () => {
-			next(s)
-			complete()
-		},
-	}
-}
-
-export function once<S>(): ISource<S, S, never, never, Empty> {
-	return {
-		emit,
 		flags,
 		getter: trush,
 		modifier: apply,

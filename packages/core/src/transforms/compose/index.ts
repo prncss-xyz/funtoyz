@@ -1,10 +1,9 @@
 import { forbidden } from '../../assertions'
 import { Init } from '../../functions/arguments'
+import { noop, pipe2 } from '../../functions/basics'
 import { Empty } from '../../objects/types'
-import { composeEmit } from './_composeEmit'
 import { Flags } from './_flags'
 import {
-	Emit,
 	Emitter,
 	Getter,
 	Modifier,
@@ -19,12 +18,12 @@ export type Compose<T, U, E1, G1, F1 extends Flags> = <
 	G2,
 	F2 extends Flags,
 >(
-	o2: ISource<T, S, E2, G2, F2>,
-) => ISource<U, S, E1 | E2, G1 | G2, F1 & F2>
+	o2: IOptic<T, S, E2, G2, F2>,
+) => IOptic<U, S, E1 | E2, G1 | G2, F1 & F2>
 
 function getModifier<T, U, S, E2, G2, F2 extends Flags>(
 	o1: IOptic<U, T, any, any, any>,
-	o2: ISource<T, S, E2, G2, F2>,
+	o2: IOptic<T, S, E2, G2, F2>,
 ): Modifier<U, S> {
 	return (
 		m: (t: U, next: (t: U) => void) => void,
@@ -35,7 +34,7 @@ function getModifier<T, U, S, E2, G2, F2 extends Flags>(
 
 function getGetter<T, U, S, E2, G2, F2 extends Flags>(
 	o1: IOptic<U, T, any, any, any>,
-	o2: ISource<T, S, E2, G2, F2>,
+	o2: IOptic<T, S, E2, G2, F2>,
 ): Getter<U, S, any> | undefined {
 	const o1Getter = o1.getter
 	if (o1Getter === undefined) return undefined
@@ -47,7 +46,7 @@ function getGetter<T, U, S, E2, G2, F2 extends Flags>(
 
 function getSetter<T, U, S, E2, G2, F2 extends Flags>(
 	o1: IOptic<U, T, any, any, any>,
-	o2: ISource<T, S, E2, G2, F2>,
+	o2: IOptic<T, S, E2, G2, F2>,
 ): Setter<U, S> | undefined {
 	const o2Setter = o2.setter
 	if (o1.flags.CONSTRUCT === undefined)
@@ -74,9 +73,26 @@ function getSetter<T, U, S, E2, G2, F2 extends Flags>(
 		)
 }
 
+function getEmit<T, U, S, E1, E2, G2, F2 extends Flags>(
+	o1: IOptic<U, T, E1, any, any>,
+	o2: IOptic<T, S, E2, G2, F2>,
+) {
+	// TODO: getter
+	if (o1.emitter) {
+		if (o2.emitter) return pipe2(o2.emitter, o1.emitter)
+		if (o2.getter) return (emit) => o1.emitter!((s, next, error, complete) => ({
+			abort: noop,
+			start: () => {
+				o2.getter!(s, next, error)
+				complete()
+			},
+		}))
+	}
+}
+
 function getNothing<G1, G2>(
 	o1: IOptic<any, any, any, G1, any>,
-	o2: ISource<any, any, any, G2, any>,
+	o2: IOptic<any, any, any, G2, any>,
 ): () => G1 | G2 {
 	if (o1.nothing === forbidden) return o2.nothing
 	return o1.nothing
@@ -86,12 +102,10 @@ export function compose<T, U, E1, G1, F1 extends Flags>(
 	o1: IOptic<U, T, E1, G1, F1>,
 ) {
 	return <S, E2, G2, F2 extends Flags>(
-		o2: ISource<T, S, E2, G2, F2>,
-	): ISource<U, S, E1 | E2, G1 | G2, F1 & F2> => {
-		const emit: Emit<U, S, E1 | E2> =
-			'emitter' in o1 ? o1.emitter(o2.emit) : composeEmit(o2.emit, o1.emit)
+		o2: IOptic<T, S, E2, G2, F2>,
+	): IOptic<U, S, E1 | E2, G1 | G2, F1 & F2> => {
 		return {
-			emit,
+			emitter: getEmit(o1, o2),
 			flags: { ...o1.flags, ...o2.flags },
 			getter: getGetter(o1, o2),
 			modifier: getModifier(o1, o2),
@@ -114,26 +128,11 @@ interface ICore<T, S, G, F extends Flags> {
 	setter?: Setter<T, S>
 }
 
-export interface ISource<T, S, E, G, F extends Flags> extends ICore<
-	T,
-	S,
-	G,
-	F
-> {
-	emit: Emit<T, S, E>
+export type IOptic<T, S, E, G, F extends Flags> = ICore<T, S, G, F> & {
+	emitter?: Emitter<T, S, E>
 }
 
-export type IOptic<T, S, E, G, F extends Flags> = ICore<T, S, G, F> &
-	(
-		| {
-				emit: Emit<T, S, E>
-		  }
-		| {
-				emitter: Emitter<T, S, E>
-		  }
-	)
-
 export type Focus<T, S, E, G, F extends Flags> = Init<
-	ISource<T, S, E, G, F>,
-	[ISource<S, Empty, never, never, Empty>]
+	IOptic<T, S, E, G, F>,
+	[IOptic<S, Empty, never, never, Empty>]
 >

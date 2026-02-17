@@ -1,4 +1,6 @@
+import { forbidden } from '../../assertions'
 import { fromInit, Init } from '../../functions/arguments'
+import { noop } from '../../functions/basics'
 
 export function trush<V>(v: V, cb: (v: V) => void) {
 	return cb(v)
@@ -42,80 +44,104 @@ export type Emit<T, S, E> = (
 
 export type Emitter<U, T, E> = <S, E1>(e1: Emit<T, S, E1>) => Emit<U, S, E | E1>
 
+function emitOne<S>(
+	s: S,
+	next: (s: S) => void,
+	_error: (e: never) => void,
+	complete: () => void,
+) {
+	return {
+		abort: noop,
+		start: () => {
+			next(s)
+			complete()
+		},
+	}
+}
+
 export function first<T, S, E extends G, G>(o: {
-	emit: Emit<T, S, E>
+	emitter?: Emitter<T, S, E>
 	getter?: Getter<T, S, G>
 	nothing: () => G
 }): Getter<T, S, G> {
 	if (o.getter) return o.getter
-	return (s, next, error) => {
-		let done = false
-		const { abort, start } = o.emit(
-			s,
-			(t) => {
-				if (!done) {
-					done = true
-					abort()
-					next(t)
-				}
-			},
-			(e) => {
-				if (!done) {
-					done = true
-					abort()
-					error(e)
-				}
-			},
-			() => {
-				if (!done) {
-					done = true
-					abort()
-					error(o.nothing())
-				}
-			},
-		)
-		start()
-	}
+	if (o.emitter)
+		return (s, next, error) => {
+			let done = false
+			const emit = o.emitter!(emitOne<S>)
+			const { abort, start } = emit(
+				s,
+				(t) => {
+					if (!done) {
+						done = true
+						abort()
+						next(t)
+					}
+				},
+				(e) => {
+					if (!done) {
+						done = true
+						abort()
+						error(e)
+					}
+				},
+				() => {
+					if (!done) {
+						done = true
+						abort()
+						error(o.nothing())
+					}
+				},
+			)
+			start()
+		}
+	forbidden()
 }
 
 export function neverNothing(): never {
-  throw new Error('Should always emit at least one value')
+	throw new Error('Should always emit at least one value')
 }
 
 // TODO: share code with fold and scan
 export function reduce<T, S, U, E, R>(
 	reducer: Reducer<T, U, R>,
-	o: { emit: Emit<T, S, E> },
+	o: { emitter?: Emitter<T, S, E> },
 ): Getter<R, S, E> {
-	return (s, next, error) => {
-		let done = false
-		let acc = fromInit(reducer.init)
-		const reduce = 'reduceDest' in reducer ? reducer.reduceDest : reducer.reduce
-		let res: ReturnType<Emit<T, S, E>>
-		res = o.emit(
-			s,
-			(t) => {
-				if (!done) {
-					acc = reduce(t, acc)
-				}
-			},
-			(e) => {
-				if (!done) {
-					done = true
-					res.abort()
-					error(e)
-				}
-			},
-			() => {
-				if (!done) {
-					done = true
-					res.abort()
-					next(reducer.result ? reducer.result(acc) : (acc as never))
-				}
-			},
-		)
-		res.start()
-	}
+	if (o.emitter)
+		return (s, next, error) => {
+			let done = false
+			let acc = fromInit(reducer.init)
+			const reduce =
+				'reduceDest' in reducer ? reducer.reduceDest : reducer.reduce
+			let res: ReturnType<Emit<T, S, E>> | undefined
+			const emit = o.emitter!(emitOne<S>)
+			const abort = () => res?.abort()
+			res = emit(
+				s,
+				(t) => {
+					if (!done) {
+						acc = reduce(t, acc)
+					}
+				},
+				(e) => {
+					if (!done) {
+						done = true
+						abort()
+						error(e)
+					}
+				},
+				() => {
+					if (!done) {
+						done = true
+						abort()
+						next(reducer.result ? reducer.result(acc) : (acc as never))
+					}
+				},
+			)
+			res.start()
+		}
+	console.log()
+	return forbidden()
 }
 
 export interface ReducerDest<Event, State, Result = State> {
