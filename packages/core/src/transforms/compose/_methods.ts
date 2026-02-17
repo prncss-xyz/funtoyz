@@ -1,6 +1,8 @@
+import { IOptic } from '.'
 import { forbidden } from '../../assertions'
 import { fromInit, Init } from '../../functions/arguments'
 import { noop } from '../../functions/basics'
+import { Flags } from './_flags'
 
 export function trush<V>(v: V, cb: (v: V) => void) {
 	return cb(v)
@@ -96,6 +98,21 @@ export function first<T, S, E extends G, G>(o: {
 			start()
 		}
 	forbidden()
+}
+
+export function getModifier<T, S, E, G, F extends Flags>(
+	o: IOptic<T, S, E, G, F>,
+): Modifier<T, S> | undefined {
+	if (o.modifier) return o.modifier
+	if (o.getter) {
+		if (o.reviewer)
+			return (m, next, s) =>
+				o.getter!(s, (t) => m(t, (t) => o.reviewer!(t, next)), noop)
+		if (o.setter)
+			return (m, next, s) =>
+				o.getter!(s, (t) => m(t, (t) => o.setter!(t, next, s)), noop)
+	}
+	return undefined
 }
 
 export function neverNothing(): never {

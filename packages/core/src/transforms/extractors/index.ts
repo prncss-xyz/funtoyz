@@ -5,7 +5,7 @@ import { isFunction } from '../../guards'
 import { result, Result } from '../../tags/results'
 import { IOptic } from '../compose'
 import { Flags, HasFlag } from '../compose/_flags'
-import { first, reduce, toArray } from '../compose/_methods'
+import { first, getModifier, reduce, toArray } from '../compose/_methods'
 
 function extract<R, Args extends any[]>(
 	sync: boolean | undefined,
@@ -89,16 +89,10 @@ export function update<T, S, G, E, F extends Flags>(
 	o: IOptic<T, S, G, E, HasFlag<'WRITE', F>>,
 ) {
 	return extract<S, [Update<T>, S]>(o.flags.SYNC, (next, t, s) => {
-		if (isFunction(t)) return o.modifier((v, n) => n(t(v)), next, s)
-		if (t === REMOVE) return o.remover(s, next)
-		return o.setter(t, next, s)
-	})
-}
-
-export function over<T, S, G, E, F extends Flags>(
-	o: IOptic<T, S, G, E, HasFlag<'WRITE', F>>,
-) {
-	return extract<S, [Modify<T>, S]>(o.flags.SYNC, (next, t, s) => {
-		return o.modifier((v, n) => n(t(v)), next, s)
+		if (isFunction(t)) return getModifier(o)!((v, n) => n(t(v)), next, s)
+		if (t === REMOVE) return o.remover!(s, next)
+		if (o.setter) return o.setter(t, next, s)
+		// TODO:
+		return getModifier(o)!((_, n) => n(t), next, s)
 	})
 }

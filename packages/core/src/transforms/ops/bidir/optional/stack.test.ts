@@ -4,7 +4,7 @@ import { preview, REMOVE, update } from '../../../extractors'
 import { once } from '../../../sources/sync/once'
 import { stack } from './stack'
 
-describe('foot', () => {
+describe('stack', () => {
 	type Source = string[]
 	const sourceDefined: Source = ['a', 'b', 'c']
 	const sourceUndefined: Source = []
