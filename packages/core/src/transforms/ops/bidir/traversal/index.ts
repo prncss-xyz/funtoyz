@@ -1,6 +1,5 @@
-import { forbidden } from '../../../../assertions'
 import { fromInit, Init } from '../../../../functions/arguments'
-import { id } from '../../../../functions/basics'
+import { id, noop } from '../../../../functions/basics'
 import { nothing, Nothing } from '../../../../tags/results'
 import { compose } from '../../../compose'
 import { source } from '../../../compose/_composeEmit'
@@ -13,18 +12,40 @@ export type Traversal<Acc, Value, Res> = {
 	result?: (acc: Acc) => Res
 }
 
+// TODO: setter
+
 export function traversal<Acc, Value, Res = Acc>({
 	emit,
 	init,
+	reduce,
 	result,
 }: Traversal<Acc, Value, Res>) {
+	const result_ = result ?? (id as never)
 	return compose<Res, Value, never, Nothing, { CONSTRUCT: false }>({
 		emitter: source(emit),
 		flags: { CONSTRUCT: false },
-		modifier: forbidden as never,
+		modifier: (
+			m: (t: Value, next: (t: Value) => void) => void,
+			next: (s: Res) => void,
+			s: Res,
+		) => {
+			let acc: Acc
+			acc = fromInit(init)
+			const { abort, start } = emit(
+				s,
+				(value) =>
+					m(value, (t) => {
+						acc = reduce(t, acc)
+					}),
+				noop,
+				() => {
+					next(result_(acc))
+					abort()
+				},
+			)
+			start()
+		},
 		nothing,
-		remover: (_s, next) => next((result ?? (id as any))(fromInit(init))),
-		reviewer: () => forbidden('reviewer') as never,
-		setter: forbidden as never,
+		remover: (_s, next) => next((result ?? (id as never))(fromInit(init))),
 	})
 }

@@ -1,6 +1,6 @@
 import { flow } from '../../../../functions/flow'
 import { result } from '../../../../tags/results'
-import { over, preview, REMOVE, update } from '../../../extractors'
+import { preview, REMOVE, update } from '../../../extractors'
 import { once } from '../../../sources/sync/once'
 import { lens } from '../lens'
 import { filter } from '../prism/filter'
@@ -25,7 +25,7 @@ describe('compose with prism', () => {
 		filter((x) => x % 2 === 0),
 	)
 	it('modify', () => {
-		expect(over(o)((x) => x * 2, [1, 2, 3])).toEqual([1, 4, 3])
+		expect(update(o)((x) => x * 2, [1, 2, 3])).toEqual([1, 4, 3])
 	})
 	it('remove', () => {
 		expect(update(o)(REMOVE, [1, 2, 3])).toEqual([1, 3])

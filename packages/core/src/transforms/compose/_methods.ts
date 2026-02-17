@@ -107,10 +107,10 @@ export function getModifier<T, S, E, G, F extends Flags>(
 	if (o.getter) {
 		if (o.reviewer)
 			return (m, next, s) =>
-				o.getter!(s, (t) => m(t, (t) => o.reviewer!(t, next)), noop)
+				o.getter!(s, (t) => m(t, (t) => o.reviewer!(t, next)), () => next(s))
 		if (o.setter)
 			return (m, next, s) =>
-				o.getter!(s, (t) => m(t, (t) => o.setter!(t, next, s)), noop)
+				o.getter!(s, (t) => m(t, (t) => o.setter!(t, next, s)), () => next(s))
 	}
 	return undefined
 }
