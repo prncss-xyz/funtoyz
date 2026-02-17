@@ -73,7 +73,7 @@ export function review<T, S, G, E, F extends Flags>(
 export function review<T, S, G, E, F extends Flags>(
 	o: IOptic<T, S, G, E, HasFlag<'CONSTRUCT' | 'WRITE', F>>,
 ) {
-	return extract<S, [T]>(o.flags.SYNC, (next, t) => o.reviewer(t, next))
+	return extract<S, [T]>(o.flags.SYNC, (next, t) => o.reviewer!(t, next))
 }
 
 export const REMOVE = Symbol('REMOVE')

@@ -62,7 +62,7 @@ function emitOne<S>(
 export function first<T, S, E extends G, G>(o: {
 	emitter?: Emitter<T, S, E>
 	getter?: Getter<T, S, G>
-	nothing: () => G
+	nothing?: () => G
 }): Getter<T, S, G> {
 	if (o.getter) return o.getter
 	if (o.emitter)
@@ -89,7 +89,7 @@ export function first<T, S, E extends G, G>(o: {
 					if (!done) {
 						done = true
 						abort()
-						error(o.nothing())
+						error(o.nothing!())
 					}
 				},
 			)
@@ -140,7 +140,6 @@ export function reduce<T, S, U, E, R>(
 			)
 			res.start()
 		}
-	console.log()
 	return forbidden()
 }
 
