@@ -1,5 +1,6 @@
 import { flow } from '../../../../functions/flow'
 import { result } from '../../../../tags/results'
+import { TYPE } from '../../../../tags/types'
 import { preview, REMOVE, update } from '../../../extractors'
 import { once } from '../../../sources/sync/once'
 import { at } from './at'
@@ -7,16 +8,20 @@ import { at } from './at'
 describe('at', () => {
 	type S = number[]
 	const o = flow(once<S>(), at(1))
-	it('view', () => {
+	test('preview, success', () => {
 		expect(preview(o)([1, 2, 3])).toEqual(result.success.of(2))
 	})
-	it('put', () => {
+	test('preview, failure', () => {
+		expect(preview(o)([])[TYPE]).toEqual('failure')
+	})
+
+	test('put', () => {
 		expect(update(o)(0, [1, 2, 3])).toEqual([1, 0, 3])
 	})
-	it('over', () => {
+	test('over', () => {
 		expect(update(o)((x) => x + 1, [1, 2, 3])).toEqual([1, 3, 3])
 	})
-	it('remove', () => {
+	test('remove', () => {
 		expect(update(o)(REMOVE, [1, 2, 3])).toEqual([1, 3])
 	})
 })
@@ -24,14 +29,14 @@ describe('at', () => {
 describe('composed at', () => {
 	type S = number[][]
 	const o = flow(once<S>(), at(1), at(2))
-	it('view', () => {
+	test('view', () => {
 		const res = preview(o)([
 			[1, 2, 3],
 			[4, 5, 6],
 		])
 		expect(res).toEqual(result.success.of(6))
 	})
-	it('put', () => {
+	test('put', () => {
 		const res = update(o)(0, [
 			[1, 2, 3],
 			[4, 5, 6],
@@ -41,7 +46,7 @@ describe('composed at', () => {
 			[4, 5, 0],
 		])
 	})
-	it('over', () => {
+	test('over', () => {
 		const res = update(o)(
 			(x) => x + 1,
 			[
@@ -54,7 +59,7 @@ describe('composed at', () => {
 			[4, 5, 7],
 		])
 	})
-	it('remove', () => {
+	test('remove', () => {
 		const res = update(o)(REMOVE, [
 			[1, 2, 3],
 			[4, 5, 6],

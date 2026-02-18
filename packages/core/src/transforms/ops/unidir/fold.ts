@@ -1,40 +1,34 @@
-import { exhaustive, forbidden } from '../../../assertions'
-import { fromInit } from '../../../functions/arguments'
-import { id } from '../../../functions/basics'
-import { compose } from '../../compose'
-import { neverNothing, ReducerDest, trush } from '../../compose/_methods'
+import { IOptic } from '../../compose'
+import { Flags } from '../../compose/_flags'
+import { reduce, Reducer } from '../../compose/_methods'
 
-export function fold<Event, State, Result>(
-	props: ReducerDest<Event, State, Result>,
+export function fold<Value, State, Result = State>(
+	props: Reducer<Value, State, Result>,
+): <S, E, F extends Flags>(
+	o: IOptic<Value, S, E, any, F>,
+) => IOptic<Result, S, E, E, Flags>
+export function fold<Value, State, Result = State>(
+	props: Reducer<Value, State, Result>,
 ) {
-	return compose<
-		Event,
+	return function <S, E, F extends Flags>(
+		o: IOptic<Value, S, E, any, F>,
+	): IOptic<
 		Result,
-		never,
-		never,
-		{ CONSTRUCT: false; WRITE: false }
-	>({
-		emitter: (emit) => (source, next, e, c) => {
-			const reduce = props.reduceDest ?? props.reduce
-			const result = props.result ?? (id as never)
-			let acc = fromInit(props.init)
-			return emit(
-				source,
-				(s) => {
-					acc = reduce(s, acc)
-				},
-				e,
-				() => {
-					next(result(acc))
-					c()
-				},
-			)
-		},
-		flags: { CONSTRUCT: false, WRITE: false },
-		modifier: forbidden as never,
-		nothing: neverNothing,
-		remover: trush,
-		reviewer: forbidden as never,
-		setter: forbidden as never,
-	})
+		S,
+		E,
+		E,
+		(F['SYNC'] extends false ? { SYNC: false } : never) & {
+			CONSTRUCT: false
+			WRITE: false
+		}
+	> {
+		return {
+			flags: {
+				CONSTRUCT: false,
+				SYNC: o.flags.SYNC,
+				WRITE: false,
+			} as never,
+			getter: reduce(props, o),
+		}
+	}
 }

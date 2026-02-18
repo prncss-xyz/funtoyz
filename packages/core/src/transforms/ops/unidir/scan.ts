@@ -1,11 +1,12 @@
-import { forbidden } from '../../../assertions'
 import { fromInit } from '../../../functions/arguments'
 import { id } from '../../../functions/basics'
 import { compose } from '../../compose'
-import { neverNothing, ReducerDest, trush } from '../../compose/_methods'
+import { ReducerNonDest } from '../../compose/_methods'
 
-export function scan<Event, State, Result>(
-	props: ReducerDest<Event, State, Result>,
+// FIX: getter error typing
+
+export function scan<Event, State, Result = State>(
+	props: ReducerNonDest<Event, State, Result>,
 ) {
 	return compose<
 		Event,
@@ -15,10 +16,10 @@ export function scan<Event, State, Result>(
 		{ CONSTRUCT: false; WRITE: false }
 	>({
 		emitter: (emit) => (source, next, e, c) => {
-			const reduce = props.reduceDest ?? props.reduce
+			const reduce = props.reduce
 			const result = props.result ?? (id as never)
 			let acc = fromInit(props.init)
-			return emit(
+			const { abort, start } = emit(
 				source,
 				(s) => {
 					acc = reduce(s, acc)
@@ -27,13 +28,14 @@ export function scan<Event, State, Result>(
 				e,
 				c,
 			)
+			return {
+				abort,
+				start: () => {
+					next(result(acc))
+					start()
+				},
+			}
 		},
 		flags: { CONSTRUCT: false, WRITE: false },
-		getter: forbidden as never,
-		modifier: forbidden as never,
-		nothing: neverNothing,
-		remover: trush,
-		reviewer: forbidden as never,
-		setter: forbidden as never,
 	})
 }

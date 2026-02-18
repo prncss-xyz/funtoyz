@@ -1,4 +1,4 @@
-import { sourceAsync } from '..'
+import { sourceAsync } from '.'
 
 export const periodic = sourceAsync<number, number, never>((s, next) => {
 	let id: number

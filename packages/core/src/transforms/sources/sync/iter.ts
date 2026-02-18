@@ -1,4 +1,4 @@
-import { sourceSync } from '..'
+import { sourceSync } from '.'
 
 export function iter<S>() {
 	return sourceSync<S, Iterable<S>, never>((s, next, _error, complete) => {

@@ -9,7 +9,7 @@ describe('map, single', () => {
 		once<string>(),
 		map((s) => s.length),
 	)
-	it('view', () => {
+	test('view', () => {
 		expect(view(o)('toto')).toBe(4)
 	})
 
@@ -27,7 +27,7 @@ describe('map, multiple', () => {
 		iter<string>(),
 		map((s) => s.length),
 	)
-	it('view', () => {
+	test('view', () => {
 		expect(collect(o)(['toto', 'to'])).toEqual([4, 2])
 	})
 

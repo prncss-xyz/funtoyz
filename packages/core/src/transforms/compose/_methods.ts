@@ -107,10 +107,18 @@ export function getModifier<T, S, E, G, F extends Flags>(
 	if (o.getter) {
 		if (o.reviewer)
 			return (m, next, s) =>
-				o.getter!(s, (t) => m(t, (t) => o.reviewer!(t, next)), () => next(s))
+				o.getter!(
+					s,
+					(t) => m(t, (t) => o.reviewer!(t, next)),
+					() => next(s),
+				)
 		if (o.setter)
 			return (m, next, s) =>
-				o.getter!(s, (t) => m(t, (t) => o.setter!(t, next, s)), () => next(s))
+				o.getter!(
+					s,
+					(t) => m(t, (t) => o.setter!(t, next, s)),
+					() => next(s),
+				)
 	}
 	return undefined
 }
@@ -119,7 +127,6 @@ export function neverNothing(): never {
 	throw new Error('Should always emit at least one value')
 }
 
-// TODO: share code with fold and scan
 export function reduce<T, S, U, E, R>(
 	reducer: Reducer<T, U, R>,
 	o: { emitter?: Emitter<T, S, E> },
@@ -128,8 +135,7 @@ export function reduce<T, S, U, E, R>(
 		return (s, next, error) => {
 			let done = false
 			let acc = fromInit(reducer.init)
-			const reduce =
-				'reduceDest' in reducer ? reducer.reduceDest : reducer.reduce
+			const reduce = reducer.reduceDest ?? (reducer as any).reduce as never
 			let res: ReturnType<Emit<T, S, E>> | undefined
 			const emit = o.emitter!(emitOne<S>)
 			const abort = () => res?.abort()
@@ -160,17 +166,9 @@ export function reduce<T, S, U, E, R>(
 	return forbidden()
 }
 
-export interface ReducerDest<Event, State, Result = State> {
-	init: Init<State>
-	reduce?: (event: Event, state: State) => State
-	reduceDest: (event: Event, state: State) => State
-	result?: (state: State) => Result
-}
-
 export interface ReducerNonDest<Event, State, Result = State> {
 	init: Init<State>
 	reduce: (event: Event, state: State) => State
-	reduceDest?: (event: Event, state: State) => State
 	result?: (state: State) => Result
 }
 
@@ -180,6 +178,7 @@ export type Reducer<Event, State, Result = State> = {
 } & (
 	| {
 			reduce: (event: Event, state: State) => State
+			reduceDest?: (event: Event, state: State) => State
 	  }
 	| {
 			reduceDest: (event: Event, state: State) => State
