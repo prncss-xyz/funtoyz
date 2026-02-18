@@ -1,4 +1,4 @@
-import { IOptic } from '.'
+import { Optic } from '.'
 import { forbidden } from '../../assertions'
 import { fromInit, Init } from '../../functions/arguments'
 import { noop } from '../../functions/basics'
@@ -93,7 +93,7 @@ export function first<T, S, E extends G, G>(o: {
 }
 
 export function getModifier<T, S, E, G, F extends Flags>(
-	o: IOptic<T, S, E, G, F>,
+	o: Optic<T, S, E, G, F>,
 ): Modifier<T, S> | undefined {
 	if (o.modifier) return o.modifier
 	if (o.getter) {

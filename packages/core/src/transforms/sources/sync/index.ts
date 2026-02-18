@@ -1,11 +1,11 @@
 import { nothing, Nothing } from '../../../tags/results'
-import { IOptic } from '../../compose'
+import { Optic } from '../../compose'
 import { source } from '../../compose/_composeEmit'
 import { Emit } from '../../compose/_methods'
 
 export function sourceSync<T, S, E>(
 	emit: Emit<T, S, E>,
-): IOptic<
+): Optic<
 	T,
 	S,
 	E,
