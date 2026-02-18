@@ -1,6 +1,5 @@
-import { lens } from ".";
-import { replace } from "../../../../arrays";
-
+import { lens } from '.'
+import { replace } from '../../../../arrays'
 
 export function nth<Index extends keyof O & number, O extends unknown[]>(
 	index: Index,
