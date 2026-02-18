@@ -58,3 +58,5 @@ vite.config.ts.timestamp-*
 *.tsbuildinfo
 next-env.d.ts
 .eslintcache
+
+.claude
