@@ -22,14 +22,6 @@ export type Modifier<T, S> = (
 	s: S,
 ) => void
 
-export function apply<V>(
-	m: (v: V, next: (v: V) => void) => void,
-	next: (v: V) => void,
-	v: V,
-) {
-	return m(v, next)
-}
-
 export type Setter<T, S> = (t: T, next: (s: S) => void, s: S) => void
 
 export type Remover<S> = (s: S, next: (s: S) => void) => void
@@ -123,10 +115,6 @@ export function getModifier<T, S, E, G, F extends Flags>(
 	return undefined
 }
 
-export function neverNothing(): never {
-	throw new Error('Should always emit at least one value')
-}
-
 export function reduce<T, S, U, E, R>(
 	reducer: Reducer<T, U, R>,
 	o: { emitter?: Emitter<T, S, E> },
@@ -135,7 +123,7 @@ export function reduce<T, S, U, E, R>(
 		return (s, next, error) => {
 			let done = false
 			let acc = fromInit(reducer.init)
-			const reduce = reducer.reduceDest ?? (reducer as any).reduce as never
+			const reduce = reducer.reduceDest ?? ((reducer as any).reduce as never)
 			let res: ReturnType<Emit<T, S, E>> | undefined
 			const emit = o.emitter!(emitOne<S>)
 			const abort = () => res?.abort()

@@ -8,11 +8,11 @@ import { Compose } from '../../../compose'
 export function filter<Here, There extends Here, Err = Nothing>(
 	cond: (w: Here) => w is There,
 	err?: Init<Err, [Here]>,
-): Compose<Here, There, Err, Err, { EXISTS: false }>
+): Compose<Here, There, never, Err, { EXISTS: false }>
 export function filter<Here, Err = Nothing>(
 	cond: (w: Here) => boolean,
 	err?: Init<Err, [Here]>,
-): Compose<Here, Here, Err, Err, { EXISTS: false }>
+): Compose<Here, Here, never, Err, { EXISTS: false }>
 export function filter<Here, Err = Nothing>(
 	cond: (w: Here) => boolean,
 	err: Init<Err, [Here]> = nothing as never,

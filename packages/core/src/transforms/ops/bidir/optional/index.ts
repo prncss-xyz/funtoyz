@@ -13,7 +13,7 @@ export function optional<Part, Whole, EG = Nothing>({
 	remove?: (w: Whole) => Whole
 	set: (p: Part, w: Whole) => Whole
 }) {
-	return compose<Whole, Part, EG, EG, { CONSTRUCT: false; EXISTS: false }>({
+	return compose<Whole, Part, never, EG, { CONSTRUCT: false; EXISTS: false }>({
 		flags: { CONSTRUCT: false, EXISTS: false },
 		getter: (w, next, error) => {
 			const res = get(w)

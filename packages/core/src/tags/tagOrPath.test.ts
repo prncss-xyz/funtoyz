@@ -2,7 +2,7 @@ import { PathFromTag, tagOrPath } from './tagOrPath'
 
 describe('tagOrPath', () => {
 	test('one', () => {
-		type Q = PathFromTag<{ payload?: undefined; type: 'a' }>
+		type Q = PathFromTag<{ payload: undefined; type: 'a' }>
 		expectTypeOf<Q>().toEqualTypeOf<['a', undefined] | ['a']>()
 	})
 	test('two', () => {
@@ -10,8 +10,8 @@ describe('tagOrPath', () => {
 		expectTypeOf<Q>().toEqualTypeOf<['a', string]>()
 	})
 	test('two, optional', () => {
-		type Q = PathFromTag<{ payload?: string; type: 'a' }>
-		expectTypeOf<Q>().toEqualTypeOf<['a', string] | ['a']>()
+		type Q = PathFromTag<{ payload: string | undefined; type: 'a' }>
+		expectTypeOf<Q>().toEqualTypeOf<['a', string] | ['a', undefined] | ['a']>()
 	})
 	test('three', () => {
 		type Q = PathFromTag<{
@@ -24,7 +24,10 @@ describe('tagOrPath', () => {
 		const t1 = tagOrPath({ type: 'a' }) satisfies { type: 'a' }
 		expect(t1).toEqual({ type: 'a' })
 
-		const t2 = tagOrPath<{ payload?: string; type: 'a' }>('a') satisfies {
+		const t2 = tagOrPath<{ payload: string; type: 'a' }>(
+			'a',
+			'toto',
+		) satisfies {
 			type: 'a'
 		}
 		expect(t2).toEqual({ type: 'a' })

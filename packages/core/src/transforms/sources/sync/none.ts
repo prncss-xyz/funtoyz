@@ -1,4 +1,4 @@
-import { sourceSync } from '..'
+import { sourceSync } from '.'
 import { noop } from '../../../functions/basics'
 
 export function none<S>() {

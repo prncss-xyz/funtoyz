@@ -46,6 +46,6 @@ export function traversal<Acc, Value, Res = Acc>({
 			start()
 		},
 		nothing,
-		remover: (_s, next) => next((result_)(fromInit(init))),
+		remover: (_s, next) => next(result_(fromInit(init))),
 	})
 }

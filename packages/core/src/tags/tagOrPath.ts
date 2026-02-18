@@ -12,7 +12,7 @@ type PathFromTagOpt<I extends AnyTag> = I extends {
 		? [T]
 		: never
 	: never
-type PathFromTagRec<I> = I extends { [PAYLOAD]?: infer P; [TYPE]: infer T }
+type PathFromTagRec<I> = I extends { [PAYLOAD]: infer P; [TYPE]: infer T }
 	? [T, ...PathFromTagRec<P>]
 	: [I]
 

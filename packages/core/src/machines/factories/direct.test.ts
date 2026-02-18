@@ -23,7 +23,11 @@ describe('machines/factories/direct', () => {
 		)
 		expect(s1).toEqual({ count: 5 })
 
-		const s2 = instance.reduce({ type: 'finish' }, { count: 10 }, () => {})
+		const s2 = instance.reduce(
+			{ payload: undefined, type: 'finish' },
+			{ count: 10 },
+			() => {},
+		)
 		expect(s2).toEqual(exit(10))
 	})
 })

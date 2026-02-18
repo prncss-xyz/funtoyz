@@ -1,6 +1,6 @@
-import { Emit, Emitter, Getter } from './_methods'
+import { Emit, Emitter } from './_methods'
 
-export function composeEmit<T, S, U, E1, E2>(
+function composeEmit<T, S, U, E1, E2>(
 	emit1: Emit<T, S, E1>,
 	emit2: Emit<U, T, E2>,
 ): Emit<U, S, E1 | E2> {
@@ -35,10 +35,4 @@ export function composeEmit<T, S, U, E1, E2>(
 
 export function source<T, S, E>(emit: Emit<T, S, E>): Emitter<T, S, E> {
 	return (emit_) => composeEmit(emit_, emit)
-}
-
-export function getterToEmitter<T, S, E>(
-	getter: Getter<T, S, E>,
-): Emitter<T, S, E> {
-	return (emit) => (s, n, e, c) => emit(s, (s_) => getter(s_, n, e), e, c)
 }

@@ -11,7 +11,7 @@ export function prism<Part, Whole, EG>({
 	get: (w: Whole) => Result<Part, EG>
 	set: (p: Part) => Whole
 }) {
-	return compose<Whole, Part, EG, EG, { EXISTS: false }>({
+	return compose<Whole, Part, never, EG, { EXISTS: false }>({
 		flags: { EXISTS: false },
 		getter: (w, next, error) =>
 			match(get(w), { failure: (e) => error(fromInit(e, w)), success: next }),

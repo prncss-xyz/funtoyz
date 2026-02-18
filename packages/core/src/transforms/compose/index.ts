@@ -27,9 +27,9 @@ export type Compose<T, U, E1, G1, F1 extends Flags> = <
 // TODO: optimize for reviewer === trush
 // TODO: optimize for setter === trush
 
-function composeGetter<T, U, S, E2, G2, F2 extends Flags>(
-	o1: IOptic<U, T, any, any, any>,
-	o2: IOptic<T, S, E2, G2, F2>,
+function composeGetter<T, U, S, E1, G1, E2, G2>(
+	o1: IOptic<U, T, E1, G1, any>,
+	o2: IOptic<T, S, E2, G2, any>,
 ): Getter<U, S, any> | undefined {
 	if (o1.getter === undefined) return undefined
 	if (o2.getter === undefined) return undefined
@@ -148,7 +148,7 @@ export function compose<T, U, E1, G1, F1 extends Flags>(
 export type IOptic<T, S, E, G, F extends Flags> = {
 	emitter?: Emitter<T, S, E>
 	flags: F
-	getter?: Getter<T, S, G>
+	getter?: Getter<T, S, E | G>
 	modifier?: Modifier<T, S>
 	nothing?: () => G
 	remover?: Remover<S>
