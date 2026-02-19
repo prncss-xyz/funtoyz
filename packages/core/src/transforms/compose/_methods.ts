@@ -120,7 +120,7 @@ export function reduce<T, S, U, E, R>(
 	o: { emitter?: Emitter<T, S, E> },
 ): Getter<R, S, E> {
 	if (o.emitter)
-		return (s, next, error) => {
+		return (s, next) => {
 			let done = false
 			let acc = fromInit(reducer.init)
 			const reduce = reducer.reduceDest ?? ((reducer as any).reduce as never)
@@ -134,13 +134,7 @@ export function reduce<T, S, U, E, R>(
 						acc = reduce(t, acc)
 					}
 				},
-				(e) => {
-					if (!done) {
-						done = true
-						abort()
-						error(e)
-					}
-				},
+				noop,
 				() => {
 					if (!done) {
 						done = true

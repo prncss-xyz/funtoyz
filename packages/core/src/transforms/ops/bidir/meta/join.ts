@@ -62,7 +62,14 @@ export function join<U, V, S, E1, G1, F1 extends Flags>(
 				return res.abort
 			}
 			if (d.getter) {
-				d.getter(s, (v) => { next(v); complete() }, () => complete())
+				d.getter(
+					s,
+					(v) => {
+						next(v)
+						complete()
+					},
+					() => complete(),
+				)
 			} else {
 				complete()
 			}
@@ -97,10 +104,15 @@ export function join<U, V, S, E1, G1, F1 extends Flags>(
 						const d = dep(u)
 						if (d.emitter) {
 							const emit = d.emitter(emitSrc)
-							const res = emit(s, next, () => {}, () => {
-								pending.delete(res.abort)
-								checkComplete()
-							})
+							const res = emit(
+								s,
+								next,
+								() => {},
+								() => {
+									pending.delete(res.abort)
+									checkComplete()
+								},
+							)
 							pending.add(res.abort)
 							res.start()
 						} else if (d.getter) {
@@ -160,7 +172,12 @@ export function join<U, V, S, E1, G1, F1 extends Flags>(
 				const emit = o.emitter!(emitSrc)
 				const { start } = emit(
 					s,
-					(u) => { if (!seen.has(u)) { seen.add(u); us.push(u) } },
+					(u) => {
+						if (!seen.has(u)) {
+							seen.add(u)
+							us.push(u)
+						}
+					},
 					() => {},
 					() => {},
 				)
@@ -170,7 +187,15 @@ export function join<U, V, S, E1, G1, F1 extends Flags>(
 				function apply(i: number) {
 					if (i >= us.length) return next(cur)
 					const mod = getModifier(dep(us[i]!))
-					if (mod) mod(m, (s2) => { cur = s2; apply(i + 1) }, cur)
+					if (mod)
+						mod(
+							m,
+							(s2) => {
+								cur = s2
+								apply(i + 1)
+							},
+							cur,
+						)
 					else apply(i + 1)
 				}
 				apply(0)
@@ -214,7 +239,12 @@ export function join<U, V, S, E1, G1, F1 extends Flags>(
 				const emit = o.emitter!(emitSrc)
 				const { start } = emit(
 					s,
-					(u) => { if (!seen.has(u)) { seen.add(u); us.push(u) } },
+					(u) => {
+						if (!seen.has(u)) {
+							seen.add(u)
+							us.push(u)
+						}
+					},
 					() => {},
 					() => {},
 				)
@@ -224,7 +254,11 @@ export function join<U, V, S, E1, G1, F1 extends Flags>(
 				function apply(i: number) {
 					if (i >= us.length) return next(cur)
 					const d = dep(us[i]!)
-					if (d.remover) d.remover(cur, (s2) => { cur = s2; apply(i + 1) })
+					if (d.remover)
+						d.remover(cur, (s2) => {
+							cur = s2
+							apply(i + 1)
+						})
 					else apply(i + 1)
 				}
 				apply(0)

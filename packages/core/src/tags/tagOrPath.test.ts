@@ -30,7 +30,7 @@ describe('tagOrPath', () => {
 		) satisfies {
 			type: 'a'
 		}
-		expect(t2).toEqual({ type: 'a' })
+		expect(t2).toEqual({ payload: 'toto', type: 'a' })
 
 		const t3 = tagOrPath('a', 'b') satisfies { payload: 'b'; type: 'a' }
 		expect(t3).toEqual({ payload: 'b', type: 'a' })

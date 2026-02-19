@@ -1,6 +1,7 @@
 import { flow } from '../../../../functions/flow'
 import { result } from '../../../../tags/results'
-import { preview, REMOVE, update, view } from '../../../extractors'
+import { PAYLOAD } from '../../../../tags/types'
+import { preview, REMOVE, update } from '../../../extractors'
 import { once } from '../../../sources/sync/once'
 import { fold } from '../../unidir/fold'
 import { lens } from '../lens'
@@ -76,6 +77,6 @@ describe('fold', () => {
 		fold({ init: 100, reduce: (x, y) => x + y }),
 	)
 	test('view', () => {
-		expect(preview(o)([1, 2, 3])).toEqual(102)
+		expect(preview(o)([1, 2, 3])[PAYLOAD]).toEqual(102)
 	})
 })

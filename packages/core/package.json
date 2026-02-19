@@ -5,7 +5,7 @@
 		"check:types": "tsc --noEmit",
 		"build": "tsdown",
 		"dev": "tsdown --watch",
-		"build:exports": "node scripts/generate-exports.mjs"
+		"generate:exports": "node scripts/generate-exports.mjs"
 	},
 	"keywords": [],
 	"author": "Juliette Lamarche <juliette.lamarche.xyz@gmail.com> (https://github.com/prncss-xyz/)",
