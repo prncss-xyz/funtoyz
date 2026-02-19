@@ -10,8 +10,8 @@ export function fold<Value, State, Result = State>(
 	): Optic<
 		Result,
 		S,
-		E,
-		E,
+		never,
+		never,
 		(F['SYNC'] extends false ? { SYNC: false } : object) & {
 			CONSTRUCT: false
 			WRITE: false

@@ -12,6 +12,8 @@ Sum, Slice, Map. Higher-order machines (undo-redo etc., see x-state)
 
 ## Transforms
 
+Inconsistency between getter and setter errors
+
 scan1, fold1
 
 Validation:

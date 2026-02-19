@@ -1,10 +1,24 @@
 import { fromInit } from '../../../functions/arguments'
-import { id } from '../../../functions/basics'
-import { compose } from '../../compose'
+import { id, noop } from '../../../functions/basics'
+import { compose, Optic } from '../../compose'
+import { Flags } from '../../compose/_flags'
 import { ReducerNonDest } from '../../compose/_methods'
 
-// FIX: getter error typing
-
+// we override type because the getter cannot have an error
+export function scan<Event, State, Result = State>(
+	props: ReducerNonDest<Event, State, Result>,
+): <S, E2, G2, F2 extends Flags>(
+	o2: Optic<Event, S, E2, G2, F2>,
+) => Optic<
+	Result,
+	S,
+	never,
+	never,
+	F2 & {
+		CONSTRUCT: false
+		WRITE: false
+	}
+>
 export function scan<Event, State, Result = State>(
 	props: ReducerNonDest<Event, State, Result>,
 ) {
@@ -15,7 +29,7 @@ export function scan<Event, State, Result = State>(
 		never,
 		{ CONSTRUCT: false; WRITE: false }
 	>({
-		emitter: (emit) => (source, next, e, c) => {
+		emitter: (emit) => (source, next, _e, c) => {
 			const reduce = props.reduce
 			const result = props.result ?? (id as never)
 			let acc = fromInit(props.init)
@@ -25,7 +39,7 @@ export function scan<Event, State, Result = State>(
 					acc = reduce(s, acc)
 					next(result(acc))
 				},
-				e,
+				noop,
 				c,
 			)
 			return {

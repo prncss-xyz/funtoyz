@@ -118,7 +118,7 @@ export function getModifier<T, S, E, G, F extends Flags>(
 export function reduce<T, S, U, E, R>(
 	reducer: Reducer<T, U, R>,
 	o: { emitter?: Emitter<T, S, E> },
-): Getter<R, S, E> {
+): Getter<R, S, never> {
 	if (o.emitter)
 		return (s, next) => {
 			let done = false
