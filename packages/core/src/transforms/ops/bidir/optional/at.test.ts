@@ -16,13 +16,13 @@ describe('at', () => {
 	})
 
 	test('put', () => {
-		expect(update(o)(0, [1, 2, 3])).toEqual([1, 0, 3])
+		expect(update(o)(0)([1, 2, 3])).toEqual([1, 0, 3])
 	})
 	test('over', () => {
-		expect(update(o)((x) => x + 1, [1, 2, 3])).toEqual([1, 3, 3])
+		expect(update(o)((x) => x + 1)([1, 2, 3])).toEqual([1, 3, 3])
 	})
 	test('remove', () => {
-		expect(update(o)(REMOVE, [1, 2, 3])).toEqual([1, 3])
+		expect(update(o)(REMOVE)([1, 2, 3])).toEqual([1, 3])
 	})
 })
 
@@ -37,7 +37,7 @@ describe('composed at', () => {
 		expect(res).toEqual(result.success.of(6))
 	})
 	test('put', () => {
-		const res = update(o)(0, [
+		const res = update(o)(0)([
 			[1, 2, 3],
 			[4, 5, 6],
 		])
@@ -47,20 +47,17 @@ describe('composed at', () => {
 		])
 	})
 	test('over', () => {
-		const res = update(o)(
-			(x) => x + 1,
-			[
-				[1, 2, 3],
-				[4, 5, 6],
-			],
-		)
+		const res = update(o)((x) => x + 1)([
+			[1, 2, 3],
+			[4, 5, 6],
+		])
 		expect(res).toEqual([
 			[1, 2, 3],
 			[4, 5, 7],
 		])
 	})
 	test('remove', () => {
-		const res = update(o)(REMOVE, [
+		const res = update(o)(REMOVE)([
 			[1, 2, 3],
 			[4, 5, 6],
 		])

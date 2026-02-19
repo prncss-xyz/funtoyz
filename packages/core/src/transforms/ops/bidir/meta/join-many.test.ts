@@ -45,7 +45,7 @@ describe('join, many', () => {
 			current: ['alice', 'alice', 'charlie', 'toto'],
 			people,
 		}
-		expect(update(o)('TOTO', data)).toEqual({
+		expect(update(o)('TOTO')(data)).toEqual({
 			current: ['alice', 'alice', 'charlie', 'toto'],
 			people: {
 				alice: 'TOTO',
@@ -59,7 +59,7 @@ describe('join, many', () => {
 			current: ['alice', 'alice', 'charlie', 'toto'],
 			people,
 		}
-		expect(update(o)((x) => x + x, data)).toEqual({
+		expect(update(o)((x) => x + x)(data)).toEqual({
 			current: ['alice', 'alice', 'charlie', 'toto'],
 			people: {
 				alice: 'AliceAlice',
@@ -73,7 +73,7 @@ describe('join, many', () => {
 			current: ['alice', 'alice', 'charlie', 'toto'],
 			people,
 		}
-		expect(update(o)(REMOVE, data)).toEqual({
+		expect(update(o)(REMOVE)(data)).toEqual({
 			current: ['alice', 'alice', 'charlie', 'toto'],
 			people: {
 				bob: 'Bob',

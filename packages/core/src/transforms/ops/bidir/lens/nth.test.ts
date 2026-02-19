@@ -13,7 +13,7 @@ describe('nth', () => {
 		expect(res).toBe('a')
 	})
 	it('put', () => {
-		const res = update(o)('A', source)
+		const res = update(o)('A')(source)
 		expect(res).toEqual([1, 'A', true])
 		expectTypeOf(res).toEqualTypeOf<Source>()
 	})

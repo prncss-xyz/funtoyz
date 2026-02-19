@@ -19,18 +19,18 @@ describe('stack', () => {
 	})
 	describe('put', () => {
 		it('defined', () => {
-			expect(update(o)('A', sourceDefined)).toEqual(['a', 'b', 'c', 'A'])
+			expect(update(o)('A')(sourceDefined)).toEqual(['a', 'b', 'c', 'A'])
 		})
 		it('undefined', () => {
-			expect(update(o)('A', sourceUndefined)).toEqual(['A'])
+			expect(update(o)('A')(sourceUndefined)).toEqual(['A'])
 		})
 	})
 	describe('remove', () => {
 		it('defined', () => {
-			expect(update(o)(REMOVE, sourceDefined)).toEqual(['a', 'b'])
+			expect(update(o)(REMOVE)(sourceDefined)).toEqual(['a', 'b'])
 		})
 		it('undefined', () => {
-			expect(update(o)(REMOVE, sourceUndefined)).toEqual(sourceUndefined)
+			expect(update(o)(REMOVE)(sourceUndefined)).toEqual(sourceUndefined)
 		})
 	})
 })

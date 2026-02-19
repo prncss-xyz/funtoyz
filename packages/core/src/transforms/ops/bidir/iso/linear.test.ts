@@ -10,7 +10,7 @@ describe('linear', () => {
 		expect(view(o)(100)).toBe(212)
 	})
 	it('fahrenheit to celsius', () => {
-		expect(update(o)(-40, 0)).toBe(-40)
-		expect(update(o)(212, 0)).toBe(100)
+		expect(update(o)(-40)(0)).toBe(-40)
+		expect(update(o)(212)(0)).toBe(100)
 	})
 })

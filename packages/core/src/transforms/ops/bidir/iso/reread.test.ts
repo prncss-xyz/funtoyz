@@ -12,7 +12,6 @@ describe('reread', () => {
 		expect(view(o)('foo')).toBe('FOO')
 	})
 	it('update', () => {
-		expect(update(o)('', 'foo')).toBe('')
-		/* expect(update(focus)('', 'foo')).toBe('foo') */
+		expect(update(o)('')('foo')).toBe('')
 	})
 })

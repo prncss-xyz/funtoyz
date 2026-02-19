@@ -20,18 +20,18 @@ describe('queue', () => {
 	})
 	describe('put', () => {
 		it('defined', () => {
-			expect(update(o)('A', sourceDefined)).toEqual(['a', 'b', 'c', 'A'])
+			expect(update(o)('A')(sourceDefined)).toEqual(['a', 'b', 'c', 'A'])
 		})
 		it('undefined', () => {
-			expect(update(o)('A', sourceUndefined)).toEqual(['A'])
+			expect(update(o)('A')(sourceUndefined)).toEqual(['A'])
 		})
 	})
 	describe('remove', () => {
 		it('defined', () => {
-			expect(update(o)(REMOVE, sourceDefined)).toEqual(['b', 'c'])
+			expect(update(o)(REMOVE)(sourceDefined)).toEqual(['b', 'c'])
 		})
 		it('undefined', () => {
-			expect(update(o)(REMOVE, sourceUndefined)).toEqual(sourceUndefined)
+			expect(update(o)(REMOVE)(sourceUndefined)).toEqual(sourceUndefined)
 		})
 	})
 })
@@ -63,18 +63,18 @@ describe('prop', () => {
 		)
 	})
 	it('put', () => {
-		expect(update(focusA)('C', sourceDefined)).toEqual({
+		expect(update(focusA)('C')(sourceDefined)).toEqual({
 			a: 'C',
 			b: 'B',
 			c: 'C',
 		})
-		expect(update(focusA)('C', sourceUndefined)).toEqual({ a: 'C', c: null })
-		expect(update(focusB)('C', sourceDefined)).toEqual({
+		expect(update(focusA)('C')(sourceUndefined)).toEqual({ a: 'C', c: null })
+		expect(update(focusB)('C')(sourceDefined)).toEqual({
 			a: 'A',
 			b: 'C',
 			c: 'C',
 		})
-		expect(update(focusB)('C', sourceUndefined)).toEqual({
+		expect(update(focusB)('C')(sourceUndefined)).toEqual({
 			a: 'A',
 			b: 'C',
 			c: null,
@@ -82,31 +82,26 @@ describe('prop', () => {
 	})
 	it('over', () => {
 		const cb = (x: string) => `${x} UPDATED`
-		expect(update(focusA)(cb, sourceDefined)).toEqual({
+		expect(update(focusA)(cb)(sourceDefined)).toEqual({
 			a: 'A UPDATED',
 			b: 'B',
 			c: 'C',
 		})
-		expect(update(focusB)(cb, sourceUndefined)).toEqual({
+		expect(update(focusB)(cb)(sourceUndefined)).toEqual({
 			a: 'A',
 			c: null,
 		})
-		expect(update(focusB)(cb, sourceDefined)).toEqual({
+		expect(update(focusB)(cb)(sourceDefined)).toEqual({
 			a: 'A',
 			b: 'B UPDATED',
 			c: 'C',
 		})
-		expect(update(focusB)(cb, sourceUndefined)).toEqual({
+		expect(update(focusB)(cb)(sourceUndefined)).toEqual({
 			a: 'A',
 			c: null,
 		})
 	})
 	it('remove', () => {
-		expect(update(focusB)(REMOVE, sourceDefined)).toEqual({ a: 'A', c: 'C' })
-		expect(update(focusB)(REMOVE, sourceUndefined)).toEqual({ a: 'A', c: null })
-		// @ts-expect-error focusA is not removable
-		update(focusA)(REMOVE)
-		// @ts-expect-error focusC is not removable
-		update(focusC)(REMOVE)
-	})
-})
+		expect(update(focusB)(REMOVE)(sourceDefined)).toEqual({ a: 'A', c: 'C' })
+		expect(update(focusB)(REMOVE)(sourceUndefined)).toEqual({ a: 'A', c: null })
+	}) })

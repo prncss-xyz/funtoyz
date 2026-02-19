@@ -11,7 +11,7 @@ describe('dedupe', () => {
 		expect(view(o)('FOO')).toBe('FOO')
 	})
 	it('put', () => {
-		expect(update(o)('foo', 'bar')).toBe('foo')
-		expect(update(o)('foo', 'FOO')).toBe('FOO')
+		expect(update(o)('foo')('bar')).toBe('foo')
+		expect(update(o)('foo')('FOO')).toBe('FOO')
 	})
 })

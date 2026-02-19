@@ -59,7 +59,7 @@ describe('join, one', () => {
 			current: 'bob',
 			people,
 		}
-		expect(update(o)({ id: 'bob', name: 'B' }, data)).toEqual({
+		expect(update(o)({ id: 'bob', name: 'B' })(data)).toEqual({
 			current: 'bob',
 			people: [
 				{ id: 'alice', name: 'Alice' },
@@ -78,7 +78,7 @@ describe('join, one', () => {
 			current: 'bob',
 			people,
 		}
-		expect(update(o)((entry) => ({ ...entry, name: 'B' }), data)).toEqual({
+		expect(update(o)((entry) => ({ ...entry, name: 'B' }))(data)).toEqual({
 			current: 'bob',
 			people: [
 				{ id: 'alice', name: 'Alice' },
@@ -97,7 +97,7 @@ describe('join, one', () => {
 			current: 'bob',
 			people,
 		}
-		expect(update(o)(REMOVE, data)).toEqual({
+		expect(update(o)(REMOVE)(data)).toEqual({
 			current: 'bob',
 			people: [
 				{ id: 'alice', name: 'Alice' },

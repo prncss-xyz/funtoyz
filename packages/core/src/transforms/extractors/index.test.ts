@@ -38,12 +38,12 @@ describe('review', () => {
 
 describe('update', () => {
 	it('sets value synchronously', () => {
-		const res = update(once<number>())(1, 2)
+		const res = update(once<number>())(1)(2)
 		expectTypeOf(res).toEqualTypeOf<number>()
 		expect(res).toBe(1)
 	})
 	it('modifies value synchronously', () => {
-		const res = update(once<number>())((x) => -x, 1)
+		const res = update(once<number>())((x) => -x)(1)
 		expectTypeOf(res).toEqualTypeOf<number>()
 		expect(res).toBe(-1)
 	})

@@ -22,16 +22,16 @@ describe('includes', () => {
 	})
 	describe('put', () => {
 		it('defined, true', () => {
-			expect(update(o)(true, sourceDefined)).toEqual(['a', 'b', 'c'])
+			expect(update(o)(true)(sourceDefined)).toEqual(['a', 'b', 'c'])
 		})
 		it('defined, false', () => {
-			expect(update(o)(false, sourceDefined)).toEqual(['a', 'c'])
+			expect(update(o)(false)(sourceDefined)).toEqual(['a', 'c'])
 		})
 		it('undefined, true', () => {
-			expect(update(o)(true, sourceUndefined)).toEqual(['a', 'b', 'c'])
+			expect(update(o)(true)(sourceUndefined)).toEqual(['a', 'b', 'c'])
 		})
 		it('undefined, false', () => {
-			expect(update(o)(false, sourceUndefined)).toEqual(['a', 'c'])
+			expect(update(o)(false)(sourceUndefined)).toEqual(['a', 'c'])
 		})
 	})
 })
