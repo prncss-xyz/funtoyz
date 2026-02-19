@@ -21,8 +21,6 @@ export type Compose<T, U, E1, G1, F1 extends Flags> = <
 	o2: Optic<T, S, E2, G2, F2>,
 ) => Optic<U, S, E1 | E2, G1 | G2, F1 & F2>
 
-// TODO: make modifier optional
-
 // TODO: optimize for getter === trush
 // TODO: optimize for reviewer === trush
 // TODO: optimize for setter === trush

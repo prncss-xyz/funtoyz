@@ -1,9 +1,9 @@
-import { forbidden } from '../../../assertions'
-import { fromInit, Init } from '../../../functions/arguments'
-import { pipe2 } from '../../../functions/basics'
-import { Optic } from '../../compose'
-import { Flags } from '../../compose/_flags'
-import { Emitter, Getter } from '../../compose/_methods'
+import { forbidden } from '../../../../assertions'
+import { fromInit, Init } from '../../../../functions/arguments'
+import { pipe2 } from '../../../../functions/basics'
+import { Optic } from '../../../compose'
+import { Flags } from '../../../compose/_flags'
+import { Emitter, Getter } from '../../../compose/_methods'
 
 // TODO: if there is both a getter and an emitter, preserve them
 

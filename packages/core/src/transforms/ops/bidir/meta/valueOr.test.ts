@@ -1,10 +1,10 @@
 import { expect } from 'vitest'
 
-import { flow } from '../../../functions/flow'
-import { collect, view } from '../../extractors'
-import { once } from '../../sources/sync/once'
-import { at } from './optional/at'
-import { elems } from './traversal/elems'
+import { flow } from '../../../../functions/flow'
+import { collect, view } from '../../../extractors'
+import { once } from '../../../sources/sync/once'
+import { at } from '../optional/at'
+import { elems } from '../traversal/elems'
 import { valueOr } from './valueOr'
 
 describe('valueOr', () => {
