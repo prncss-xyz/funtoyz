@@ -12,7 +12,6 @@ describe('rewrite', () => {
 		expect(review(o)('foo')).toBe('FOO')
 	})
 	it('update', () => {
-		// TODO: which behavior is better?
 		expect(update(o)('', 'foo')).toBe('')
 		/* expect(update(focus)('', 'foo')).toBe('foo') */
 	})

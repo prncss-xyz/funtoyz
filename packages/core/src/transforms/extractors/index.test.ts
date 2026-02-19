@@ -22,7 +22,7 @@ describe('collect', () => {
 
 describe('preview', () => {
 	it('previews value asynchronously', async () => {
-		const pro = preview(periodic)(1)
+		const pro = preview(periodic())(1)
 		expectTypeOf(pro).toEqualTypeOf<Promise<Result<number, Nothing>>>()
 		expect(result.success.is(await pro)).toBeTruthy()
 	})

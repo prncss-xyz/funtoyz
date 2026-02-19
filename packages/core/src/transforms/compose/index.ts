@@ -10,6 +10,7 @@ import {
 	Remover,
 	Reviewer,
 	Setter,
+	trush,
 } from './_methods'
 
 export type Compose<T, U, E1, G1, F1 extends Flags> = <
@@ -23,12 +24,13 @@ export type Compose<T, U, E1, G1, F1 extends Flags> = <
 
 // TODO: optimize for getter === trush
 // TODO: optimize for reviewer === trush
-// TODO: optimize for setter === trush
 
 function composeGetter<T, U, S, E1, G1, E2, G2>(
 	o1: Optic<U, T, E1, G1, any>,
 	o2: Optic<T, S, E2, G2, any>,
 ): Getter<U, S, any> | undefined {
+	if (o1.getter === trush) return o2.getter as never
+	if (o2.getter === trush) return o1.getter as never
 	if (o1.getter === undefined) return undefined
 	if (o2.getter === undefined) return undefined
 	return (s, next, error) =>
@@ -69,8 +71,11 @@ function composesReviewer<T, U, S>(
 	o1: Optic<U, T, any, any, any>,
 	o2: Optic<T, S, any, any, any>,
 ): Reviewer<U, S> | undefined {
-	if (o1.reviewer && o2.reviewer)
+	if (o1.reviewer && o2.reviewer) {
+		if (o1.reviewer === trush) return o2.reviewer as never
+		if (o2.reviewer === trush) return o1.reviewer as never
 		return (t, next) => o1.reviewer!(t, (t) => o2.reviewer!(t, next))
+	}
 	return undefined
 }
 
@@ -79,16 +84,19 @@ function composeSetter<T, U, S, E2, G2, F2 extends Flags>(
 	o2: Optic<T, S, E2, G2, F2>,
 ): Setter<U, S> | undefined {
 	if (o1.reviewer)
-		if (o2.setter)
+		if (o2.setter) {
+			if (o1.reviewer === trush) return o2.setter as never
 			return (t, next, s) => o1.reviewer!(t, (t) => o2.setter!(t, next, s))
+		}
 	if (o1.setter && o2.getter) {
-		if (o2.reviewer)
+		if (o2.reviewer) {
 			return (t, next, s) =>
 				o2.getter!(
 					s,
 					(u) => o1.setter!(t, (t) => o2.reviewer!(t, next), u),
 					() => next(s),
 				)
+		}
 		if (o2.setter)
 			return (t, next, s) =>
 				o2.getter!(

@@ -3,9 +3,9 @@ import { collect } from '../../extractors'
 import { take } from '../../ops/unidir/take'
 import { periodic } from './periodic'
 
-describe.skip('periodic', () => {
+describe('periodic', () => {
 	test('basic', async () => {
-		const res = await collect(flow(periodic, take(3)))(1)
+		const res = await collect(flow(periodic(), take(3)))(1)
 		expect(res.length).toEqual(3)
 	})
 })

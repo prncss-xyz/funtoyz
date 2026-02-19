@@ -1,20 +1,21 @@
 import { flow } from '../../../../functions/flow'
 import { result } from '../../../../tags/results'
-import { preview, REMOVE, update } from '../../../extractors'
+import { preview, REMOVE, update, view } from '../../../extractors'
 import { once } from '../../../sources/sync/once'
+import { fold } from '../../unidir/fold'
 import { lens } from '../lens'
 import { filter } from '../prism/filter'
 import { elems } from './elems'
 
 describe('elems', () => {
 	const o = flow(once<number[]>(), elems())
-	it('view', () => {
+	test('view', () => {
 		expect(preview(o)([1, 2, 3])).toEqual(result.success.of(1))
 	})
-	it('modify', () => {
+	test('modify', () => {
 		expect(update(o)((x) => x * 2, [1, 2, 3])).toEqual([2, 4, 6])
 	})
-	it('remove', () => {
+	test('remove', () => {
 		expect(update(o)(REMOVE, [1, 2, 3])).toEqual([])
 	})
 })
@@ -24,10 +25,10 @@ describe('compose with prism', () => {
 		elems(),
 		filter((x) => x % 2 === 0),
 	)
-	it('modify', () => {
+	test('modify', () => {
 		expect(update(o)((x) => x * 2, [1, 2, 3])).toEqual([1, 4, 3])
 	})
-	it('remove', () => {
+	test('remove', () => {
 		expect(update(o)(REMOVE, [1, 2, 3])).toEqual([1, 3])
 	})
 })
@@ -39,19 +40,20 @@ describe('compose with lens', () => {
 		})
 	}
 	const o = flow(once<{ a: number }[]>(), elems(), prop('a'))
-	it('modify', () => {
+	test('modify', () => {
 		const res = update(o)((x) => x * 2, [{ a: 1 }, { a: 3 }])
 		expect(res).toEqual([{ a: 2 }, { a: 6 }])
 	})
 	// this is to make sure the call stack doesn't grow with data length
-	it.skip('modify, long array', { timeout: 20_000 }, () => {
+	// since it's very long we don't run it on a regular basis
+	test.skip('modify, long array', { timeout: 20_000 }, () => {
 		const xs: { a: number }[] = Array(50_000).fill({ a: 1 })
 		expect(update(o)((x) => x * 2, xs)[0]).toEqual({ a: 2 })
 	})
 })
 describe('compose with elems', () => {
 	const o = flow(once<number[][]>(), elems(), elems())
-	it('modify', () => {
+	test('modify', () => {
 		expect(
 			update(o)(
 				(x) => x * 2,
@@ -66,7 +68,6 @@ describe('compose with elems', () => {
 		])
 	})
 })
-/*
 describe('fold', () => {
 	const o = flow(
 		once<number[]>(),
@@ -74,9 +75,7 @@ describe('fold', () => {
 		filter((x) => x % 2 === 0),
 		fold({ init: 100, reduce: (x, y) => x + y }),
 	)
-	it('view', () => {
-		// @ts-expect-error TODO:
-		expect(view(o)([1, 2, 3])).toEqual(102)
+	test('view', () => {
+		expect(preview(o)([1, 2, 3])).toEqual(102)
 	})
-  })
-*/
+})
