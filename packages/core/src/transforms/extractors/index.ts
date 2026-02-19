@@ -90,7 +90,6 @@ export function update<T, S, G, E, F extends Flags>(
 		if (isFunction(t)) return getModifier(o)!((v, n) => n(t(v)), next, s)
 		if (t === REMOVE) return o.remover!(s, next)
 		if (o.setter) return o.setter(t, next, s)
-		// TODO:
 		return getModifier(o)!((_, n) => n(t), next, s)
 	})
 }
