@@ -1,4 +1,4 @@
-import { Init } from '../../functions/arguments'
+import { Init } from '../../functions/arguments/init'
 import { AnyTag, PayloadOf, TypeIn } from '../../tags/types'
 import { Exit, MachineFactory } from '../core'
 import { baseMachine } from './base'

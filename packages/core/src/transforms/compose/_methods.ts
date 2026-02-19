@@ -1,6 +1,6 @@
 import { Optic } from '.'
 import { forbidden } from '../../assertions'
-import { fromInit, Init } from '../../functions/arguments'
+import { fromInit, Init } from '../../functions/arguments/init'
 import { noop } from '../../functions/basics'
 import { Flags } from './_flags'
 
@@ -14,7 +14,7 @@ export type Getter<T, S, E> = (
 	error: (e: E) => void,
 ) => void
 
-export type Reviewer<T, S> = (t: T, next: (s: S) => void, s: S | void) => void
+export type Reviewer<T, S> = (t: T, next: (s: S) => void) => void
 
 export type Modifier<T, S> = (
 	m: (t: T, next: (t: T) => void) => void,

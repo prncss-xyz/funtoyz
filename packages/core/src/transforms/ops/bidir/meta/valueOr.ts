@@ -1,5 +1,5 @@
 import { isoAssert } from '../../../../assertions'
-import { fromInit, Init } from '../../../../functions/arguments'
+import { fromInit, Init } from '../../../../functions/arguments/init'
 import { pipe2 } from '../../../../functions/basics'
 import { Optic } from '../../../compose'
 import { Flags, HasFlag } from '../../../compose/_flags'

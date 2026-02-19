@@ -1,4 +1,4 @@
-import { Init } from '../../functions/arguments'
+import { Init } from '../../functions/arguments/init'
 import { Tags } from '../../tags/types'
 import { Exit } from '../core'
 import { baseMachine } from './base'

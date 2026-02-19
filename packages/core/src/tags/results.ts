@@ -1,5 +1,4 @@
 import { forbidden } from '../assertions'
-import { match } from './match'
 import { tag } from './tag'
 import { tags } from './tags'
 import { Tag, Tags } from './types'

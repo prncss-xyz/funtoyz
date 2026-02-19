@@ -1,5 +1,5 @@
 import { prism } from '.'
-import { fromInit, Init } from '../../../../functions/arguments'
+import { fromInit, Init } from '../../../../functions/arguments/init'
 import { id } from '../../../../functions/basics'
 import { nothing, Nothing } from '../../../../tags/results'
 import { tag } from '../../../../tags/tag'

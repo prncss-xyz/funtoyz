@@ -1,7 +1,7 @@
 import { traversal } from '.'
 
 export function elems<Value>() {
-	return traversal<Value[], Value>({
+	return traversal<Value, Value[]>({
 		emit: (acc, next, _error, complete) => {
 			let done = false
 			return {
@@ -19,5 +19,6 @@ export function elems<Value>() {
 		},
 		init: () => [],
 		reduce: (t, acc) => [...acc, t],
+		set: (v) => [v],
 	})
 }

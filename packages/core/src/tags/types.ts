@@ -1,4 +1,4 @@
-import { OptionalUndefined, Prettify, ValueUnion } from '../types'
+import { Prettify, ValueUnion } from '../types'
 
 export const TYPE = 'type'
 export type Type = typeof TYPE

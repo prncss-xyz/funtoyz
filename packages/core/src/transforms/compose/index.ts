@@ -1,4 +1,4 @@
-import { Init } from '../../functions/arguments'
+import { Init } from '../../functions/arguments/init'
 import { pipe2 } from '../../functions/basics'
 import { Empty } from '../../objects/types'
 import { Flags } from './_flags'

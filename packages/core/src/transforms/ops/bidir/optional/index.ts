@@ -1,4 +1,4 @@
-import { fromInit, Init } from '../../../../functions/arguments'
+import { fromInit, Init } from '../../../../functions/arguments/init'
 import { nothing, Nothing } from '../../../../tags/results'
 import { compose } from '../../../compose'
 

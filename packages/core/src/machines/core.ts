@@ -1,4 +1,4 @@
-import { Init } from '../functions/arguments'
+import { Init } from '../functions/arguments/init'
 import { noop } from '../functions/basics'
 
 export type MachineFactory<

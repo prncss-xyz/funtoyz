@@ -1,4 +1,4 @@
-import { fromInit, Init } from '../functions/arguments'
+import { fromInit, Init } from '../functions/arguments/init'
 import { AnyTag, PAYLOAD, PayloadOf, TYPE, TypeIn } from './types'
 
 type Bound<T extends AnyTag, O> = keyof O extends TypeIn<T> ? O : never

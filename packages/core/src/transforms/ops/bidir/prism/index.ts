@@ -1,4 +1,4 @@
-import { fromInit } from '../../../../functions/arguments'
+import { fromInit } from '../../../../functions/arguments/init'
 import { noop } from '../../../../functions/basics'
 import { match } from '../../../../tags/match'
 import { Result } from '../../../../tags/results'

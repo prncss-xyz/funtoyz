@@ -1,4 +1,4 @@
-import { curry2, curry3 } from './arguments'
+import { curry2, curry2_1 } from './arguments/curry'
 
 export const mul = curry2((a: number, b: number) => b * a)
 export const div = curry2((a: number, b: number) => a / b)
@@ -31,7 +31,7 @@ export const modulo = curry2((a: number, b: number) => {
 	return a % b
 })
 
-export const clamp = curry3((min: number, max: number, source: number) =>
+export const clamp = curry2_1((min: number, max: number, source: number) =>
 	Math.max(Math.min(source, max), min),
 )
 

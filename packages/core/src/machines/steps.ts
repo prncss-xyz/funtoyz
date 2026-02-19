@@ -1,4 +1,4 @@
-import { fromInit, Init } from '../functions/arguments'
+import { fromInit, Init } from '../functions/arguments/init'
 import { AnyTag, PAYLOAD, PayloadOf, TypeIn } from '../tags/types'
 import { Exit } from './core'
 

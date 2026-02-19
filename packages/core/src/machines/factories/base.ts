@@ -1,4 +1,4 @@
-import { fromInit, Init } from '../../functions/arguments'
+import { fromInit, Init } from '../../functions/arguments/init'
 import { id } from '../../functions/basics'
 import { Exit, MachineFactory } from '../core'
 

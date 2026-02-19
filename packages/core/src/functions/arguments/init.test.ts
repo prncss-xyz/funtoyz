@@ -1,5 +1,5 @@
-import { curry2, curry3, fromInit, Init, toInit } from './arguments'
-import { id } from './basics'
+import { id } from '../basics'
+import { fromInit, Init, toInit } from './init'
 
 describe('fromInit', () => {
 	type I = Init<number, [number, string]>
@@ -19,18 +19,5 @@ describe('toInit', () => {
 	})
 	test('function', () => {
 		expect(toInit(id<number>)(1)).toBe(1)
-	})
-})
-
-describe('curry', () => {
-	test('base', () => {
-		const fn = curry2((x: number, s: string) => x - s.length)
-		expect(fn(5, 'four')).toBe(1)
-		expect(fn('four')(5)).toBe(1)
-	})
-	test('curry3', () => {
-		const fn = curry3((a: number, b: number, c: number) => a + b + c)
-		expect(fn(1, 2, 3)).toBe(6)
-		expect(fn(1, 2)(3)).toBe(6)
 	})
 })
