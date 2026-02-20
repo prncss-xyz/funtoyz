@@ -1,8 +1,8 @@
 import { fromInit, Init } from '../functions/arguments/init'
 import { AnyTag, PAYLOAD, PayloadOf, TypeIn } from '../tags/types'
-import { Exit } from './core'
 
 // Do not write tests for this
+// TODO: exit handler, maybe other handlers
 
 export function steps<Final = void>() {
 	return <
@@ -16,7 +16,7 @@ export function steps<Final = void>() {
 					[E in TypeIn<Event[S]>]: (
 						event: PayloadOf<Event[S], E>,
 						state: PayloadOf<State, S>,
-					) => Exit<Final> | State
+					) => State
 				}>
 			}
 		}) =>
@@ -39,7 +39,6 @@ export function steps<Final = void>() {
 							e[PAYLOAD],
 							state[PAYLOAD],
 						)
-						if (next instanceof Exit) return handlers.onExit(next.value)
 						handlers.setState(next)
 					}, state[PAYLOAD]),
 			init: (props: Props) => fromInit(flow.init, props),

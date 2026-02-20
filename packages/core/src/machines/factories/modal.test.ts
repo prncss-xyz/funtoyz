@@ -1,6 +1,5 @@
 import { tag } from '../../tags/tag'
 import { Tags } from '../../tags/types'
-import { exit } from '../core'
 import { modalMachine } from './modal'
 
 type Events = Tags<{
@@ -17,13 +16,13 @@ type States = Tags<{
 
 describe('machines/factories/modal', () => {
 	it('modalMachine works', () => {
-		const machine = modalMachine<never, number>()<Events, States>(tag('idle'), {
+		const machine = modalMachine<never>()<Events, States>(tag('idle'), {
 			done: {},
 			idle: {
 				start: () => tag('running', 0),
 			},
 			running: {
-				stop: (_e, s) => exit(s),
+				stop: (_e) => tag('idle'),
 				tick: (_e, s) => tag('running', s + 1),
 			},
 		})
@@ -40,7 +39,7 @@ describe('machines/factories/modal', () => {
 
 		// Running -> Stop
 		const s3 = instance.reduce(tag('stop'), tag('running', 20), () => {})
-		expect(s3).toEqual(exit(20))
+		expect(s3).toEqual(tag('idle'))
 
 		// No handler
 		const s4 = instance.reduce(tag('tick'), tag('idle'), () => {})
@@ -48,7 +47,7 @@ describe('machines/factories/modal', () => {
 	})
 
 	it('modalMachine result mapping', () => {
-		const machine = modalMachine<never, number>()<
+		const machine = modalMachine<never>()<
 			Tags<{ done: number }>,
 			Tags<{ done: number }>,
 			void,

@@ -1,14 +1,13 @@
-import { exit } from '../core'
 import { directMachine } from './direct'
 
 describe('machines/factories/direct', () => {
 	test('directMachine works', () => {
-		const machine = directMachine<never, number>()(
+		const machine = directMachine<never>()(
 			{
 				count: 0,
 			},
 			{
-				finish: (_e: any, s: { count: number }) => exit(s.count),
+				finish: (e: any) => e,
 				inc: (e: any, s: { count: number }) => ({ count: s.count + e.payload }),
 			},
 		)
@@ -18,16 +17,9 @@ describe('machines/factories/direct', () => {
 
 		const s1 = instance.reduce(
 			{ payload: 5, type: 'inc' },
-			{ count: 0 },
+			{ count: 1 },
 			() => {},
 		)
-		expect(s1).toEqual({ count: 5 })
-
-		const s2 = instance.reduce(
-			{ payload: undefined, type: 'finish' },
-			{ count: 10 },
-			() => {},
-		)
-		expect(s2).toEqual(exit(10))
+		expect(s1).toEqual({ count: 6 })
 	})
 })
