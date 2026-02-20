@@ -1,66 +1,79 @@
-# AGENTS
+# Agents
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Overview
+## Project
 
-FunToyz is a TypeScript functional programming library with React integration. It provides optics/transforms, state machines, discriminated unions (tags), and function composition utilities.
-
-## Monorepo Structure
-
-- **pnpm workspaces** + **TurboRepo** orchestration
-- `packages/core` — main library (`@funtoyz/core`), built with `tsdown`
-- `packages/config` — shared ESLint, TypeScript, Prettier configs
-- `apps/demo` — React + Vite demo app
+FunToyz is a TypeScript functional programming library providing composable optics, state machines, discriminated unions (tags), and function utilities. It is structured as a pnpm monorepo with Turborepo orchestration.
 
 ## Commands
 
-```bash
-# Development
-pnpm dev              # Turbo watch all packages
-pnpm dev:tests        # Vitest watch mode
+- `pnpm run verify` — full verification (lint + types + tests)
+- `pnpm run check:tests` — run all tests with coverage (vitest)
+- `pnpm run dev:tests` — watch mode tests
+- `pnpm vitest run packages/core/src/tags/match.test.ts` — run a single test file
+- `pnpm run lint` — eslint + prettier checks
+- `pnpm run lint:eslint` — eslint only (zero warnings policy)
+- `pnpm run lint:style` — prettier only
+- `pnpm run fix:prettier` — auto-fix formatting
+- `pnpm run fix:eslint` — auto-fix lint issues
+- `pnpm run knip` — find unused files/exports
+- `pnpm run sherif` — check dependency consistency
 
-# Testing
-pnpm check:tests      # Run all tests with coverage
-pnpm vitest run packages/core/src/path/to/file.test.ts  # Single test file
+## Monorepo Layout
 
-# Linting & Formatting (ALWAYS run after edits)
-pnpm fix:eslint       # Auto-fix ESLint issues
-pnpm fix:prettier     # Auto-format with Prettier
+- `packages/core/` — main library (`@funtoyz/core`), all source and tests in `src/`
+- `packages/config/` — shared eslint, prettier, and vitest configs (`@funtoyz/config`)
+- `apps/demo/` — React + Vite demo app showcasing machines with `useMachine` hook
 
-# Verification
-pnpm verify           # Full lint + type check + tests
-pnpm check:types      # Type checking only
-pnpm knip             # Unused files/dependencies
-pnpm sherif           # Monorepo health
-```
-
-## Code Conventions
-
-- **ESM only** (`type: "module"` everywhere)
-- **Erasable syntax only** — no enums, no parameter properties
-- **Strict sorting** of imports, exports, object keys, types (eslint-plugin-perfectionist). Run `pnpm fix:eslint` if unsure
-- **Unused variables** must be prefixed with `_`
-- **Tests** are co-located (`*.test.ts` next to source). Vitest globals are available — never import `describe`, `it`, `expect`, etc.
-- **Write as few tests as necessary**
-- **Conventional Commits** enforced by commitlint (e.g. `fix:`, `feat:`, `refactor:`)
+Build pipeline (turbo.json): `build` → `check:types` / `check:tests` → `check` → `pre-commit` → `verify`. Lint runs independently.
 
 ## Architecture
 
-### Core Library Domains (`packages/core/src/`)
+### Optics (transforms/)
 
-- **transforms/** — Optics framework (lenses, prisms, traversals, isomorphisms). Central type is `Optic<Focus, Whole, Error, Guard, Flags>`. Supports composable getters, setters, emitters, and reviewers. Includes sources (`iter`, `once`, `periodic`) and operations (`map`, `fold`, `scan`, `filter`, `take`)
-- **machines/** — Functional state machines. `Machine<EventIn, State, Result, EventOut>` with `init`, `reduce`, and optional `result`. Factories: `base`, `direct`, `modal`
-- **tags/** — Typed discriminated unions with `tag()` for construction, `tags()` for defining sets with `.of`, `.is`, `.get`, and pattern matching via `match`
-- **functions/** — Composition (`pipe`, `flow`), currying (`curry2`, `curry2_1`), combinators, and primitives (`id`, `noop`)
-- **objects/** — Collection utilities, shallow equality, merging, hashing
-- **guards.ts / assertions.ts** — Type guards and assertion functions
-- **brands.ts** — Branded type utilities
-- **types.ts** — Utility types (`Prettify`, `Equals`, `UnionToIntersection`, etc.)
+The core abstraction is `Optic<T, S, E, G, F>` — a composable lens-like structure with:
 
-## Workflow
+- **T** (target/inner type), **S** (source/outer type), **E** (error), **G** (nothing/fallback), **F** (capability flags)
+- Methods: `getter`, `reviewer`, `modifier`, `setter`, `remover`, `emit` — each optional depending on optic kind
+- `compose(o1)(o2)` composes two optics, intersecting capability flags
 
-1. Read existing code to match style
-2. Apply changes
-3. Run `pnpm fix:prettier` and `pnpm fix:eslint` on modified files
-4. Run relevant tests with `pnpm vitest run ...`
+Optic hierarchy (bidirectional, in `ops/bidir/`):
+
+- **Iso** — lossless bidirectional (get + review)
+- **Lens** — focus on a part (prop, index, nth)
+- **Prism** — conditional focus
+- **Optional** — maybe-focus (at, prop, stack, queue)
+- **Traversal** — multiple focuses (elems, chars)
+- **Meta** — combinators (join, valueOr)
+
+Unidirectional operations (`ops/unidir/`): map, fold, scan, take — these drop write capabilities.
+
+Sources (`sources/`): sync (iter, once, none, loop, unfold, until) and async (periodic) — entry points that produce optics from data.
+
+Extractors (`extractors/`): `view`, `preview`, `collect`, `review`, `update` — consume optics to get/set values.
+
+CPS style: getters and setters use continuation-passing style (`next` callbacks) rather than direct returns. This enables composition without intermediate allocations.
+
+### Tags (tags/)
+
+Discriminated unions with `tag(name, payload)`, factory creation via `tags<Union>()('a', 'b')`, pattern matching via `match()`, and built-in `result` (success/failure).
+
+### Machines (machines/)
+
+State machines following `Machine<EventIn, State, Result, EventOut>` with `init` + `reduce` + optional `result`. Factories: `baseMachine`, `directMachine`, `modalMachine`, `steps`.
+
+### Functions (functions/)
+
+- `pipe(value, f1, f2, ...)` — left-to-right application (value-first, like Ramda)
+- `flow(f1, f2, ...)` — left-to-right composition (returns function, like fp-ts)
+- `curry` — auto-currying with type safety
+- `Init<T>` — lazy initializer pattern (function or value), resolved with `fromInit`
+
+## Conventions
+
+- Tests are colocated: `foo.ts` has `foo.test.ts` in the same directory
+- ESLint flat config with zero max-warnings; perfectionist plugin enforces natural sorting of imports/object keys
+- Conventional commits enforced via commitlint + husky
+- `tsdown` for building, `tsc --noEmit` for type checking
+- Vitest globals are enabled (no need to import `describe`/`it`/`expect`)
