@@ -38,10 +38,28 @@ export function composeGetterEmit_<T, S, U, E1, E2>(
 	getter2: Getter<T, S, E2>,
 ): Emit<U, S, E1 | E2> {
 	const res: Emit<U, S, E1 | E2> = (s, n, e, c) => {
-		// TODO: make it work with async getters
-		let sub!: ReturnType<Emit<U, S, E1 | E2>>
-		getter2(s, (t) => (sub = emit1(t, n, e, c)), e)
-		return sub
+		let sub: ReturnType<Emit<U, S, E1 | E2>> | undefined
+		let aborted = false
+		let started = false
+		getter2(
+			s,
+			(t) => {
+				if (aborted) return
+				sub = emit1(t, n, e, c)
+				if (started) sub.start()
+			},
+			e,
+		)
+		return {
+			abort() {
+				if (sub) sub.abort()
+				else aborted = true
+			},
+			start() {
+				if (sub) sub.start()
+				else started = true
+			},
+		}
 	}
 	return res
 }
