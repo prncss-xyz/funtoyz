@@ -1,6 +1,5 @@
 import { nothing, Nothing } from '../../../tags/results'
 import { Optic } from '../../compose'
-import { source } from '../../compose/_composeEmit'
 import { Emit } from '../../compose/_methods'
 
 export function sourceAsync<T, S, E>(
@@ -13,7 +12,7 @@ export function sourceAsync<T, S, E>(
 	{ CONSTRUCT: false; SYNC: false; UNIQUE: false; WRITE: false }
 > {
 	return {
-		emitter: source(emit),
+		emit,
 		flags: { CONSTRUCT: false, SYNC: false, UNIQUE: false, WRITE: false },
 		nothing,
 	}

@@ -5,7 +5,7 @@ import { periodic } from './periodic'
 
 describe('periodic', () => {
 	test('basic', async () => {
-		const res = await collect(flow(periodic(), take(3)))(1)
+		const res = await collect(flow(periodic(1), take(3)))()
 		expect(res.length).toEqual(3)
 	})
 })

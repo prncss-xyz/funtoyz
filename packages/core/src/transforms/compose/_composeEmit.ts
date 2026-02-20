@@ -1,6 +1,6 @@
-import { Emit, Emitter } from './_methods'
+import { Emit, Getter } from './_methods'
 
-function composeEmit<T, S, U, E1, E2>(
+export function composeEmitEmit_<T, S, U, E1, E2>(
 	emit1: Emit<T, S, E1>,
 	emit2: Emit<U, T, E2>,
 ): Emit<U, S, E1 | E2> {
@@ -33,6 +33,15 @@ function composeEmit<T, S, U, E1, E2>(
 	}
 }
 
-export function source<T, S, E>(emit: Emit<T, S, E>): Emitter<T, S, E> {
-	return (emit_) => composeEmit(emit_, emit)
+export function composeGetterEmit_<T, S, U, E1, E2>(
+	emit1: Emit<U, T, E1>,
+	getter2: Getter<T, S, E2>,
+): Emit<U, S, E1 | E2> {
+	const res: Emit<U, S, E1 | E2> = (s, n, e, c) => {
+		// TODO: make it work with async getters
+		let sub!: ReturnType<Emit<U, S, E1 | E2>>
+		getter2(s, (t) => (sub = emit1(t, n, e, c)), e)
+		return sub
+	}
+	return res
 }

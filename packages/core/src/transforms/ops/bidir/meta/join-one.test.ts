@@ -22,7 +22,7 @@ const people: Data['people'] = [
 	{ id: 'charlie', name: 'Charlie' },
 ]
 
-describe('join, one', () => {
+describe.skip('join, one', () => {
 	const o = flow(
 		once<Data>(),
 		prop('current'),

@@ -21,14 +21,14 @@ describe('fold', () => {
 	})
 	test('view, async', async () => {
 		const focus = flow(
-			periodic(),
+			periodic(1),
 			take(3),
 			fold({
 				init: 0,
 				reduce: (e, acc) => e + acc,
 			}),
 		)
-		const res = await view(focus)(1)
+		const res = await view(focus)()
 		expectTypeOf(res).toEqualTypeOf<number>()
 	})
 })

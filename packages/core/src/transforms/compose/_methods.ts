@@ -1,7 +1,7 @@
 import { Optic } from '.'
 import { forbidden } from '../../assertions'
 import { fromInit, Init } from '../../functions/arguments/init'
-import { noop } from '../../functions/basics'
+import { id, noop } from '../../functions/basics'
 import { Flags } from './_flags'
 
 export function trush<V>(v: V, cb: (v: V) => void) {
@@ -36,34 +36,16 @@ export type Emit<T, S, E> = (
 	start: () => void
 }
 
-export type Emitter<U, T, E> = <S, E1>(e1: Emit<T, S, E1>) => Emit<U, S, E | E1>
-
-function emitOne<S>(
-	s: S,
-	next: (s: S) => void,
-	_error: (e: never) => void,
-	complete: () => void,
-) {
-	return {
-		abort: noop,
-		start: () => {
-			next(s)
-			complete()
-		},
-	}
-}
-
 export function first<T, S, E extends G, G>(o: {
-	emitter?: Emitter<T, S, E>
+	emit?: Emit<T, S, E>
 	getter?: Getter<T, S, G>
 	nothing?: () => G
 }): Getter<T, S, G> {
 	if (o.getter) return o.getter
-	if (o.emitter)
+	if (o.emit)
 		return (s, next, error) => {
 			let done = false
-			const emit = o.emitter!(emitOne<S>)
-			const { abort, start } = emit(
+			const { abort, start } = o.emit!(
 				s,
 				(t) => {
 					if (!done) {
@@ -89,7 +71,7 @@ export function first<T, S, E extends G, G>(o: {
 			)
 			start()
 		}
-	forbidden()
+	forbidden('first needs an emit or a getter')
 }
 
 export function getModifier<T, S, E, G, F extends Flags>(
@@ -115,19 +97,23 @@ export function getModifier<T, S, E, G, F extends Flags>(
 	return undefined
 }
 
-export function reduce<T, S, U, E, R>(
+export function reduce<T, S, U, E, G, R>(
 	reducer: Reducer<T, U, R>,
-	o: { emitter?: Emitter<T, S, E> },
+	o: {
+		emit?: Emit<T, S, E>
+		getter?: Getter<T, S, G>
+	},
 ): Getter<R, S, never> {
-	if (o.emitter)
+	const result = reducer.result ?? (id as never)
+	const reduce = reducer.reduceDest ?? ((reducer as any).reduce as never)
+
+	if (o.emit)
 		return (s, next) => {
 			let done = false
 			let acc = fromInit(reducer.init)
-			const reduce = reducer.reduceDest ?? ((reducer as any).reduce as never)
 			let res: ReturnType<Emit<T, S, E>> | undefined
-			const emit = o.emitter!(emitOne<S>)
 			const abort = () => res?.abort()
-			res = emit(
+			res = o.emit!(
 				s,
 				(t) => {
 					if (!done) {
@@ -139,13 +125,22 @@ export function reduce<T, S, U, E, R>(
 					if (!done) {
 						done = true
 						abort()
-						next(reducer.result ? reducer.result(acc) : (acc as never))
+						next(result(acc))
 					}
 				},
 			)
 			res.start()
 		}
-	return forbidden()
+	if (o.getter)
+		return (s, next) => {
+			let acc = fromInit(reducer.init)
+			o.getter!(
+				s,
+				(t) => next(result(reduce(t, acc))),
+				() => next(result(acc)),
+			)
+		}
+	return forbidden('reduce needs an emit or a getter')
 }
 
 export interface ReducerNonDest<Event, State, Result = State> {
