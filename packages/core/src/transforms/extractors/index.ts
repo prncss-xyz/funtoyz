@@ -35,24 +35,24 @@ function extract2<R, P, Q>(
 	return (p: P) => (q: Q) => extract_(sync, action, p, q)
 }
 
-export function view<T, S, F extends { SYNC: false }>(
-	o: Optic<T, S, never, never, F>,
-): (s: S) => Promise<T>
 export function view<T, S, F extends Flags>(
 	o: Optic<T, S, never, never, HasFlag<'SYNC', F>>,
 ): (s: S) => T
+export function view<T, S, F extends Flags>(
+	o: Optic<T, S, never, never, F>,
+): (s: S) => Promise<T>
 export function view<T, S, F extends Flags>(o: Optic<T, S, never, never, F>) {
 	return extract1<T, S>(o.flags.SYNC, (next, s) =>
 		first(o)(s, next, exhaustive),
 	)
 }
 
-export function preview<T, S, E extends G, G, F extends { SYNC: false }>(
-	o: Optic<T, S, E, G, F>,
-): (s: S) => Promise<Result<T, G>>
 export function preview<T, S, E extends G, G, F extends Flags>(
 	o: Optic<T, S, E, G, HasFlag<'SYNC', F>>,
 ): (s: S) => Result<T, G>
+export function preview<T, S, E extends G, G, F extends Flags>(
+	o: Optic<T, S, E, G, F>,
+): (s: S) => Promise<Result<T, G>>
 export function preview<T, S, E extends G, G, F extends Flags>(
 	o: Optic<T, S, E, G, F>,
 ) {
@@ -61,24 +61,24 @@ export function preview<T, S, E extends G, G, F extends Flags>(
 	)
 }
 
-export function collect<T, S, F extends { SYNC: false }>(
-	o: Optic<T, S, any, any, F>,
-): (s: S) => Promise<T[]>
 export function collect<T, S, F extends Flags>(
 	o: Optic<T, S, any, any, HasFlag<'SYNC', F>>,
 ): (s: S) => T[]
+export function collect<T, S, F extends Flags>(
+	o: Optic<T, S, any, any, F>,
+): (s: S) => Promise<T[]>
 export function collect<T, S, F extends Flags>(o: Optic<T, S, any, any, F>) {
 	return extract1<T[], S>(o.flags.SYNC, (next, s) =>
 		reduce(toArray<T>(), o)(s, next, exhaustive),
 	)
 }
 
-export function review<T, S, G, E, F extends { SYNC: false }>(
-	o: Optic<T, S, G, E, HasFlag<'CONSTRUCT' | 'WRITE', F>>,
-): (t: T) => Promise<S>
 export function review<T, S, G, E, F extends Flags>(
 	o: Optic<T, S, G, E, HasFlag<'CONSTRUCT' | 'SYNC' | 'WRITE', F>>,
 ): (t: T) => S
+export function review<T, S, G, E, F extends Flags>(
+	o: Optic<T, S, G, E, HasFlag<'CONSTRUCT' | 'WRITE', F>>,
+): (t: T) => Promise<S>
 export function review<T, S, G, E, F extends Flags>(
 	o: Optic<T, S, G, E, HasFlag<'CONSTRUCT' | 'WRITE', F>>,
 ) {
@@ -88,18 +88,18 @@ export function review<T, S, G, E, F extends Flags>(
 export const REMOVE = Symbol('REMOVE')
 type Update<T> = Modify<T> | T | typeof REMOVE
 
-export function update<T, S, G, E, F extends { SYNC: false }>(
-	o: Optic<T, S, G, E, HasFlag<'READ' | 'WRITE', F>>,
-): (t: Update<T>) => (s: S) => Promise<S>
 export function update<T, S, G, E, F extends Flags>(
 	o: Optic<T, S, G, E, HasFlag<'READ' | 'SYNC' | 'WRITE', F>>,
 ): (t: Update<T>) => (s: S) => S
-export function update<T, S, G, E, F extends { SYNC: false }>(
-	o: Optic<T, S, G, E, HasFlag<'WRITE', F>>,
-): (t: T) => (s: S) => Promise<S>
+export function update<T, S, G, E, F extends Flags>(
+	o: Optic<T, S, G, E, HasFlag<'READ' | 'WRITE', F>>,
+): (t: Update<T>) => (s: S) => Promise<S>
 export function update<T, S, G, E, F extends Flags>(
 	o: Optic<T, S, G, E, HasFlag<'SYNC' | 'WRITE', F>>,
 ): (t: T) => (s: S) => S
+export function update<T, S, G, E, F extends Flags>(
+	o: Optic<T, S, G, E, HasFlag<'WRITE', F>>,
+): (t: T) => (s: S) => Promise<S>
 export function update<T, S, G, E, F extends Flags>(
 	o: Optic<T, S, G, E, HasFlag<'READ', F>>,
 ) {
