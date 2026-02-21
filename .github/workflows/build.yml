@@ -37,6 +37,19 @@ jobs:
         run: pnpm run verify
       - name: Knip
         run: pnpm run knip
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+  codecov:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - uses: codecov/codecov-action@v5
+        with:
+          use_oidc: true
+          fail_ci_if_error: true
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
