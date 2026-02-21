@@ -42,13 +42,6 @@ type LastOf<T> =
 		? R
 		: never
 
-// TODO: maybe remove
-export type FromResulter<T> = T extends (u: any) => u is infer R
-	? R
-	: T extends (u: any) => infer R
-		? R
-		: never
-
 export type OptionalUndefined<T> = Prettify<
 	{
 		[K in keyof T as undefined extends T[K] ? K : never]?: T[K]
