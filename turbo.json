@@ -6,15 +6,14 @@
 			"env": ["BASE_PATH"],
 			"dependsOn": ["^build"]
 		},
-		"check:tests": {
-			"dependsOn": ["build"],
+		"//#check:tests": {
 			"outputs": ["coverage/**"]
 		},
 		"check:types": {
 			"dependsOn": ["build"]
 		},
 		"check": {
-			"dependsOn": ["check:types", "check:tests"]
+			"dependsOn": ["check:types", "//#check:tests"]
 		},
 		"//#lint:style": {},
 		"//#lint:eslint": {},
