@@ -22,6 +22,7 @@ export type ValueIntersection<T> = Prettify<
 >
 
 export type AnyFunction = (...args: any[]) => any
+export type NonEmptyArray<T> = [T, ...T[]]
 export type NonFunction<T> = T extends AnyFunction ? never : T
 
 export type UnionToIntersection<U> = (

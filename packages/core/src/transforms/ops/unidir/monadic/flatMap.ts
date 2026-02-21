@@ -1,12 +1,13 @@
+import { isoAssert } from '../../../../assertions'
 import { Optic } from '../../../compose'
 import { flatEmitter_ } from '../../../compose/_composeEmitter'
 import { Flags } from '../../../compose/_flags'
 import { HasSameSync } from './_hasSameSync'
 
-export function flatMap<A, T, E1, G1, F1 extends Flags>(
+export function flatMap<A, T, E1, G1, F1 extends Flags & { UNIQUE: false }>(
 	f: (a: A) => Optic<T, any, E1, G1, F1>,
 ) {
-	return function <S, E2, G2, F2 extends Flags>(
+	return function <S, E2, G2, F2 extends Flags & { UNIQUE: false }>(
 		o: Optic<A, S, E2, G2, HasSameSync<F2, F1>>,
 	): Optic<
 		T,
@@ -19,10 +20,11 @@ export function flatMap<A, T, E1, G1, F1 extends Flags>(
 			WRITE: false
 		}
 	> {
+		isoAssert(o.emitter !== undefined)
 		return {
-			emitter: o.emitter
-				? flatEmitter_(o.emitter, (a, s, n, e, c) => f(a).emitter!(s, n, e, c))
-				: undefined,
+			emitter: flatEmitter_(o.emitter, (a, s, n, e, c) =>
+				f(a).emitter!(s, n, e, c),
+			),
 			flags: {
 				CONSTRUCT: false,
 				SYNC: o.flags.SYNC,

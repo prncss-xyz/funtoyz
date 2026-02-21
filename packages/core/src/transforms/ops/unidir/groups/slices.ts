@@ -1,31 +1,30 @@
+import { NonEmptyArray } from '../../../../types'
 import { Optic } from '../../../compose'
 import { Flags } from '../../../compose/_flags'
 
-export function dropWhile<T>(cond: (value: T) => unknown) {
+export function slices<T>(n: number) {
 	return function <S, E, G, F extends Flags>(
 		o: Optic<T, S, E, G, F>,
-	): Optic<T, S, E, G, Flags> {
+	): Optic<NonEmptyArray<T>, S, E, G, F> {
 		return {
 			...o,
 			emitter: o.emitter
 				? (source, next, e, c) => {
-						let closed: unknown = true
+						let acc: T[] = []
 						return o.emitter!(
 							source,
-							(s) => {
-								if (!closed) next(s)
-								closed = closed && cond(s)
+							(value) => {
+								acc.push(value)
+								if (acc.length === n) {
+									next(acc as NonEmptyArray<T>)
+									acc = []
+								}
 							},
 							e,
 							c,
 						)
 					}
 				: undefined,
-			flags: {
-				CONSTRUCT: false,
-				SYNC: o.flags.SYNC,
-				WRITE: o.flags.WRITE,
-			},
-		}
+		} as Optic<NonEmptyArray<T>, S, E, G, F>
 	}
 }

@@ -40,7 +40,5 @@ export function tuple<const Args extends unknown[]>(...args: Args) {
 }
 
 export function eqWith<A, B>(m: (a: A) => B) {
-	return function (a: A, b: A) {
-		return Object.is(m(a), m(b))
-	}
+	return curry2((a: A, b: A) => Object.is(m(a), m(b)))
 }

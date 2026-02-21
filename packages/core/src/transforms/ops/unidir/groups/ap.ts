@@ -1,31 +1,26 @@
 import { Optic } from '../../../compose'
 import { Flags } from '../../../compose/_flags'
 
-export function dropWhile<T>(cond: (value: T) => unknown) {
+export function ap<T, Bs extends any[]>(
+	...fns: { [K in keyof Bs]: (value: T) => Bs[K] }
+) {
 	return function <S, E, G, F extends Flags>(
 		o: Optic<T, S, E, G, F>,
-	): Optic<T, S, E, G, Flags> {
+	): Optic<Bs[number], S, E, G, F> {
 		return {
 			...o,
 			emitter: o.emitter
 				? (source, next, e, c) => {
-						let closed: unknown = true
 						return o.emitter!(
 							source,
-							(s) => {
-								if (!closed) next(s)
-								closed = closed && cond(s)
+							(value) => {
+								fns.forEach((fn) => next(fn(value)))
 							},
 							e,
 							c,
 						)
 					}
 				: undefined,
-			flags: {
-				CONSTRUCT: false,
-				SYNC: o.flags.SYNC,
-				WRITE: o.flags.WRITE,
-			},
-		}
+		} as Optic<Bs[number], S, E, G, F>
 	}
 }
