@@ -1,53 +1,32 @@
 {
-  "$schema": "https://turborepo.com/schema.json",
-  "tasks": {
-    "build": {
-      "outputs": [
-        "dist/**"
-      ],
-      "env": [
-        "BASE_PATH"
-      ],
-      "dependsOn": [
-        "^build"
-      ]
-    },
-    "check:tests": {
-      "dependsOn": [
-        "build"
-      ],
-      "outputs": [
-        "coverage/**"
-      ]
-    },
-    "check:types": {
-      "dependsOn": [
-        "build"
-      ]
-    },
-    "check": {
-      "dependsOn": [
-        "check:types",
-        "check:tests"
-      ]
-    },
-    "//#lint:style": {},
-    "//#lint:eslint": {},
-    "lint": {
-      "dependsOn": [
-        "//#lint:style",
-        "//#lint:eslint"
-      ]
-    },
-    "verify": {
-      "dependsOn": [
-        "lint",
-        "check"
-      ]
-    },
-    "dev": {
-      "persistent": true,
-      "cache": false
-    }
-  }
+	"$schema": "https://turborepo.com/schema.json",
+	"tasks": {
+		"build": {
+			"outputs": ["dist/**"],
+			"env": ["BASE_PATH"],
+			"dependsOn": ["^build"]
+		},
+		"check:tests": {
+			"dependsOn": ["build"],
+			"outputs": ["coverage/**"]
+		},
+		"check:types": {
+			"dependsOn": ["build"]
+		},
+		"check": {
+			"dependsOn": ["check:types", "check:tests"]
+		},
+		"//#lint:style": {},
+		"//#lint:eslint": {},
+		"lint": {
+			"dependsOn": ["//#lint:style", "//#lint:eslint"]
+		},
+		"verify": {
+			"dependsOn": ["lint", "check"]
+		},
+		"dev": {
+			"persistent": true,
+			"cache": false
+		}
+	}
 }
