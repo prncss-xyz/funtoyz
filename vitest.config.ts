@@ -6,7 +6,7 @@ export default defineConfig({
 			exclude: ['**.test.*'],
 			include: ['src/**/*.{js,ts,jsx,tsx}'],
 			provider: 'v8',
-			reporter: ['text', 'json'],
+			reporter: ['text', 'clover', 'json'],
 			thresholds: {
 				// branches: 100,
 				// functions: 100,
