@@ -38,12 +38,18 @@ function extract2<R, P, Q>(
 export function view<T, S, F extends Flags>(
 	o: Optic<T, S, never, never, HasFlag<'SYNC', F>>,
 ): (s: S) => T
+export function view<T, S, E, G, F extends Flags>(
+	o: Optic<T, S, E, G, HasFlag<'SYNC', F>>,
+): (s: S) => T | undefined
 export function view<T, S, F extends Flags>(
 	o: Optic<T, S, never, never, F>,
 ): (s: S) => Promise<T>
-export function view<T, S, F extends Flags>(o: Optic<T, S, never, never, F>) {
+export function view<T, S, E, G, F extends Flags>(
+	o: Optic<T, S, E, G, F>,
+): (s: S) => Promise<T | undefined>
+export function view<T, S, E, G, F extends Flags>(o: Optic<T, S, E, G, F>) {
 	return extract1<T, S>(o.flags.SYNC, (next, s) =>
-		first(o)(s, next, exhaustive),
+		first(o)(s, next, () => undefined),
 	)
 }
 

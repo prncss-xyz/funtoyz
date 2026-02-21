@@ -48,9 +48,6 @@ describe('prop', () => {
 	const focusC = flow(once<Source>(), prop('c'))
 
 	it('view, preview', () => {
-		// @ts-expect-error focusB is optional
-		view(focusB)
-
 		expect(view(focusA)(sourceDefined)).toBe('A')
 		expect(view(focusA)(sourceUndefined)).toBe('A')
 		expect(preview(focusB)(sourceDefined)).toEqual(result.success.of('B'))
