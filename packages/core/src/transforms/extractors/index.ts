@@ -89,13 +89,19 @@ export const REMOVE = Symbol('REMOVE')
 type Update<T> = Modify<T> | T | typeof REMOVE
 
 export function update<T, S, G, E, F extends { SYNC: false }>(
-	o: Optic<T, S, G, E, HasFlag<'WRITE', F>>,
+	o: Optic<T, S, G, E, HasFlag<'READ' | 'WRITE', F>>,
 ): (t: Update<T>) => (s: S) => Promise<S>
 export function update<T, S, G, E, F extends Flags>(
-	o: Optic<T, S, G, E, HasFlag<'SYNC' | 'WRITE', F>>,
+	o: Optic<T, S, G, E, HasFlag<'READ' | 'SYNC' | 'WRITE', F>>,
 ): (t: Update<T>) => (s: S) => S
-export function update<T, S, G, E, F extends Flags>(
+export function update<T, S, G, E, F extends { SYNC: false }>(
 	o: Optic<T, S, G, E, HasFlag<'WRITE', F>>,
+): (t: T) => (s: S) => Promise<S>
+export function update<T, S, G, E, F extends Flags>(
+	o: Optic<T, S, G, E, HasFlag<'SYNC' | 'WRITE', F>>,
+): (t: T) => (s: S) => S
+export function update<T, S, G, E, F extends Flags>(
+	o: Optic<T, S, G, E, HasFlag<'READ', F>>,
 ) {
 	return extract2<S, Update<T>, S>(o.flags.SYNC, (next, t, s) => {
 		if (isFunction(t)) return getModifier(o)!((v, n) => n(t(v)), next, s)
