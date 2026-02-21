@@ -1,7 +1,7 @@
-import { flow } from '../../../functions/flow'
-import { collect } from '../../extractors'
-import { once } from '../../sources/sync/once'
-import { elems } from '../bidir/traversal/elems'
+import { flow } from '../../../../functions/flow'
+import { collect } from '../../../extractors'
+import { once } from '../../../sources/sync/once'
+import { elems } from '../../bidir/traversal/elems'
 import { take } from './take'
 
 describe('take', () => {

@@ -1,6 +1,6 @@
-import { Optic } from '../../compose'
-import { flatEmitter_ } from '../../compose/_composeEmitter'
-import { Flags } from '../../compose/_flags'
+import { Optic } from '../../../compose'
+import { flatEmitter_ } from '../../../compose/_composeEmitter'
+import { Flags } from '../../../compose/_flags'
 import { HasSameSync } from './_hasSameSync'
 
 export function flatMap<A, T, E1, G1, F1 extends Flags>(

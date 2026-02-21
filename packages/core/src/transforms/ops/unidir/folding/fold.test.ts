@@ -1,9 +1,9 @@
-import { flow } from '../../../functions/flow'
-import { view } from '../../extractors'
-import { periodic } from '../../sources/async/periodic'
-import { iter } from '../../sources/sync/iter'
-import { fold } from './fold'
-import { take } from './take'
+import { flow } from '../../../../functions/flow'
+import { view } from '../../../extractors'
+import { periodic } from '../../../sources/async/periodic'
+import { iter } from '../../../sources/sync/iter'
+import { fold } from '../folding/fold'
+import { take } from '../take-like/take'
 
 describe('fold', () => {
 	test('view, sync', async () => {

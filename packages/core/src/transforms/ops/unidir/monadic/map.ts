@@ -1,4 +1,4 @@
-import { compose } from '../../compose'
+import { compose } from '../../../compose'
 
 export function map<A, B>(mapper: (w: A) => B) {
 	return compose<A, B, never, never, { CONSTRUCT: false; WRITE: false }>({

@@ -1,9 +1,9 @@
-import { flow } from '../../../functions/flow'
-import { collect } from '../../extractors'
-import { periodic } from '../../sources/async/periodic'
-import { range } from '../../sources/sync/loop'
+import { flow } from '../../../../functions/flow'
+import { collect } from '../../../extractors'
+import { periodic } from '../../../sources/async/periodic'
+import { range } from '../../../sources/sync/loop'
+import { take } from '../take-like/take'
 import { flatMap } from './flatMap'
-import { take } from './take'
 
 describe('flatMap', () => {
 	test('range', () => {

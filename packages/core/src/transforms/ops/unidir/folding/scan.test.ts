@@ -1,9 +1,9 @@
-import { flow } from '../../../functions/flow'
-import { collect, view } from '../../extractors'
-import { periodic } from '../../sources/async/periodic'
-import { iter } from '../../sources/sync/iter'
+import { flow } from '../../../../functions/flow'
+import { collect, view } from '../../../extractors'
+import { periodic } from '../../../sources/async/periodic'
+import { iter } from '../../../sources/sync/iter'
+import { take } from '../take-like/take'
 import { scan } from './scan'
-import { take } from './take'
 
 describe('scan', () => {
 	const focus = flow(

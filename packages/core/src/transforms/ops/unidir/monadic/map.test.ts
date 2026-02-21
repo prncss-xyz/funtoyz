@@ -1,7 +1,7 @@
-import { flow } from '../../../functions/flow'
-import { collect, update, view } from '../../extractors'
-import { iter } from '../../sources/sync/iter'
-import { once } from '../../sources/sync/once'
+import { flow } from '../../../../functions/flow'
+import { collect, update, view } from '../../../extractors'
+import { iter } from '../../../sources/sync/iter'
+import { once } from '../../../sources/sync/once'
 import { map } from './map'
 
 describe('map, single', () => {

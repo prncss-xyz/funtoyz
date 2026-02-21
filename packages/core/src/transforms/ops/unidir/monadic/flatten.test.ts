@@ -1,10 +1,10 @@
-import { flow } from '../../../functions/flow'
-import { collect } from '../../extractors'
-import { periodic } from '../../sources/async/periodic'
-import { range } from '../../sources/sync/loop'
+import { flow } from '../../../../functions/flow'
+import { collect } from '../../../extractors'
+import { periodic } from '../../../sources/async/periodic'
+import { range } from '../../../sources/sync/loop'
+import { take } from '../take-like/take'
 import { flatten } from './flatten'
 import { map } from './map'
-import { take } from './take'
 
 describe('flatten', () => {
 	test('range', () => {

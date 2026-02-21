@@ -1,7 +1,7 @@
 import { add, lt } from '../../../functions/elementary'
 import { flow } from '../../../functions/flow'
 import { collect } from '../../extractors'
-import { take } from '../../ops/unidir/take'
+import { take } from '../../ops/unidir/take-like/take'
 import { loop, range, times } from './loop'
 
 describe('loop', () => {

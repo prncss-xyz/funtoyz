@@ -1,6 +1,6 @@
 import { flow } from '../../../functions/flow'
 import { collect } from '../../extractors'
-import { take } from '../../ops/unidir/take'
+import { take } from '../../ops/unidir/take-like/take'
 import { periodic } from './periodic'
 
 describe('periodic', () => {

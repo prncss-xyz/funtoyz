@@ -1,7 +1,7 @@
-import { Nothing } from '../../../tags/results'
-import { Optic } from '../../compose'
-import { Flags } from '../../compose/_flags'
-import { none } from '../../sources/sync/none'
+import { Nothing } from '../../../../tags/results'
+import { Optic } from '../../../compose'
+import { Flags } from '../../../compose/_flags'
+import { none } from '../../../sources/sync/none'
 
 export function take(n: number) {
 	return function <T, S, E, G, F extends Flags>(

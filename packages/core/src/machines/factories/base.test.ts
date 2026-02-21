@@ -1,7 +1,7 @@
 import { flow } from '../../functions/flow'
 import { collect } from '../../transforms/extractors'
 import { elems } from '../../transforms/ops/bidir/traversal/elems'
-import { scan } from '../../transforms/ops/unidir/scan'
+import { scan } from '../../transforms/ops/unidir/folding/scan'
 import { once } from '../../transforms/sources/sync/once'
 import { machineToReducer } from '../core'
 import { baseMachine } from './base'
