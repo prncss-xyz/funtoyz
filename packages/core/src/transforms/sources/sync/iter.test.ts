@@ -3,7 +3,7 @@ import { iter } from './iter'
 
 describe('iter', () => {
 	test('basic', () => {
-		const res = collect(iter())([0, 1, 2])
+		const res = collect(iter<number>())([0, 1, 2])
 		expect(res).toEqual([0, 1, 2])
 	})
 })
