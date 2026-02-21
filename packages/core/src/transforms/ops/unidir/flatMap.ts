@@ -1,5 +1,5 @@
 import { Optic } from '../../compose'
-import { flatEmit_ } from '../../compose/_composeEmit'
+import { flatEmitter_ } from '../../compose/_composeEmitter'
 import { Flags } from '../../compose/_flags'
 import { HasSameSync } from './_hasSameSync'
 
@@ -20,8 +20,8 @@ export function flatMap<A, T, E1, G1, F1 extends Flags>(
 		}
 	> {
 		return {
-			emit: o.emit
-				? flatEmit_(o.emit, (a, s, n, e, c) => f(a).emit!(s, n, e, c))
+			emitter: o.emitter
+				? flatEmitter_(o.emitter, (a, s, n, e, c) => f(a).emitter!(s, n, e, c))
 				: undefined,
 			flags: {
 				CONSTRUCT: false,

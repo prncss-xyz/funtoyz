@@ -2,7 +2,7 @@ import { traversal } from '.'
 
 export function elems<Value>() {
 	return traversal<Value, Value[]>({
-		emit: (acc, next, _error, complete) => {
+		emitter: (acc, next, _error, complete) => {
 			let done = false
 			return {
 				abort: () => {

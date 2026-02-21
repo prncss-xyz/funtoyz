@@ -21,12 +21,12 @@ export function scan<Event, State, Result = State>(
 		}
 	> {
 		return {
-			emit: o.emit
+			emitter: o.emitter
 				? (source, next, _e, c) => {
 						const reduce = props.reduce
 						const result = props.result ?? (id as never)
 						let acc = fromInit(props.init)
-						const { abort, start } = o.emit!(
+						const { abort, start } = o.emitter!(
 							source,
 							(s) => {
 								acc = reduce(s, acc)

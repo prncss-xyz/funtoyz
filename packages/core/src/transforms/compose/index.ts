@@ -1,9 +1,12 @@
 import { Init } from '../../functions/arguments/init'
 import { Empty } from '../../objects/types'
-import { composeEmitEmit_, composeGetterEmit_ } from './_composeEmit'
+import {
+	composeEmitterEmitter_,
+	composeGetterEmitter_,
+} from './_composeEmitter'
 import { Flags } from './_flags'
 import {
-	Emit,
+	Emitter,
 	getModifier,
 	Getter,
 	Modifier,
@@ -37,18 +40,18 @@ function composeGetter<T, U, S, E1, G1, E2, G2>(
 		o2.getter!(s, (t) => o1.getter!(t, next, error), error)
 }
 
-function composeEmit<T, U, S, E1, E2, G2, F2 extends Flags>(
+function composeEmitter<T, U, S, E1, E2, G2, F2 extends Flags>(
 	o1: Optic<U, T, E1, any, any>,
 	o2: Optic<T, S, E2, G2, F2>,
-): Emit<U, S, E1 | E2 | G2> | undefined {
-	if (o1.emit) {
-		if (o2.emit) return composeEmitEmit_(o2.emit, o1.emit)
-		if (o2.getter) return composeGetterEmit_(o1.emit, o2.getter)
+): Emitter<U, S, E1 | E2 | G2> | undefined {
+	if (o1.emitter) {
+		if (o2.emitter) return composeEmitterEmitter_(o2.emitter, o1.emitter)
+		if (o2.getter) return composeGetterEmitter_(o1.emitter, o2.getter)
 	}
 	if (o1.getter)
-		if (o2.emit)
+		if (o2.emitter)
 			return (s, next, error, complete) =>
-				o2.emit!(s, (t) => o1.getter!(t, next, error), error, complete)
+				o2.emitter!(s, (t) => o1.getter!(t, next, error), error, complete)
 	return undefined
 }
 
@@ -131,7 +134,7 @@ export function compose<T, U, E1, G1, F1 extends Flags>(
 		o2: Optic<T, S, E2, G2, F2>,
 	): Optic<U, S, E1 | E2 | G2, G1 | G2, F1 & F2> => {
 		return {
-			emit: composeEmit(o1, o2),
+			emitter: composeEmitter(o1, o2),
 			flags: { ...o1.flags, ...o2.flags },
 			getter: composeGetter(o1, o2),
 			modifier: composeModifier(o1, o2),
@@ -144,7 +147,7 @@ export function compose<T, U, E1, G1, F1 extends Flags>(
 }
 
 export type Optic<T, S, E, G, F extends Flags> = {
-	emit?: Emit<T, S, E>
+	emitter?: Emitter<T, S, E>
 	flags: F
 	getter?: Getter<T, S, E | G>
 	modifier?: Modifier<T, S>

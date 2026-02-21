@@ -1,7 +1,7 @@
-import { Emit, Getter } from './_methods'
+import { Emitter, Getter } from './_methods'
 
-export function flatEmit_<V, S, U, E1, E2>(
-	outer: Emit<V, S, E1>,
+export function flatEmitter_<V, S, U, E1, E2>(
+	outer: Emitter<V, S, E1>,
 	inner: (
 		v: V,
 		s: S,
@@ -9,7 +9,7 @@ export function flatEmit_<V, S, U, E1, E2>(
 		e: (err: E1 | E2) => void,
 		c: () => void,
 	) => { abort: () => void; start: () => void },
-): Emit<U, S, E1 | E2> {
+): Emitter<U, S, E1 | E2> {
 	return (s, n, e, c) => {
 		let done = false
 		const aborts = new Set<() => void>()
@@ -39,26 +39,26 @@ export function flatEmit_<V, S, U, E1, E2>(
 	}
 }
 
-export function composeEmitEmit_<T, S, U, E1, E2>(
-	emit1: Emit<T, S, E1>,
-	emit2: Emit<U, T, E2>,
-): Emit<U, S, E1 | E2> {
-	return flatEmit_(emit1, (t, _s, n, e, c) => emit2(t, n, e, c))
+export function composeEmitterEmitter_<T, S, U, E1, E2>(
+	emitter1: Emitter<T, S, E1>,
+	emitter2: Emitter<U, T, E2>,
+): Emitter<U, S, E1 | E2> {
+	return flatEmitter_(emitter1, (t, _s, n, e, c) => emitter2(t, n, e, c))
 }
 
-export function composeGetterEmit_<T, S, U, E1, E2>(
-	emit1: Emit<U, T, E1>,
+export function composeGetterEmitter_<T, S, U, E1, E2>(
+	emitter1: Emitter<U, T, E1>,
 	getter2: Getter<T, S, E2>,
-): Emit<U, S, E1 | E2> {
-	const res: Emit<U, S, E1 | E2> = (s, n, e, c) => {
-		let sub: ReturnType<Emit<U, S, E1 | E2>> | undefined
+): Emitter<U, S, E1 | E2> {
+	const res: Emitter<U, S, E1 | E2> = (s, n, e, c) => {
+		let sub: ReturnType<Emitter<U, S, E1 | E2>> | undefined
 		let aborted = false
 		let started = false
 		getter2(
 			s,
 			(t) => {
 				if (aborted) return
-				sub = emit1(t, n, e, c)
+				sub = emitter1(t, n, e, c)
 				if (started) sub.start()
 			},
 			e,

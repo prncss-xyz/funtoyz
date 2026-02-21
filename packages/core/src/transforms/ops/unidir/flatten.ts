@@ -1,5 +1,5 @@
 import { Optic } from '../../compose'
-import { flatEmit_ } from '../../compose/_composeEmit'
+import { flatEmitter_ } from '../../compose/_composeEmitter'
 import { Flags } from '../../compose/_flags'
 import { HasSameSync } from './_hasSameSync'
 
@@ -18,8 +18,10 @@ export function flatten() {
 		}
 	> {
 		return {
-			emit: o.emit
-				? flatEmit_(o.emit, (inner, s, n, e, c) => inner.emit!(s, n, e, c))
+			emitter: o.emitter
+				? flatEmitter_(o.emitter, (inner, s, n, e, c) =>
+						inner.emitter!(s, n, e, c),
+					)
 				: undefined,
 			flags: {
 				CONSTRUCT: false,

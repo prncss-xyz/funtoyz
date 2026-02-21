@@ -26,7 +26,7 @@ export type Setter<T, S> = (t: T, next: (s: S) => void, s: S) => void
 
 export type Remover<S> = (s: S, next: (s: S) => void) => void
 
-export type Emit<T, S, E> = (
+export type Emitter<T, S, E> = (
 	s: S,
 	next: (t: T) => void,
 	error: (e: E) => void,
@@ -37,15 +37,15 @@ export type Emit<T, S, E> = (
 }
 
 export function first<T, S, E extends G, G>(o: {
-	emit?: Emit<T, S, E>
+	emitter?: Emitter<T, S, E>
 	getter?: Getter<T, S, G>
 	nothing?: () => G
 }): Getter<T, S, G> {
 	if (o.getter) return o.getter
-	if (o.emit)
+	if (o.emitter)
 		return (s, next, error) => {
 			let done = false
-			const { abort, start } = o.emit!(
+			const { abort, start } = o.emitter!(
 				s,
 				(t) => {
 					if (!done) {
@@ -71,7 +71,7 @@ export function first<T, S, E extends G, G>(o: {
 			)
 			start()
 		}
-	forbidden('first needs an emit or a getter')
+	forbidden('first needs an emitter or a getter')
 }
 
 export function getModifier<T, S, E, G, F extends Flags>(
@@ -100,20 +100,20 @@ export function getModifier<T, S, E, G, F extends Flags>(
 export function reduce<T, S, U, E, G, R>(
 	reducer: Reducer<T, U, R>,
 	o: {
-		emit?: Emit<T, S, E>
+		emitter?: Emitter<T, S, E>
 		getter?: Getter<T, S, G>
 	},
 ): Getter<R, S, never> {
 	const result = reducer.result ?? (id as never)
 	const reduce = reducer.reduceDest ?? ((reducer as any).reduce as never)
 
-	if (o.emit)
+	if (o.emitter)
 		return (s, next) => {
 			let done = false
 			let acc = fromInit(reducer.init)
-			let res: ReturnType<Emit<T, S, E>> | undefined
+			let res: ReturnType<Emitter<T, S, E>> | undefined
 			const abort = () => res?.abort()
-			res = o.emit!(
+			res = o.emitter!(
 				s,
 				(t) => {
 					if (!done) {
@@ -140,7 +140,7 @@ export function reduce<T, S, U, E, G, R>(
 				() => next(result(acc)),
 			)
 		}
-	return forbidden('reduce needs an emit or a getter')
+	return forbidden('reduce needs an emitter or a getter')
 }
 
 export interface ReducerNonDest<Event, State, Result = State> {

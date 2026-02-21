@@ -10,10 +10,10 @@ export function take(n: number) {
 		if (n === 0) return none() as never
 		return {
 			...o,
-			emit: o.emit
+			emitter: o.emitter
 				? (source, next, e, c) => {
 						let i = 0
-						return o.emit!(
+						return o.emitter!(
 							source,
 							(s) => {
 								next(s)
