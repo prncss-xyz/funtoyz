@@ -32,10 +32,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Sherif
-        run: pnpm run sherif
-      - name: Verify
         run: pnpm run verify
       - name: Knip
+        run: pnpm run sherif
+      - name: Verify
         run: pnpm run knip
       - name: Upload to Codecov
         if: github.ref == 'refs/heads/main'
@@ -43,8 +43,6 @@ jobs:
         with:
           use_oidc: true
           fail_ci_if_error: true
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true

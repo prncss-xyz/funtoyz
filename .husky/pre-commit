@@ -1,5 +1,5 @@
 pnpm exec lint-staged
-pnpm exec turbo run pre-commit
+pnpm exec turbo run check
 pnpm run sherif
 git update-index --again
 pnpm run knip
