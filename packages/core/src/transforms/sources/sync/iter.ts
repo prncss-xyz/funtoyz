@@ -8,7 +8,7 @@ export function iter<S>() {
 				done = true
 			},
 			start() {
-				for (const t of s as any) {
+				for (const t of s) {
 					if (done) break
 					next(t)
 				}

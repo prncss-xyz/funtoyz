@@ -14,13 +14,11 @@ export function scan<Event, State, Result = State>(
 		S,
 		E,
 		never,
-		F['SYNC'] & {
+		(F['SYNC'] extends false ? { SYNC: false } : object) & {
 			CONSTRUCT: false
 			UNIQUE: false
 			WRITE: false
-		} extends false
-			? { SYNC: false }
-			: object
+		}
 	> {
 		return {
 			emit: o.emit

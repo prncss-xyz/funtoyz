@@ -6,29 +6,29 @@ export function composeEmitEmit_<T, S, U, E1, E2>(
 ): Emit<U, S, E1 | E2> {
 	return (s, n, e, c) => {
 		let done = false
-		const unmounts = new Set<() => void>()
-		const { abort: abort1, start: start1 } = emit1(
+		const aborts = new Set<() => void>()
+		const { abort, start } = emit1(
 			s,
 			(t) => {
 				const res = emit2(t, n, e, () => {
-					unmounts.delete(res.abort)
-					if (unmounts.size === 0 && done) c()
+					aborts.delete(res.abort)
+					if (aborts.size === 0 && done) c()
 				})
-				unmounts.add(res.abort)
+				aborts.add(res.abort)
 				res.start()
 			},
 			e,
 			() => {
 				done = true
-				if (unmounts.size == 0) c()
+				if (aborts.size == 0) c()
 			},
 		)
 		return {
 			abort() {
-				unmounts.forEach((cb) => cb())
-				abort1()
+				aborts.forEach((cb) => cb())
+				abort()
 			},
-			start: start1,
+			start,
 		}
 	}
 }
