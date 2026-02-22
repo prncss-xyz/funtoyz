@@ -10,15 +10,19 @@ Sum, Slice, Map. Higher-order machines (undo-redo etc., see x-state)
 
 ## Transforms
 
+outer join, zipCmp
+
+sync zip
+
+port fold functions
+
 scan1, fold1
 
 Validation:
 
 - change in protocol: close must be called after error
 
-Import all folds.
-
-Add relation utils.
+relation utils.
 
 Do notation.
 

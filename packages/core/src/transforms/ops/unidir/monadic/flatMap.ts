@@ -3,10 +3,10 @@ import { flatEmitter_ } from '../../../compose/_composeEmitter'
 import { Flags } from '../../../compose/_flags'
 import { HasSameSync } from './_hasSameSync'
 
-export function flatMap<A, T, E1, G1, F1 extends Flags & { UNIQUE: false }>(
-	f: (a: A) => Optic<T, any, E1, G1, F1>,
+export function flatMap<A, S, T, E1, G1, F1 extends Flags & { UNIQUE: false }>(
+	f: (a: A) => Optic<T, S, E1, G1, F1>,
 ) {
-	return function <S, E2, G2, F2 extends Flags & { UNIQUE: false }>(
+	return function <E2, G2, F2 extends Flags & { UNIQUE: false }>(
 		o: Optic<A, S, E2, G2, HasSameSync<F2, F1>>,
 	): Optic<
 		T,

@@ -1,7 +1,7 @@
 import { Optic } from '../../../compose'
 import { HasFlag } from '../../../compose/_flags'
 
-export function ap<T, Bs extends any[]>(
+export function ap<T, Bs extends unknown[]>(
 	...fns: { [K in keyof Bs]: (value: T) => Bs[K] }
 ) {
 	return function <S, E, G, F extends { UNIQUE: false }>(

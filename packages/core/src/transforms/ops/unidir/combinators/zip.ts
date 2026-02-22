@@ -1,76 +1,22 @@
 import { Optic } from '../../../compose'
 import { Flags, HasFlag } from '../../../compose/_flags'
-
-function merger<VL, VR, V>(
-	merge: (left: VL, right: VR) => V,
-	push: (c: V) => void,
-	complete: () => void,
-) {
-	let openedLeft = true
-	let openedRight = true
-	const ls: VL[] = []
-	const rs: VR[] = []
-	return {
-		completeLeft() {
-			if (openedRight) {
-				openedLeft = false
-				return
-			}
-			complete()
-		},
-		completeRight() {
-			if (openedLeft) {
-				openedRight = false
-				return
-			}
-			complete()
-		},
-		nextLeft(l: VL) {
-			if (!openedLeft) return
-			if (rs.length) {
-				const r = rs.shift()!
-				push(merge(l, r))
-				if (!rs.length && !openedRight) complete()
-				return
-			}
-			ls.push(l)
-		},
-		nextRight(r: VR) {
-			if (!openedRight) return
-			if (ls.length) {
-				const a = ls.shift()!
-				push(merge(a, r))
-				if (!ls.length && !openedLeft) complete()
-				return
-			}
-			rs.push(r)
-		},
-	}
-}
+import { zipper } from './_utils'
 
 // TODO: handle sync (runtime)
-// TODO: harmonize R -> 1 L -> 2
+// TODO: we might want to invert 1 and 2 everywhere
 
-export function zip<
-	TR,
-	SR,
-	ER,
-	GR,
-	FR extends Flags & { UNIQUE: false },
-	V,
-	TL,
->(
-	oRight: Optic<TR, SR, ER, GR, HasFlag<'READ', FR>>,
-	merge: (a: TL, b: TR) => V,
+export function zip<T1, S, E1, G1, F1 extends Flags & { UNIQUE: false }, V, T2>(
+	o1: Optic<T1, S, E1, G1, HasFlag<'READ', F1>>,
+	merge: (v2: T2, v1: T1) => V,
 ) {
-	return function <SL, EL, GL, FL extends { UNIQUE: false }>(
-		oLeft: Optic<TL, SL, EL, GL, HasFlag<'READ', FL>>,
+	return function <E2, G2, F2 extends { UNIQUE: false }>(
+		o2: Optic<T2, S, E2, G2, HasFlag<'READ', F2>>,
 	): Optic<
 		V,
-		SL,
-		EL | ER,
-		GL | GR,
-		(FR['SYNC'] extends false ? { SYNC: false } : object) & {
+		S,
+		E1 | E2,
+		G1 | G2,
+		(F1['SYNC'] extends false ? { SYNC: false } : object) & {
 			CONSTRUCT: false
 			UNIQUE: false
 			WRITE: false
@@ -78,43 +24,34 @@ export function zip<
 	> {
 		return {
 			emitter: (
-				source: SL,
+				source: S,
 				next: (value: V) => void,
-				e: (error: EL | ER) => void,
+				e: (error: E1 | E2) => void,
 				c: () => void,
 			) => {
-				const { completeLeft, completeRight, nextLeft, nextRight } = merger(
-					merge,
-					next,
-					c,
-				)
+				const { complete1, complete2, next1, next2 } = zipper(merge, next, c)
 
-				const resultL = oLeft.emitter!(source, nextLeft, e, completeLeft)
-				const resultR = oRight.emitter!(
-					source as any,
-					nextRight,
-					e,
-					completeRight,
-				)
+				const result2 = o2.emitter!(source, next2, e, complete2)
+				const result1 = o1.emitter!(source, next1, e, complete1)
 
 				return {
 					abort: () => {
-						resultL?.abort?.()
-						resultR?.abort?.()
+						result2?.abort?.()
+						result1?.abort?.()
 					},
 					start: () => {
-						resultL?.start?.()
-						resultR?.start?.()
+						result2?.start?.()
+						result1?.start?.()
 					},
 				}
 			},
 			flags: {
 				CONSTRUCT: false,
-				SYNC: oRight.flags.SYNC as never,
+				SYNC: o1.flags.SYNC as never,
 				UNIQUE: false,
 				WRITE: false,
 			},
-			nothing: oLeft.nothing,
+			nothing: o2.nothing,
 		}
 	}
 }
