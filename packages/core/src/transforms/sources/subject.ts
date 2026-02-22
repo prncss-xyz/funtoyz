@@ -1,5 +1,7 @@
 import { Emitter } from '../compose/_methods'
 
+// TODO: encapsulate
+
 // hot observable
 export function subject<T, S, E>(
 	emitter: Emitter<T, S, E>,

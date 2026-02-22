@@ -3,6 +3,8 @@ import { tag } from '../../tags/tag'
 import { Tags } from '../../tags/types'
 import { Emitter } from '../compose/_methods'
 
+// TODO: encapsulate
+
 // cold observable
 export function replay<T, S, E>(
 	emitter: Emitter<T, S, E>,

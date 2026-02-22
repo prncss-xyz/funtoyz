@@ -1,5 +1,5 @@
 import { Optic } from '../../../compose'
-import { Flags } from '../../../compose/_flags'
+import { Flags, HasFlag } from '../../../compose/_flags'
 
 function merger<VL, VR, V>(
 	merge: (left: VL, right: VR) => V,
@@ -48,46 +48,73 @@ function merger<VL, VR, V>(
 	}
 }
 
-export function zip<TR, SR, ER, GR, FR extends Flags, V, TL>(
-	oRight: Optic<TR, SR, ER, GR, FR>,
+// TODO: handle sync (runtime)
+// TODO: harmonize R -> 1 L -> 2
+
+export function zip<
+	TR,
+	SR,
+	ER,
+	GR,
+	FR extends Flags & { UNIQUE: false },
+	V,
+	TL,
+>(
+	oRight: Optic<TR, SR, ER, GR, HasFlag<'READ', FR>>,
 	merge: (a: TL, b: TR) => V,
 ) {
-	return function <SL, EL, GL, FL extends Flags>(
-		oLeft: Optic<TL, SL, EL, GL, FL>,
-	): Optic<V, SL, EL | ER, GL | GR, FL> {
+	return function <SL, EL, GL, FL extends { UNIQUE: false }>(
+		oLeft: Optic<TL, SL, EL, GL, HasFlag<'READ', FL>>,
+	): Optic<
+		V,
+		SL,
+		EL | ER,
+		GL | GR,
+		(FR['SYNC'] extends false ? { SYNC: false } : object) & {
+			CONSTRUCT: false
+			UNIQUE: false
+			WRITE: false
+		}
+	> {
 		return {
-			...oLeft,
-			emitter:
-				oLeft.emitter && oRight.emitter
-					? (
-							source: SL,
-							next: (value: V) => void,
-							e: (error: EL | ER) => void,
-							c: () => void,
-						) => {
-							const { completeLeft, completeRight, nextLeft, nextRight } =
-								merger(merge, next, c)
+			emitter: (
+				source: SL,
+				next: (value: V) => void,
+				e: (error: EL | ER) => void,
+				c: () => void,
+			) => {
+				const { completeLeft, completeRight, nextLeft, nextRight } = merger(
+					merge,
+					next,
+					c,
+				)
 
-							const resultL = oLeft.emitter!(source, nextLeft, e, completeLeft)
-							const resultR = oRight.emitter!(
-								source as any,
-								nextRight,
-								e,
-								completeRight,
-							)
+				const resultL = oLeft.emitter!(source, nextLeft, e, completeLeft)
+				const resultR = oRight.emitter!(
+					source as any,
+					nextRight,
+					e,
+					completeRight,
+				)
 
-							return {
-								abort: () => {
-									resultL?.abort?.()
-									resultR?.abort?.()
-								},
-								start: () => {
-									resultL?.start?.()
-									resultR?.start?.()
-								},
-							}
-						}
-					: undefined,
-		} as any
+				return {
+					abort: () => {
+						resultL?.abort?.()
+						resultR?.abort?.()
+					},
+					start: () => {
+						resultL?.start?.()
+						resultR?.start?.()
+					},
+				}
+			},
+			flags: {
+				CONSTRUCT: false,
+				SYNC: oRight.flags.SYNC as never,
+				UNIQUE: false,
+				WRITE: false,
+			},
+			nothing: oLeft.nothing,
+		}
 	}
 }

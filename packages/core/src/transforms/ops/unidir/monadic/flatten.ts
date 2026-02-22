@@ -27,18 +27,17 @@ export function flatten() {
 			WRITE: false
 		}
 	> {
-		isoAssert(o.emitter !== undefined)
 		return {
-			emitter: flatEmitter_(o.emitter, (inner, s, n, e, c) => {
+			emitter: flatEmitter_(o.emitter!, (inner, s, n, e, c) => {
 				isoAssert(inner.emitter !== undefined)
 				return inner.emitter(s, n, e, c)
 			}),
 			flags: {
 				CONSTRUCT: false,
-				SYNC: o.flags.SYNC,
+				SYNC: o.flags.SYNC as never,
 				UNIQUE: false,
 				WRITE: false,
-			} as never,
+			},
 			nothing: o.nothing,
 		}
 	}

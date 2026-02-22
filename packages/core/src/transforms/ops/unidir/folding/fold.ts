@@ -5,8 +5,8 @@ import { reduce, Reducer } from '../../../compose/_methods'
 export function fold<Value, State, Result = State>(
 	props: Reducer<Value, State, Result>,
 ) {
-	return function <S, E, F extends Flags>(
-		o: Optic<Value, S, E, any, F>,
+	return function <S, E, G, F extends Flags & { UNIQUE: false }>(
+		o: Optic<Value, S, E, G, F>,
 	): Optic<
 		Result,
 		S,
@@ -20,9 +20,9 @@ export function fold<Value, State, Result = State>(
 		return {
 			flags: {
 				CONSTRUCT: false,
-				SYNC: o.flags.SYNC,
+				SYNC: o.flags.SYNC as never,
 				WRITE: false,
-			} as never,
+			},
 			getter: reduce(props, o),
 		}
 	}

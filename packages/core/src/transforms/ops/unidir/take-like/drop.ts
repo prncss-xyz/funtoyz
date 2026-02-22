@@ -1,26 +1,24 @@
 import { Optic } from '../../../compose'
-import { Flags } from '../../../compose/_flags'
+import { HasFlag } from '../../../compose/_flags'
 
 export function drop(n: number) {
-	return function <T, S, E, G, F extends Flags>(
-		o: Optic<T, S, E, G, F>,
+	return function <T, S, E, G, F extends { UNIQUE: false }>(
+		o: Optic<T, S, E, G, HasFlag<'READ', F>>,
 	): Optic<T, S, E, G, F> {
 		return {
 			...o,
-			emitter: o.emitter
-				? (source, next, e, c) => {
-						let i = 0
-						return o.emitter!(
-							source,
-							(s) => {
-								if (i >= n) next(s)
-								i++
-							},
-							e,
-							c,
-						)
-					}
-				: undefined,
+			emitter: (source, next, e, c) => {
+				let i = 0
+				return o.emitter!(
+					source,
+					(s) => {
+						if (i >= n) next(s)
+						i++
+					},
+					e,
+					c,
+				)
+			},
 		}
 	}
 }

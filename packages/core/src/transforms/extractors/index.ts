@@ -67,13 +67,15 @@ export function preview<T, S, E extends G, G, F extends Flags>(
 	)
 }
 
-export function collect<T, S, F extends Flags>(
+export function collect<T, S, F extends { UNIQUE: false }>(
 	o: Optic<T, S, any, any, HasFlag<'SYNC', F>>,
 ): (s: S) => T[]
-export function collect<T, S, F extends Flags>(
+export function collect<T, S, F extends { UNIQUE: false }>(
 	o: Optic<T, S, any, any, F>,
 ): (s: S) => Promise<T[]>
-export function collect<T, S, F extends Flags>(o: Optic<T, S, any, any, F>) {
+export function collect<T, S, F extends Flags & { UNIQUE: false }>(
+	o: Optic<T, S, any, any, F>,
+) {
 	return extract1<T[], S>(o.flags.SYNC, (next, s) =>
 		reduce(toArray<T>(), o)(s, next, exhaustive),
 	)

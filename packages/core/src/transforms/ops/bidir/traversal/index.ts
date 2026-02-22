@@ -20,9 +20,15 @@ export function traversal<Value, Acc, Res = Acc>({
 	// set,
 }: Traversal<Value, Acc, Res>) {
 	const result_ = result ?? (id as never)
-	return compose<Res, Value, never, Nothing, { CONSTRUCT: false }>({
+	return compose<
+		Res,
+		Value,
+		never,
+		Nothing,
+		{ CONSTRUCT: false; UNIQUE: false }
+	>({
 		emitter,
-		flags: { CONSTRUCT: false },
+		flags: { CONSTRUCT: false, UNIQUE: false },
 		modifier: (
 			m: (t: Value, next: (t: Value) => void) => void,
 			next: (s: Res) => void,
