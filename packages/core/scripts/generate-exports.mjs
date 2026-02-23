@@ -40,9 +40,9 @@ async function getAllFiles(dir, baseDir = dir) {
 async function generateIndex() {
 	const files = await getAllFiles(srcDir)
 
-	// Filter out index.ts itself
+	// Filter out root index.ts itself
 	const exports = files
-		.filter((file) => !file.endsWith('index.ts') && !file.endsWith('index.tsx'))
+		.filter((file) => file !== 'index.ts' && file !== 'index.tsx')
 		.sort()
 		.map((file) => {
 			// Remove .ts or .tsx extension

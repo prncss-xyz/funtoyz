@@ -1,12 +1,12 @@
 import { expect } from 'vitest'
 
-import { flow } from '../../../../functions/flow'
-import { pipe } from '../../../../functions/pipe'
-import { collect, preview, REMOVE, update } from '../../../extractors'
-import { once } from '../../../sources/sync/once'
-import { prop } from '../optional/prop'
-import { elems } from '../traversal/elems'
-import { join } from './join'
+import { innerJoin } from '.'
+import { flow } from '../../../../../functions/flow'
+import { pipe } from '../../../../../functions/pipe'
+import { collect, preview, REMOVE, update } from '../../../../extractors'
+import { once } from '../../../../sources/sync/once'
+import { prop } from '../../optional/prop'
+import { elems } from '../../traversal/elems'
 
 type Data = {
 	current: string[]
@@ -24,7 +24,7 @@ describe.skip('join, many', () => {
 		once<Data>(),
 		prop('current'),
 		elems(),
-		join((current) => pipe(prop('people'), prop(current))),
+		innerJoin((current) => pipe(prop('people'), prop(current))),
 	)
 	test('preview, success', () => {
 		const data: Data = {

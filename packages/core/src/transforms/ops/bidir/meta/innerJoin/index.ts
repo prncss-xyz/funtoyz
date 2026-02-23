@@ -1,8 +1,8 @@
-import { Optic } from '../../../compose'
-import { Flags } from '../../../compose/_flags'
-import { Once } from '../../../sources/sync/once'
+import { Optic } from '../../../../compose'
+import { Flags } from '../../../../compose/_flags'
+import { Once } from '../../../../sources/sync/once'
 
-export function join<U, V, S, E1, G1, F1 extends Flags>(
+export function innerJoin<U, V, S, E1, G1, F1 extends Flags>(
 	_r: (u: U) => (u: Once<S>) => Optic<V, S, E1, G1, F1>,
 ) {
 	return function <E2, G2, F2 extends Flags>(

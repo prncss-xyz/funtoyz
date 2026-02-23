@@ -1,7 +1,8 @@
 import { Optic } from '.'
 import { forbidden } from '../../assertions'
-import { fromInit, Init } from '../../functions/arguments/init'
+import { fromInit } from '../../functions/arguments/init'
 import { id, noop } from '../../functions/basics'
+import { Reducer } from '../../reduce'
 import { Flags } from './_flags'
 
 export function trush<V>(v: V, cb: (v: V) => void) {
@@ -141,34 +142,4 @@ export function reduce<T, S, U, E, G, R>(
 			)
 		}
 	return forbidden('reduce needs an emitter or a getter')
-}
-
-export interface ReducerNonDest<Event, State, Result = State> {
-	init: Init<State>
-	reduce: (event: Event, state: State) => State
-	result?: (state: State) => Result
-}
-
-export type Reducer<Event, State, Result = State> = {
-	init: Init<State>
-	result?: (state: State) => Result
-} & (
-	| {
-			reduce: (event: Event, state: State) => State
-			reduceDest?: (event: Event, state: State) => State
-	  }
-	| {
-			reduceDest: (event: Event, state: State) => State
-	  }
-)
-
-export function toArray<T>(): Reducer<T, T[]> {
-	return {
-		init: () => [],
-		reduce: (event, state) => [...state, event],
-		reduceDest: (event, state) => {
-			state.push(event)
-			return state
-		},
-	}
 }

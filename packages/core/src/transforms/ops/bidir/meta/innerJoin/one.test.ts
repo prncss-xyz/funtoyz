@@ -1,14 +1,14 @@
 import { expect } from 'vitest'
 
-import { flow } from '../../../../functions/flow'
-import { pipe } from '../../../../functions/pipe'
-import { result } from '../../../../tags/results'
-import { collect, preview, REMOVE, update } from '../../../extractors'
-import { once } from '../../../sources/sync/once'
-import { prop } from '../optional/prop'
-import { filter } from '../prism/filter'
-import { elems } from '../traversal/elems'
-import { join } from './join'
+import { innerJoin } from '.'
+import { flow } from '../../../../../functions/flow'
+import { pipe } from '../../../../../functions/pipe'
+import { result } from '../../../../../tags/results'
+import { collect, preview, REMOVE, update } from '../../../../extractors'
+import { once } from '../../../../sources/sync/once'
+import { prop } from '../../optional/prop'
+import { filter } from '../../prism/filter'
+import { elems } from '../../traversal/elems'
 
 type Data = {
 	current: string
@@ -26,7 +26,7 @@ describe.skip('join, one', () => {
 	const o = flow(
 		once<Data>(),
 		prop('current'),
-		join((current) =>
+		innerJoin((current) =>
 			pipe(
 				prop('people'),
 				elems(),

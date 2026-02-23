@@ -19,6 +19,7 @@ describe('elems', () => {
 		expect(update(o)(REMOVE)([1, 2, 3])).toEqual([])
 	})
 })
+
 describe('compose with prism', () => {
 	const o = flow(
 		once<number[]>(),
@@ -32,6 +33,7 @@ describe('compose with prism', () => {
 		expect(update(o)(REMOVE)([1, 2, 3])).toEqual([1, 3])
 	})
 })
+
 describe('compose with lens', () => {
 	function prop<S, K extends keyof S>(k: K) {
 		return lens<S[K], S>({
@@ -51,6 +53,7 @@ describe('compose with lens', () => {
 		expect(update(o)((x) => x * 2)(xs)[0]).toEqual({ a: 2 })
 	})
 })
+
 describe('compose with elems', () => {
 	const o = flow(once<number[][]>(), elems(), elems())
 	test('modify', () => {
@@ -65,6 +68,7 @@ describe('compose with elems', () => {
 		])
 	})
 })
+
 describe('fold', () => {
 	const o = flow(
 		once<number[]>(),

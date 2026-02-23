@@ -1,6 +1,7 @@
+import { Reducer } from '../../../../reduce'
 import { Optic } from '../../../compose'
 import { Flags } from '../../../compose/_flags'
-import { reduce, Reducer } from '../../../compose/_methods'
+import { reduce } from '../../../compose/_methods'
 
 export function fold<Value, State, Result = State>(
 	props: Reducer<Value, State, Result>,

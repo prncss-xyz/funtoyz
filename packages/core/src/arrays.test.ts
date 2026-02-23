@@ -1,19 +1,14 @@
-import {
-	insert,
-	insertCmp,
-	insertSorted,
-	remove,
-	replace,
-	symmetricDiff,
-} from './arrays'
+import { insert, insertSorted, remove, replace, symmetricDiff } from './arrays'
 
 describe('insertSorted', () => {
 	it('inserts sorted', () => {
-		expect(insertSorted(2)([1, 3])).toEqual([1, 2, 3])
+		const res = insertSorted()(2, [1, 3])
+		expectTypeOf(res).toEqualTypeOf<number[]>()
+		expect(res).toEqual([1, 2, 3])
 	})
 	it('keeps the reference when possible', () => {
 		const xs = [0, 3]
-		expect(insertSorted(3)(xs)).toBe(xs)
+		expect(insertSorted()(3, xs)).toBe(xs)
 	})
 })
 
@@ -25,13 +20,13 @@ describe('symmetricDiff', () => {
 
 describe('insertCmp', () => {
 	it('inserts an element', () => {
-		expect(insertCmp()(0)([1, 3])).toEqual([0, 1, 3])
-		expect(insertCmp()(2)([1, 3])).toEqual([1, 2, 3])
-		expect(insertCmp()(4)([1, 3])).toEqual([1, 3, 4])
+		expect(insertSorted()(0, [1, 3])).toEqual([0, 1, 3])
+		expect(insertSorted()(2, [1, 3])).toEqual([1, 2, 3])
+		expect(insertSorted()(4, [1, 3])).toEqual([1, 3, 4])
 	})
 	it('keeps the reference when possible', () => {
 		const xs = [0, 3]
-		expect(insertCmp()(3)(xs)).toBe(xs)
+		expect(insertSorted()(3, xs)).toBe(xs)
 	})
 })
 

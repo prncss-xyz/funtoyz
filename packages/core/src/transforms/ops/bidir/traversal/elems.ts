@@ -1,7 +1,7 @@
-import { traversal } from '.'
+import { Traversal, traversal } from '.'
 
-export function elems<Value>() {
-	return traversal<Value, Value[]>({
+export function toArray<T>(): Traversal<T, T[]> {
+	return {
 		emitter: (acc, next, _error, complete) => {
 			let done = false
 			return {
@@ -18,7 +18,15 @@ export function elems<Value>() {
 			}
 		},
 		init: () => [],
-		reduce: (t, acc) => [...acc, t],
+		reduce: (event, state) => [...state, event],
+		reduceDest: (event, state) => {
+			state.push(event)
+			return state
+		},
 		set: (v) => [v],
-	})
+	}
+}
+
+export function elems<Value>() {
+	return traversal<Value, Value[]>(toArray())
 }

@@ -2,23 +2,22 @@ function cmp0<T>(a: T, b: T): number {
 	return a < b ? -1 : a > b ? 1 : 0
 }
 
-// this provides better type inference
-export function insertSorted<T>(t: T) {
-	return insertCmp(cmp0)(t)
-}
-
-export function insertCmp<T>(cmp = cmp0<T>) {
-	return function (t: T) {
-		return function (acc: T[]) {
-			for (let i = 0; i < acc.length; i++) {
-				const v = acc[i]!
-				const r = cmp(v, t)
-				if (r < 0) continue
-				if (r === 0) return acc
-				if (r > 0) return acc.slice(0, i).concat([t], acc.slice(i))
-			}
-			return acc.concat(t)
+// TODO: use dichotomic search
+// TODO: modify method
+export function insertSorted<T>(
+	cmp: (a: T, b: T) => number,
+): (t: T, acc: T[]) => T[]
+export function insertSorted(): <T>(t: T, acc: T[]) => T[]
+export function insertSorted<T>(cmp = cmp0<T>) {
+	return function (t: T, acc: T[]) {
+		for (let i = 0; i < acc.length; i++) {
+			const v = acc[i]!
+			const r = cmp(v, t)
+			if (r < 0) continue
+			if (r === 0) return acc
+			if (r > 0) return acc.slice(0, i).concat([t], acc.slice(i))
 		}
+		return acc.concat(t)
 	}
 }
 

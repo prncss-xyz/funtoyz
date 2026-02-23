@@ -21,6 +21,27 @@ export function always<T>(a: T) {
 		return a
 	}
 }
+
+export function compare<T>(a: T, b: T): number {
+	return a < b ? -1 : a > b ? 1 : 0
+}
+
+export function maxFrom<A, T>(f: (a: A) => T) {
+	return (a: A, b: A) => (f(a) > f(b) ? a : b)
+}
+
+export function minFrom<A, T>(f: (a: A) => T) {
+	return (a: A, b: A) => (f(a) < f(b) ? a : b)
+}
+
+export function maxWith<A>(f: (a: A, b: A) => number) {
+	return (a: A, b: A) => (f(a, b) > 0 ? a : b)
+}
+
+export function minWith<A>(f: (a: A, b: A) => number) {
+	return (a: A, b: A) => (f(a, b) < 0 ? a : b)
+}
+
 export function not(a: unknown) {
 	return !a
 }

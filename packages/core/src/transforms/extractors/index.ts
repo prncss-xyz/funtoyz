@@ -5,7 +5,8 @@ import { isFunction } from '../../guards'
 import { result, Result } from '../../tags/results'
 import { Optic } from '../compose'
 import { Flags, HasFlag } from '../compose/_flags'
-import { first, getModifier, reduce, toArray } from '../compose/_methods'
+import { first, getModifier, reduce } from '../compose/_methods'
+import { toArray } from '../ops/bidir/traversal/elems'
 
 function extract_<R, Args extends any[]>(
 	sync: boolean | undefined,

@@ -1,6 +1,6 @@
 import { Traversal } from '.'
 
-export function toChars(): Traversal<string, string> {
+export function fromEntries<V>(): Traversal<[string, V], Record<string, V>> {
 	return {
 		emitter: (acc, next, _error, complete) => {
 			let done = false
@@ -9,7 +9,7 @@ export function toChars(): Traversal<string, string> {
 					done = true
 				},
 				start: () => {
-					for (const t of acc) {
+					for (const t of Object.entries(acc)) {
 						if (done) break
 						next(t)
 					}
@@ -17,7 +17,8 @@ export function toChars(): Traversal<string, string> {
 				},
 			}
 		},
-		init: '',
-		reduce: (t, acc) => acc + t,
+		init: () => ({}) as any,
+		reduce: ([k, v], acc) => ({ ...acc, [k]: v }),
+		reduceDest: ([k, v], acc) => ((acc[k] = v), acc),
 	}
 }
