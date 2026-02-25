@@ -21,6 +21,7 @@ export type Modifier<T, S> = (
 	m: (t: T, next: (t: T) => void) => void,
 	next: (s: S) => void,
 	s: S,
+	flush: (next: (t: T) => void) => void,
 ) => void
 
 export type Setter<T, S> = (t: T, next: (s: S) => void, s: S) => void

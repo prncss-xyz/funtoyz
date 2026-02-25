@@ -7,10 +7,13 @@ import { lens } from '../lens'
 import { filter } from '../prism/filter'
 import { elems } from './elems'
 
-describe('elems', () => {
+describe.only('elems', () => {
 	const o = flow(once<number[]>(), elems())
 	test('view', () => {
 		expect(preview(o)([1, 2, 3])).toEqual(result.success.of(1))
+	})
+	test('put', () => {
+		expect(update(o)(4)([1, 2, 3])).toEqual([4])
 	})
 	test('modify', () => {
 		expect(update(o)((x) => x * 2)([1, 2, 3])).toEqual([2, 4, 6])

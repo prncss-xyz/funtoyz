@@ -1,4 +1,5 @@
 import { Init } from '../../functions/arguments/init'
+import { noop } from '../../functions/basics'
 import { Empty } from '../../objects/types'
 import {
 	composeEmitterEmitter_,
@@ -111,7 +112,7 @@ function composeModifier<T, U, S, E2, G2, F2 extends Flags>(
 		const mod1 = getModifier(o1)
 		const mod2 = getModifier(o2)
 		if (mod1 && mod2)
-			return (m, next, s) => mod2((t, nextT) => mod1(m, nextT, t), next, s)
+			return (m, next, s) => mod2((t, nextT) => mod1(m, nextT, t, noop), next, s, noop)
 	}
 	return undefined
 }
@@ -122,7 +123,7 @@ function composeRemover<T, U, S>(
 ): Remover<S> | undefined {
 	if (o1.remover) {
 		const m = getModifier(o2)
-		if (m) return (s, next) => m(o1.remover!, next, s)
+		if (m) return (s, next) => m(o1.remover!, next, s, noop)
 	}
 	return undefined
 }

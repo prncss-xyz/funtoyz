@@ -28,11 +28,7 @@ export function traversal<Value, Acc = Value, Res = Acc>(
 	>({
 		emitter: props.emitter,
 		flags: { CONSTRUCT: false, UNIQUE: false },
-		modifier: (
-			m: (t: Value, next: (t: Value) => void) => void,
-			next: (s: Res) => void,
-			s: Res,
-		) => {
+		modifier: (m, next, s, flush) => {
 			let acc: Acc
 			acc = fromInit(props.init)
 			const { abort, start } = props.emitter(
@@ -43,8 +39,13 @@ export function traversal<Value, Acc = Value, Res = Acc>(
 					}),
 				noop,
 				() => {
-					next(result_(acc))
 					abort()
+					console.log('flush')
+					flush((t) => {
+						console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!', t)
+						acc = reduce(t, acc)
+					})
+					next(result_(acc))
 				},
 			)
 			start()
