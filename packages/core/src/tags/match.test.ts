@@ -1,10 +1,14 @@
 import { flow } from '../functions/flow'
+import { createTag } from './createTag'
 import { match, matcher } from './match'
-import { tags } from './tags'
 import { Tags } from './types'
 
 type T = Tags<{ a: number; b: string; c: string }>
-const type = tags<T>()('a', 'b', 'c')
+
+const a = createTag('a')
+const b = createTag('b')
+const c = createTag('c')
+const type = { a, b, c }
 
 describe('match', () => {
 	const a = type.a.of(3) as T

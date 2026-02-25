@@ -1,5 +1,5 @@
 import { flow } from '../../../../functions/flow'
-import { result } from '../../../../tags/results'
+import { success } from '../../../../tags/results'
 import { preview, REMOVE, update, view } from '../../../extractors'
 import { once } from '../../../sources/sync/once'
 import { fold } from '../../unidir/folding/fold'
@@ -10,7 +10,7 @@ import { elems } from './elems'
 describe('elems', () => {
 	const o = flow(once<number[]>(), elems())
 	test('view', () => {
-		expect(preview(o)([1, 2, 3])).toEqual(result.success.of(1))
+		expect(preview(o)([1, 2, 3])).toEqual(success.of(1))
 	})
 	test('modify', () => {
 		expect(update(o)((x) => x * 2)([1, 2, 3])).toEqual([2, 4, 6])

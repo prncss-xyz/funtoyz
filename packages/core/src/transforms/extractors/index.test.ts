@@ -1,5 +1,5 @@
 import { collect, preview, review, update, view } from '.'
-import { Nothing, Result, result } from '../../tags/results'
+import { Nothing, Result, success } from '../../tags/results'
 import { periodic } from '../sources/async/periodic'
 import { iter } from '../sources/sync/iter'
 import { once } from '../sources/sync/once'
@@ -24,7 +24,7 @@ describe('preview', () => {
 	it('previews value asynchronously', async () => {
 		const pro = preview(periodic(1))()
 		expectTypeOf(pro).toEqualTypeOf<Promise<Result<number, Nothing>>>()
-		expect(result.success.is(await pro)).toBeTruthy()
+		expect(success.is(await pro)).toBeTruthy()
 	})
 })
 

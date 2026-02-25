@@ -2,7 +2,7 @@ import { exhaustive } from '../../assertions'
 import { pipe2 } from '../../functions/basics'
 import { Modify } from '../../functions/types'
 import { isFunction } from '../../guards'
-import { result, Result } from '../../tags/results'
+import { failure, Result, success } from '../../tags/results'
 import { Optic } from '../compose'
 import { Flags, HasFlag } from '../compose/_flags'
 import { first, getModifier, reduce } from '../compose/_methods'
@@ -64,7 +64,7 @@ export function preview<T, S, E extends G, G, F extends Flags>(
 	o: Optic<T, S, E, G, F>,
 ) {
 	return extract1<Result<T, G>, S>(o.flags.SYNC, (next, s) =>
-		first(o)(s, pipe2(result.success.of, next), pipe2(result.failure.of, next)),
+		first(o)(s, pipe2(success.of, next), pipe2(failure.of, next)),
 	)
 }
 

@@ -1,5 +1,5 @@
 import { flow } from '../../../../functions/flow'
-import { result } from '../../../../tags/results'
+import { success } from '../../../../tags/results'
 import { TYPE } from '../../../../tags/types'
 import { preview, REMOVE, update } from '../../../extractors'
 import { once } from '../../../sources/sync/once'
@@ -9,7 +9,7 @@ describe('at', () => {
 	type S = number[]
 	const o = flow(once<S>(), at(1))
 	test('preview, success', () => {
-		expect(preview(o)([1, 2, 3])).toEqual(result.success.of(2))
+		expect(preview(o)([1, 2, 3])).toEqual(success.of(2))
 	})
 	test('preview, failure', () => {
 		expect(preview(o)([])[TYPE]).toEqual('failure')
@@ -34,7 +34,7 @@ describe('composed at', () => {
 			[1, 2, 3],
 			[4, 5, 6],
 		])
-		expect(res).toEqual(result.success.of(6))
+		expect(res).toEqual(success.of(6))
 	})
 	test('put', () => {
 		const res = update(o)(0)([

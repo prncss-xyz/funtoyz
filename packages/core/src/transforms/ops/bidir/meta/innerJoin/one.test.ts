@@ -3,7 +3,7 @@ import { expect } from 'vitest'
 import { innerJoin } from '.'
 import { flow } from '../../../../../functions/flow'
 import { pipe } from '../../../../../functions/pipe'
-import { result } from '../../../../../tags/results'
+import { success } from '../../../../../tags/results'
 import { collect, preview, REMOVE, update } from '../../../../extractors'
 import { once } from '../../../../sources/sync/once'
 import { prop } from '../../optional/prop'
@@ -39,9 +39,7 @@ describe.skip('join, one', () => {
 			current: 'bob',
 			people,
 		}
-		expect(preview(o)(data)).toEqual(
-			result.success.of({ id: 'bob', name: 'Bob' }),
-		)
+		expect(preview(o)(data)).toEqual(success.of({ id: 'bob', name: 'Bob' }))
 		expect(collect(o)(data)).toEqual([
 			{ id: 'bob', name: 'Bob' },
 			{ id: 'bob', name: 'Bob2' },

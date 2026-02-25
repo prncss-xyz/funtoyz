@@ -1,6 +1,6 @@
 import { forbidden } from '../assertions'
+import { createTag } from './createTag'
 import { tag } from './tag'
-import { tags } from './tags'
 import { Tag, Tags } from './types'
 
 export type Result<S, F> = Tags<{
@@ -9,7 +9,6 @@ export type Result<S, F> = Tags<{
 }>
 
 export type AnyResult = Result<any, any>
-export const result = tags<AnyResult>()('failure', 'success')
 
 export type Nothing = Tag<'nothing', void>
 export function nothing(): Nothing {
@@ -17,10 +16,14 @@ export function nothing(): Nothing {
 }
 
 function successful_<T>(value: Result<T, any>, message?: string) {
-	if (result.success.is(value)) return result.success.get(value)
+	if (success.is(value)) return success.get(value)
 	forbidden(message ?? 'Unexpected failure')
 }
 
+export const success = createTag('success')
+export const failure = createTag('failure')
+
+// TODO: wtf?
 export function successful(message?: string): <T>(value: Result<T, any>) => T
 export function successful<T>(value: Result<T, any>, message?: string): T
 export function successful(...args: any[]): any {

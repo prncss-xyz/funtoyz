@@ -1,6 +1,6 @@
 import { sourceSync } from '.'
 import { fromInit, Init } from '../../../functions/arguments/init'
-import { result, Result } from '../../../tags/results'
+import { Result, success } from '../../../tags/results'
 
 export function unfold<Value>(
 	init: Init<Value, []>,
@@ -14,10 +14,10 @@ export function unfold<Value>(
 			},
 			start() {
 				let res = cb(fromInit(init))
-				while (result.success.is(res)) {
-					next(result.success.get(res))
+				while (success.is(res)) {
+					next(success.get(res))
 					if (done) return
-					res = cb(result.success.get(res))
+					res = cb(success.get(res))
 				}
 				complete()
 			},

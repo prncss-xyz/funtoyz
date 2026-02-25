@@ -1,7 +1,12 @@
 import { isoAssert } from '../assertions'
-import { Nothing, nothing, Result, result, successful } from './results'
-
-const { success } = result
+import {
+	failure,
+	Nothing,
+	nothing,
+	Result,
+	success,
+	successful,
+} from './results'
 
 describe('of, get', () => {
 	test('get inverts of', () => {
@@ -33,21 +38,21 @@ describe('successful', () => {
 		return res
 	}
 	test('pass', () => {
-		expect(t(result.success.of(3))).toBe(3)
+		expect(t(success.of(3))).toBe(3)
 	})
 	test('fail', () => {
 		expect(() => {
-			t(result.failure.of(nothing()))
+			t(failure.of(nothing()))
 		}).toThrowError()
 	})
 	test('message', () => {
 		expect(() => {
-			successful(result.failure.of(nothing()), 'message')
+			successful(failure.of(nothing()), 'message')
 		}).toThrowError('message')
 	})
 	test('curried', () => {
 		expect(() => {
-			successful('message')(result.failure.of(nothing()))
+			successful('message')(failure.of(nothing()))
 		}).toThrowError('message')
 	})
 })

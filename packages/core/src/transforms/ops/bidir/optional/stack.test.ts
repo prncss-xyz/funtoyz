@@ -1,5 +1,5 @@
 import { flow } from '../../../../functions/flow'
-import { nothing, result } from '../../../../tags/results'
+import { failure, nothing, success } from '../../../../tags/results'
 import { preview, REMOVE, update } from '../../../extractors'
 import { once } from '../../../sources/sync/once'
 import { stack } from './stack'
@@ -11,10 +11,10 @@ describe('stack', () => {
 	const o = flow(once<string[]>(), stack())
 	describe('view', () => {
 		it('defined', () => {
-			expect(preview(o)(sourceDefined)).toEqual(result.success.of('c'))
+			expect(preview(o)(sourceDefined)).toEqual(success.of('c'))
 		})
 		it('undefined', () => {
-			expect(preview(o)(sourceUndefined)).toEqual(result.failure.of(nothing()))
+			expect(preview(o)(sourceUndefined)).toEqual(failure.of(nothing()))
 		})
 	})
 	describe('put', () => {
