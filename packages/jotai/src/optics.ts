@@ -14,35 +14,40 @@ import { Atom, atom, WritableAtom } from 'jotai'
 
 import { unwrap } from './_utils'
 
+export function viewAtom<T, S, E extends G, G, F extends Flags>(
+	baseAtom: Atom<Promise<S>>,
+	focus: Focus<T, S, E, G, HasFlag<'READ', F>>,
+): Atom<Promise<View<T, G>>>
+export function viewAtom<T, S, E extends G, G, F extends Flags>(
+	baseAtom: Atom<S>,
+	focus: Focus<T, S, E, G, HasFlag<'READ' | 'SYNC', F>>,
+): Atom<View<T, G>>
+export function viewAtom<T, S, E extends G, G, F extends Flags>(
+	baseAtom: Atom<S>,
+	focus: Focus<T, S, E, G, HasFlag<'READ', F>>,
+): Atom<Promise<View<T, G>>>
+
+export function viewAtom<T, S, E extends G, G, F extends Flags, R>(
+	baseAtom: Atom<S> | WritableAtom<S, [NonFunction<S>], R>,
+	focus: Focus<T, S, E, G, HasFlag<'READ', F>>,
+) {
+	const o = fromFocus(focus)
+	const v = view(o)
+	return atom((get) => unwrap(get(baseAtom), v))
+}
+
 export function focusAtom<T, S, E extends G, G, F extends Flags, R>(
 	baseAtom: WritableAtom<Promise<S>, [Promise<S>], R>,
-	focus: Focus<T, S, E, G, HasFlag<'READ' | 'WRITE', F>>,
+	focus: Focus<T, S, E, G, HasFlag<'READ' | 'SYNC' | 'WRITE', F>>,
 ): WritableAtom<Promise<View<T, G>>, [arg: Update<T, G>], R>
 export function focusAtom<T, S, E extends G, G, F extends Flags, R>(
 	baseAtom: WritableAtom<S, [NonFunction<S>], R>,
 	focus: Focus<T, S, E, G, HasFlag<'READ' | 'SYNC' | 'WRITE', F>>,
 ): WritableAtom<View<T, G>, [arg: Update<T, G>], R>
+
 export function focusAtom<T, S, E extends G, G, F extends Flags, R>(
 	baseAtom: WritableAtom<S, [NonFunction<S>], R>,
-	focus: Focus<T, S, E, G, HasFlag<'READ' | 'WRITE', F>>,
-): WritableAtom<Promise<View<T, G>>, [arg: Update<T, G>], R>
-
-export function focusAtom<T, S, E extends G, G, F extends Flags>(
-	baseAtom: Atom<Promise<S>>,
-	focus: Focus<T, S, E, G, HasFlag<'READ' | 'WRITE', F>>,
-): Atom<Promise<View<T, G>>>
-export function focusAtom<T, S, E extends G, G, F extends Flags>(
-	baseAtom: Atom<S>,
 	focus: Focus<T, S, E, G, HasFlag<'READ' | 'SYNC' | 'WRITE', F>>,
-): Atom<View<T, G>>
-export function focusAtom<T, S, E extends G, G, F extends Flags>(
-	baseAtom: Atom<S>,
-	focus: Focus<T, S, E, G, HasFlag<'READ' | 'WRITE', F>>,
-): Atom<Promise<View<T, G>>>
-
-export function focusAtom<T, S, E extends G, G, F extends Flags, R>(
-	baseAtom: Atom<S> | WritableAtom<S, [NonFunction<S>], R>,
-	focus: Focus<T, S, E, G, HasFlag<'READ' | 'WRITE', F>>,
 ) {
 	const o = fromFocus(focus)
 	const v = view(o)
@@ -50,15 +55,25 @@ export function focusAtom<T, S, E extends G, G, F extends Flags, R>(
 	return atom(
 		(get) => unwrap(get(baseAtom), v),
 		(get, set, arg: Update<T, G>) =>
-			set(baseAtom as any, unwrap(get(baseAtom), u(arg))),
+			set(baseAtom, unwrap(get(baseAtom), u(arg)) as NonFunction<S>),
 	)
 }
 
+export function disabledAtom<T, S, E extends G, G, F extends Flags, R>(
+	baseAtom: WritableAtom<Promise<S>, [NonFunction<S>], R>,
+	focus: Focus<T, S, E, G, HasFlag<'READ' | 'SYNC' | 'WRITE', F>>,
+	value: Update<T, G>,
+): WritableAtom<Promise<boolean>, [], R>
 export function disabledAtom<T, S, E extends G, G, F extends Flags, R>(
 	baseAtom: WritableAtom<S, [NonFunction<S>], R>,
 	focus: Focus<T, S, E, G, HasFlag<'READ' | 'SYNC' | 'WRITE', F>>,
 	value: Update<T, G>,
 ): WritableAtom<boolean, [], R>
+export function disabledAtom<T, S, E extends G, G, F extends Flags, R>(
+	baseAtom: WritableAtom<Promise<S>, [NonFunction<S>], R>,
+	focus: Focus<T, S, E, G, HasFlag<'SYNC' | 'WRITE', F>>,
+	value: T,
+): WritableAtom<Promise<boolean>, [], R>
 export function disabledAtom<T, S, E extends G, G, F extends Flags, R>(
 	baseAtom: WritableAtom<S, [NonFunction<S>], R>,
 	focus: Focus<T, S, E, G, HasFlag<'SYNC' | 'WRITE', F>>,
@@ -66,17 +81,7 @@ export function disabledAtom<T, S, E extends G, G, F extends Flags, R>(
 ): WritableAtom<boolean, [], R>
 export function disabledAtom<T, S, E extends G, G, F extends Flags, R>(
 	baseAtom: WritableAtom<S, [NonFunction<S>], R>,
-	focus: Focus<T, S, E, G, HasFlag<'READ' | 'WRITE', F>>,
-	value: Update<T, G>,
-): WritableAtom<Promise<boolean>, [], R>
-export function disabledAtom<T, S, E extends G, G, F extends Flags, R>(
-	baseAtom: WritableAtom<S, [NonFunction<S>], R>,
-	focus: Focus<T, S, E, G, HasFlag<'WRITE', F>>,
-	value: T,
-): WritableAtom<Promise<boolean>, [], R>
-export function disabledAtom<T, S, E extends G, G, F extends Flags, R>(
-	baseAtom: WritableAtom<S, [NonFunction<S>], R>,
-	focus: Focus<T, S, E, G, HasFlag<'WRITE', F>>,
+	focus: Focus<T, S, E, G, HasFlag<'SYNC' | 'WRITE', F>>,
 	value: Update<T, G>,
 ) {
 	const o = fromFocus(focus)

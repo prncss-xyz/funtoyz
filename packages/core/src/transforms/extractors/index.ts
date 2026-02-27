@@ -95,6 +95,17 @@ export type Update<T, G> =
 	| (G extends never ? never : typeof REMOVE)
 	| Modify<T>
 	| T
+function update_<T, S, G>(
+	o: Optic<T, S, any, G, any>,
+	next: (r: S) => void,
+	t: Update<T, G>,
+	s: S,
+) {
+	if (isFunction(t)) return getModifier(o)!((v, n) => n(t(v)), next, s)
+	if (t === REMOVE) return o.remover!(s, next)
+	if (o.setter) return o.setter(t, next, s)
+	return getModifier(o)!((_, n) => n(t), next, s)
+}
 
 export function update<T, S, E, G, F extends Flags>(
 	o: Optic<T, S, E, G, HasFlag<'READ' | 'SYNC' | 'WRITE', F>>,
@@ -111,35 +122,44 @@ export function update<T, S, E, G, F extends Flags>(
 export function update<T, S, E, G, F extends Flags>(
 	o: Optic<T, S, E, G, HasFlag<'READ', F>>,
 ) {
-	return extract2<S, Update<T, G>, S>(o.flags.SYNC, (next, t, s) => {
-		if (isFunction(t)) return getModifier(o)!((v, n) => n(t(v)), next, s)
-		if (t === REMOVE) return o.remover!(s, next)
-		if (o.setter) return o.setter(t, next, s)
-		return getModifier(o)!((_, n) => n(t), next, s)
-	})
+	return extract2<S, Update<T, G>, S>(
+		o.flags.SYNC,
+		(next: (r: S) => void, t: Update<T, G>, s: S) => update_(o, next, t, s),
+	)
 }
 
-// TODO: reuse shared code
 export function disabledUpdate<T, S, E, G, F extends Flags>(
 	o: Optic<T, S, E, G, HasFlag<'READ' | 'SYNC' | 'WRITE', F>>,
 ): (t: Update<T, G>) => (s: S) => boolean
 export function disabledUpdate<T, S, E, G, F extends Flags>(
-	o: Optic<T, S, E, G, HasFlag<'READ' | 'WRITE', F>>,
-): (t: Update<T, G>) => (s: S) => Promise<boolean>
-export function disabledUpdate<T, S, E, G, F extends Flags>(
 	o: Optic<T, S, E, G, HasFlag<'SYNC' | 'WRITE', F>>,
 ): (t: T) => (s: S) => boolean
 export function disabledUpdate<T, S, E, G, F extends Flags>(
-	o: Optic<T, S, E, G, HasFlag<'WRITE', F>>,
-): (t: T) => (s: S) => Promise<boolean>
-export function disabledUpdate<T, S, E, G, F extends Flags>(
-	o: Optic<T, S, E, G, HasFlag<'WRITE', F>>,
+	o: Optic<T, S, E, G, HasFlag<'SYNC' | 'WRITE', F>>,
 ) {
 	return extract2<boolean, Update<T, G>, S>(o.flags.SYNC, (n, t, s) => {
 		const next = (s_: S) => n(Object.is(s_, s))
-		if (isFunction(t)) return getModifier(o)!((v, n) => n(t(v)), next, s)
-		if (t === REMOVE) return o.remover!(s, next)
-		if (o.setter) return o.setter(t, next, s)
-		return getModifier(o)!((_, n) => n(t), next, s)
+		return update_(o, next, t, s)
 	})
+}
+
+export function focusedState<T, S, G>(o: Optic<T, S, any, G, any>) {
+	return (state: S, setState: (r: S) => void) =>
+		[
+			view(o)(state),
+			(t: Update<T, G>) => update_(o, setState, t, state),
+		] as const
+}
+
+export function stateUpdater<T, S, G>(
+	o: Optic<T, S, any, G, any>,
+	t: Update<T, G>,
+) {
+	return (state: S, setState: (r: S) => void) => {
+		const nextState = update_(o, setState, t, state)
+		return [
+			Object.is(state, nextState),
+			() => update_(o, setState, t, state),
+		] as const
+	}
 }

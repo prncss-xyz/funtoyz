@@ -70,3 +70,39 @@ export function spicedMachine<
 		},
 	}
 }
+
+export function machineState<
+	EventIn,
+	State = EventIn,
+	Result = State,
+	EventOut = never,
+>(
+	machine: Machine<EventIn, State, Result, EventOut>,
+	state: State,
+	setState: (s: State) => void,
+	impl: (e: EventOut) => void,
+) {
+	const reduce = machine.reduce
+	const result = machine.result ?? (id as never)
+	return {
+		disabled: (event: EventIn) => {
+			let called = false
+			return (
+				Object.is(
+					state,
+					reduce(event, state, () => (called = true)),
+				) || called
+			)
+		},
+		next: (event: EventIn) => {
+			return result(reduce(event, state, noop))
+		},
+		result: result(state),
+		send: (event: EventIn) => {
+			const calls: EventOut[] = []
+			setState(reduce(event, state, (e) => calls.push(e)))
+			if (calls.length > 0)
+				Promise.resolve().then(() => calls.forEach((c) => impl(c)))
+		},
+	}
+}

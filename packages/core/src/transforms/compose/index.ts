@@ -1,4 +1,4 @@
-import { fromInit, Init } from '../../functions/arguments/init'
+import { Init } from '../../functions/arguments/init'
 import { isFunction } from '../../guards'
 import { Empty } from '../../objects/types'
 import { once } from '../sources/sync/once'
@@ -167,6 +167,6 @@ export type Focus<T, S, E, G, F extends Flags> = Init<
 export function fromFocus<T, S, E, G, F extends Flags>(
 	focus: Focus<T, S, E, G, F>,
 ): Optic<T, S, E, G, F> {
-  if (isFunction(focus)) return focus(once<S>()) 
+	if (isFunction(focus)) return focus(once<S>())
 	return focus
 }

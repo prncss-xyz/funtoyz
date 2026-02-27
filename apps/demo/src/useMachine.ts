@@ -1,4 +1,4 @@
-import { canSend, exhaustive, getNext, type Machine } from '@funtoyz/core'
+import { exhaustive, type Machine, machineState } from '@funtoyz/core'
 import { useState } from 'react'
 
 export function useMachine<
@@ -21,19 +21,7 @@ export function useMachine<
 			]
 ) {
 	const opts = args[0]
-	const onSend = opts?.onSend ?? (exhaustive as never)
+	const impl = opts?.onSend ?? (exhaustive as never)
 	const [state, setState] = useState(machine.init)
-	function send(event: EventIn) {
-		const events: EventOut[] = []
-		const nextState = machine.reduce(event, state, (e) => events.push(e))
-		setState(nextState)
-		events.forEach(onSend)
-	}
-	const result = machine.result ? machine.result(state) : (state as never)
-	return {
-		canSend: canSend(machine, state),
-		getNext: getNext(machine, state),
-		result,
-		send,
-	}
+	return machineState(machine, state, setState, impl)
 }

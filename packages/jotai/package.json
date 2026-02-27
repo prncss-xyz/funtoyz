@@ -1,33 +1,33 @@
 {
-  "name": "@funtoyz/jotai",
-  "version": "0.0.0",
-  "scripts": {
-    "check:types": "tsc --noEmit",
-    "build": "tsdown",
-    "dev": "tsdown --watch",
-    "gen:exports": "node scripts/generate-exports.mjs"
-  },
-  "keywords": [],
-  "author": "Juliette Lamarche <juliette.lamarche.xyz@gmail.com> (https://github.com/prncss-xyz/)",
-  "license": "MIT",
-  "type": "module",
-  "peerDependencies": {
-    "jotai": ">=2.0.0",
-    "@funtoyz/core": "workspace:*"
-  },
-  "devDependencies": {
-    "@funtoyz/config": "workspace:*",
-    "@types/node": "^25.0.10",
-    "tsdown": "^0.20.1",
-    "typescript": "^5.9.3"
-  },
-  "files": [
-    "dist"
-  ],
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
-  }
+	"name": "@funtoyz/jotai",
+	"version": "0.0.0",
+	"scripts": {
+		"check:types": "tsc --noEmit",
+		"build": "tsdown",
+		"dev": "tsdown --watch",
+		"gen:exports": "node scripts/generate-exports.mjs"
+	},
+	"keywords": [],
+	"author": "Juliette Lamarche <juliette.lamarche.xyz@gmail.com> (https://github.com/prncss-xyz/)",
+	"license": "MIT",
+	"type": "module",
+	"peerDependencies": {
+		"@funtoyz/core": "workspace:*",
+		"jotai": ">=2.0.0"
+	},
+	"devDependencies": {
+		"@funtoyz/config": "workspace:*",
+		"@types/node": "^25.0.10",
+		"tsdown": "^0.20.1",
+		"typescript": "^5.9.3"
+	},
+	"files": [
+		"dist"
+	],
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		}
+	}
 }
