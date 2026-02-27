@@ -1,6 +1,6 @@
 import { Optic } from '../../../compose'
-import { Flags, HasFlag } from '../../../compose/_flags'
 import { Emitter } from '../../../compose/_methods'
+import { Flags, HasFlag } from '../../../compose/flags'
 
 type EmitterResult = ReturnType<Emitter<any, any, any>>
 

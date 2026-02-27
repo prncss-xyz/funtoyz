@@ -1,7 +1,7 @@
 import { isoAssert } from '../../../../assertions'
 import { Optic } from '../../../compose'
 import { flatEmitter_ } from '../../../compose/_composeEmitter'
-import { Flags } from '../../../compose/_flags'
+import { Flags } from '../../../compose/flags'
 import { HasSameSync } from './_hasSameSync'
 
 export function flatten() {

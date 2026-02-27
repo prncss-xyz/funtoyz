@@ -1,6 +1,6 @@
 import { NonEmptyArray } from '../../../../types'
 import { Optic } from '../../../compose'
-import { HasFlag } from '../../../compose/_flags'
+import { HasFlag } from '../../../compose/flags'
 
 export function window<T>(n: number) {
 	return function <S, E, G, F extends { UNIQUE: false }>(

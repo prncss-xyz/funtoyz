@@ -1,5 +1,5 @@
 import { Optic } from '../../../compose'
-import { Flags, HasFlag } from '../../../compose/_flags'
+import { Flags, HasFlag } from '../../../compose/flags'
 import { zipper } from './_utils'
 
 // TODO: handle sync (runtime)

@@ -1,5 +1,5 @@
 import { Optic } from '../../../compose'
-import { HasFlag } from '../../../compose/_flags'
+import { HasFlag } from '../../../compose/flags'
 
 export function groupWith<T>(eq: (next: T, last: T) => unknown) {
 	return function <S, E, G, F extends { UNIQUE: false }>(

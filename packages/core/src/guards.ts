@@ -4,6 +4,10 @@ export function isFunction(u: unknown): u is AnyFunction {
 	return typeof u === 'function'
 }
 
+export function isNonNullable<V>(u: V): u is NonNullable<V> {
+	return u != null
+}
+
 export function isNullish(u: unknown): u is null | undefined {
 	return u == null
 }

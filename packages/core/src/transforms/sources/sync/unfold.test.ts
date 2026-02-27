@@ -3,7 +3,7 @@ import { collect } from '../../extractors'
 import { unfold } from './unfold'
 
 describe('unfold', () => {
-	test('', () => {
+	test('basic', () => {
 		const res = collect(
 			unfold(0, (acc) =>
 				acc < 3 ? success.of(acc + 1) : failure.of(nothing()),

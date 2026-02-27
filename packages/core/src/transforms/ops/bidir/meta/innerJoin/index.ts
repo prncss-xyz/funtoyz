@@ -1,5 +1,5 @@
 import { Optic } from '../../../../compose'
-import { Flags } from '../../../../compose/_flags'
+import { Flags } from '../../../../compose/flags'
 import { Once } from '../../../../sources/sync/once'
 
 export function innerJoin<U, V, S, E1, G1, F1 extends Flags>(

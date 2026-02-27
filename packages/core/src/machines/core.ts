@@ -1,5 +1,5 @@
 import { Init } from '../functions/arguments/init'
-import { noop } from '../functions/basics'
+import { id, noop } from '../functions/basics'
 
 export type MachineFactory<Props, EventIn, State, Result, EventOut> = (
 	props: Props,
@@ -36,40 +36,37 @@ export function machineToReducer<EventIn, State = EventIn, Result = State>(
 	}
 }
 
-export function canSend<EventIn, State, EventOut>(
-	{
-		reduce,
-	}: {
-		reduce: (
-			event: EventIn,
-			state: State,
-			send: (event: EventOut) => void,
-		) => void
-	},
-	state: State,
+export function spicedMachine<
+	EventIn,
+	State = EventIn,
+	Result = State,
+	EventOut = never,
+>(
+	machine: Machine<EventIn, State, Result, EventOut>,
+	impl: (e: EventOut) => void,
 ) {
-	return (event: EventIn) => {
-		let called = false
-		return (
-			!Object.is(
-				state,
-				reduce(event, state, () => (called = true)),
-			) || called
-		)
+	const reduce = machine.reduce
+	const result = machine.result ?? (id as never)
+	return {
+		disabled: (event: EventIn) => (state: State) => {
+			let called = false
+			return (
+				Object.is(
+					state,
+					reduce(event, state, () => (called = true)),
+				) || called
+			)
+		},
+		next: (event: EventIn) => (state: State) => {
+			return result(reduce(event, state, noop))
+		},
+		result,
+		send: (event: EventIn) => (state: State) => {
+			const calls: EventOut[] = []
+			const res = reduce(event, state, (e) => calls.push(e))
+			if (calls.length > 0)
+				Promise.resolve().then(() => calls.forEach((c) => impl(c)))
+			return res
+		},
 	}
-}
-
-export function getNext<EventIn, State, EventOut>(
-	{
-		reduce,
-	}: {
-		reduce: (
-			event: EventIn,
-			state: State,
-			send: (event: EventOut) => void,
-		) => void
-	},
-	state: State,
-) {
-	return (event: EventIn) => reduce(event, state, noop)
 }

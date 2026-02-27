@@ -1,5 +1,5 @@
 import { Optic } from '../../../compose'
-import { HasFlag } from '../../../compose/_flags'
+import { HasFlag } from '../../../compose/flags'
 import { none } from '../../../sources/sync/none'
 
 export function take(n: number) {

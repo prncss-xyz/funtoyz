@@ -1,5 +1,5 @@
 import { Optic } from '../../../compose'
-import { HasFlag } from '../../../compose/_flags'
+import { HasFlag } from '../../../compose/flags'
 
 export function ap<T, Bs extends unknown[]>(
 	...fns: { [K in keyof Bs]: (value: T) => Bs[K] }

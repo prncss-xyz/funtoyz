@@ -1,5 +1,5 @@
 import { Optic } from '../../../compose'
-import { HasFlag } from '../../../compose/_flags'
+import { HasFlag } from '../../../compose/flags'
 
 export function debounceWith<T>(
 	delay: number,

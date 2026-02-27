@@ -2,7 +2,7 @@ import { fromInit } from '../../../../functions/arguments/init'
 import { id, noop } from '../../../../functions/basics'
 import { ReducerNonDest } from '../../../../reduce'
 import { Optic } from '../../../compose'
-import { Flags } from '../../../compose/_flags'
+import { Flags } from '../../../compose/flags'
 
 export function scan<Event, State, Result = State>(
 	props: ReducerNonDest<Event, State, Result>,

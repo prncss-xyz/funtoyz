@@ -1,10 +1,11 @@
-import { Init } from '../../functions/arguments/init'
+import { fromInit, Init } from '../../functions/arguments/init'
+import { isFunction } from '../../guards'
 import { Empty } from '../../objects/types'
+import { once } from '../sources/sync/once'
 import {
 	composeEmitterEmitter_,
 	composeGetterEmitter_,
 } from './_composeEmitter'
-import { Flags } from './_flags'
 import {
 	Emitter,
 	getModifier,
@@ -15,6 +16,7 @@ import {
 	Setter,
 	trush,
 } from './_methods'
+import { Flags } from './flags'
 
 export type Compose<T, U, E1, G1, F1 extends Flags> = <
 	S,
@@ -159,5 +161,12 @@ export type Optic<T, S, E, G, F extends Flags> = {
 
 export type Focus<T, S, E, G, F extends Flags> = Init<
 	Optic<T, S, E, G, F>,
-	[Optic<S, Empty, never, never, Empty>]
+	[Optic<S, S, never, never, Empty>]
 >
+
+export function fromFocus<T, S, E, G, F extends Flags>(
+	focus: Focus<T, S, E, G, F>,
+): Optic<T, S, E, G, F> {
+  if (isFunction(focus)) return focus(once<S>()) 
+	return focus
+}

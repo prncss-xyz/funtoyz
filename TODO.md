@@ -1,8 +1,10 @@
 # TODO
 
-## Prelude
+## Core
 
-Fix tag methods
+move generate-exports to core, make it typescript
+
+remove generators
 
 ## Machines
 
@@ -10,11 +12,11 @@ Sum, Slice, Map. Higher-order machines (undo-redo etc., see x-state)
 
 ## Transforms
 
+maybe use undefined to trigger remove
+
 outer join, zipCmp
 
 sync zip
-
-port fold functions
 
 scan1, fold1
 
@@ -22,7 +24,7 @@ Validation:
 
 - change in protocol: close must be called after error
 
-relation utils.
+port relation utils
 
 Do notation.
 
