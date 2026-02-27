@@ -1,2 +1,9 @@
-import { sharedPrettier } from './packages/config/src/prettier.js'
-export default sharedPrettier
+/** @type {import("prettier").Options} */
+export default {
+	arrowParens: 'always',
+	jsxSingleQuote: true,
+	semi: false,
+	singleQuote: true,
+	trailingComma: 'all',
+	useTabs: true,
+}

@@ -3,30 +3,7 @@
 	"version": "0.0.0",
 	"type": "module",
 	"private": true,
-	"scripts": {
-		"build": "tsc --declaration"
-	},
-	"main": "./dist/index.js",
-	"module": "./dist/index.js",
-	"types": "./dist/index.d.ts",
 	"exports": {
-		".": "./dist/index.js",
 		"./tsconfig.base.json": "./tsconfig.base.json"
-	},
-	"peerDependencies": {
-		"eslint": "^9.36.0"
-	},
-	"devDependencies": {
-		"@eslint/js": "^9.39.2",
-		"eslint-plugin-only-warn": "^1.1.0",
-		"eslint-plugin-perfectionist": "^5.4.0",
-		"eslint-plugin-react": "^7.37.5",
-		"eslint-plugin-react-compiler": "19.1.0-rc.2",
-		"eslint-plugin-react-hooks": "^7.0.1",
-		"eslint-plugin-react-refresh": "^0.4.26",
-		"eslint-plugin-turbo": "^2.7.6",
-		"globals": "^17.1.0",
-		"typescript": "^5.9.3",
-		"typescript-eslint": "^8.53.1"
 	}
 }
