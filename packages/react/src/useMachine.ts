@@ -27,7 +27,7 @@ export function useMachine<
 	machine: Machine<EventIn, State, Result, EventOut>,
 	onSend?: (event: EventOut) => void,
 ) {
-	const impl = onSend ?? (forbidden as never)
+	onSend ??= (forbidden as never)
 	const [state, setState] = useState(machine.init)
-	return machineState(machine, state, setState, impl)
+	return machineState(machine, state, setState, onSend)
 }

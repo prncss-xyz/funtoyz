@@ -43,7 +43,7 @@ export function spicedMachine<
 	EventOut = never,
 >(
 	machine: Machine<EventIn, State, Result, EventOut>,
-	impl: (e: EventOut) => void,
+	onSend: (e: EventOut) => void,
 ) {
 	const reduce = machine.reduce
 	const result = machine.result ?? (id as never)
@@ -65,7 +65,7 @@ export function spicedMachine<
 			const calls: EventOut[] = []
 			const res = reduce(event, state, (e) => calls.push(e))
 			if (calls.length > 0)
-				Promise.resolve().then(() => calls.forEach((c) => impl(c)))
+				Promise.resolve().then(() => calls.forEach((c) => onSend(c)))
 			return res
 		},
 	}
@@ -80,7 +80,7 @@ export function machineState<
 	machine: Machine<EventIn, State, Result, EventOut>,
 	state: State,
 	setState: (s: State) => void,
-	impl: (e: EventOut) => void,
+	onSend: (e: EventOut) => void,
 ) {
 	const reduce = machine.reduce
 	const result = machine.result ?? (id as never)
@@ -102,7 +102,7 @@ export function machineState<
 			const calls: EventOut[] = []
 			setState(reduce(event, state, (e) => calls.push(e)))
 			if (calls.length > 0)
-				Promise.resolve().then(() => calls.forEach((c) => impl(c)))
+				Promise.resolve().then(() => calls.forEach((c) => onSend(c)))
 		},
 	}
 }
