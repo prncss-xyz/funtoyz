@@ -16,7 +16,7 @@ type States = Tags<{
 
 describe('machines/factories/modal', () => {
 	it('modalMachine works', () => {
-		const machine = modalMachine<never>()<Events, States>(tag('idle'), {
+		const machine = modalMachine()<Events, States>(tag('idle'), {
 			done: {},
 			idle: {
 				start: () => tag('running', 0),
@@ -30,19 +30,19 @@ describe('machines/factories/modal', () => {
 		const instance = machine()
 
 		// Idle -> Start
-		const s1 = instance.reduce(tag('start'), tag('idle'), () => {})
+		const s1 = instance.reduce(tag('start'), tag('idle'))
 		expect(s1).toEqual(tag('running', 0))
 
 		// Running -> Tick
-		const s2 = instance.reduce(tag('tick'), tag('running', 10), () => {})
+		const s2 = instance.reduce(tag('tick'), tag('running', 10))
 		expect(s2).toEqual(tag('running', 11))
 
 		// Running -> Stop
-		const s3 = instance.reduce(tag('stop'), tag('running', 20), () => {})
+		const s3 = instance.reduce(tag('stop'), tag('running', 20))
 		expect(s3).toEqual(tag('idle'))
 
 		// No handler
-		const s4 = instance.reduce(tag('tick'), tag('idle'), () => {})
+		const s4 = instance.reduce(tag('tick'), tag('idle'))
 		expect(s4).toEqual(tag('idle'))
 	})
 

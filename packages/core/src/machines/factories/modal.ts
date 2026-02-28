@@ -3,7 +3,7 @@ import { AnyTag, PayloadOf, TypeIn } from '../../tags/types'
 import { MachineFactory } from '../core'
 import { baseMachine } from './base'
 
-export function modalMachine<EventOut = never>() {
+export function modalMachine<CW = void, CR = void>() {
 	return function <
 		EventIn extends AnyTag,
 		State extends AnyTag,
@@ -16,15 +16,15 @@ export function modalMachine<EventOut = never>() {
 				[E in TypeIn<EventIn>]: (
 					event: PayloadOf<EventIn, E>,
 					state: PayloadOf<State, S>,
-					send: (event: EventOut) => void,
+					send: CW,
 				) => State
 			}>
 		},
 		result?: {
-			[S in TypeIn<State>]: (state: PayloadOf<State, S>) => Result
+			[S in TypeIn<State>]: (state: PayloadOf<State, S>, cr: CR) => Result
 		},
-	): MachineFactory<Props, EventIn, State, Result, EventOut> {
-		return baseMachine<EventOut>()<EventIn, State, Props, Result>(
+	): MachineFactory<Props, EventIn, State, Result, CW, CR> {
+		return baseMachine<CW, CR>()<EventIn, State, Props, Result>(
 			init,
 			(event: any, state, send) => {
 				const s = (states as any)[state.type]

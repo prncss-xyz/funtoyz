@@ -1,23 +1,20 @@
 import { Init } from '../functions/arguments/init'
 import { id, noop } from '../functions/basics'
 
-export type MachineFactory<Props, EventIn, State, Result, EventOut> = (
+export type MachineFactory<Props, EventIn, State, Result, CW, CR> = (
 	props: Props,
-) => Machine<EventIn, State, Result, EventOut>
+) => Machine<EventIn, State, Result, CW, CR>
 
 export interface Machine<
 	EventIn,
 	State = EventIn,
 	Result = State,
-	EventOut = never,
+	CW = void,
+	CR = void,
 > {
 	init: Init<State>
-	reduce: (
-		event: EventIn,
-		state: State,
-		send: (event: EventOut) => void,
-	) => State
-	result?: (state: State) => Result
+	reduce: (event: EventIn, state: State, send: CW) => State
+	result?: (state: State, cr: CR) => Result
 }
 
 export type MachineReducer<Value, State = Value, Result = State> = Machine<
@@ -26,27 +23,16 @@ export type MachineReducer<Value, State = Value, Result = State> = Machine<
 	Result
 >
 
-export function machineToReducer<EventIn, State = EventIn, Result = State>(
-	m: Machine<EventIn, State, Result>,
-) {
-	return {
-		init: m.init,
-		reduce: (event: EventIn, state: State) => m.reduce(event, state, noop),
-		result: m.result,
-	}
-}
-
 export function spicedMachine<
 	EventIn,
 	State = EventIn,
 	Result = State,
-	EventOut = never,
->(
-	machine: Machine<EventIn, State, Result, EventOut>,
-	onSend: (e: EventOut) => void,
-) {
+	CWA = void,
+	CR = void,
+>(machine: Machine<EventIn, State, Result, (e: CWA) => void, CR>) {
 	const reduce = machine.reduce
 	const result = machine.result ?? (id as never)
+
 	return {
 		disabled: (event: EventIn) => (state: State) => {
 			let called = false
@@ -57,17 +43,21 @@ export function spicedMachine<
 				) || called
 			)
 		},
-		next: (event: EventIn) => (state: State) => {
-			return result(reduce(event, state, noop))
-		},
-		result,
-		send: (event: EventIn) => (state: State) => {
-			const calls: EventOut[] = []
-			const res = reduce(event, state, (e) => calls.push(e))
-			if (calls.length > 0)
-				Promise.resolve().then(() => calls.forEach((c) => onSend(c)))
-			return res
-		},
+		next: (event: EventIn, cr: CR) => (state: State) =>
+			result(reduce(event, state, noop), cr),
+		result: (cr: CR) => (state: State) => result(state, cr),
+		send:
+			(
+				event: EventIn,
+				setState: (s: State) => void,
+				onSend: (e: CWA) => void,
+			) =>
+			(state: State) => {
+				const calls: CWA[] = []
+				setState(reduce(event, state, (e) => calls.push(e)))
+				if (calls.length > 0)
+					Promise.resolve().then(() => calls.forEach((c) => onSend(c)))
+			},
 	}
 }
 
@@ -77,7 +67,13 @@ export function machineState<
 	Result = State,
 	EventOut = never,
 >(
-	machine: Machine<EventIn, State, Result, EventOut>,
+	machine: Machine<
+		EventIn,
+		State,
+		Result,
+		EventOut extends never ? void : (e: EventOut) => void,
+		void
+	>,
 	state: State,
 	setState: (s: State) => void,
 	onSend: (e: EventOut) => void,
@@ -90,17 +86,15 @@ export function machineState<
 			return (
 				Object.is(
 					state,
-					reduce(event, state, () => (called = true)),
+					reduce(event, state, (() => (called = true)) as any),
 				) || called
 			)
 		},
-		next: (event: EventIn) => {
-			return result(reduce(event, state, noop))
-		},
+		next: (event: EventIn) => result(reduce(event, state, noop as any)),
 		result: result(state),
 		send: (event: EventIn) => {
 			const calls: EventOut[] = []
-			setState(reduce(event, state, (e) => calls.push(e)))
+			setState(reduce(event, state, ((e: EventOut) => calls.push(e)) as any))
 			if (calls.length > 0)
 				Promise.resolve().then(() => calls.forEach((c) => onSend(c)))
 		},

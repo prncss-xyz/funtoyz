@@ -2,7 +2,7 @@ import { directMachine } from './direct'
 
 describe('machines/factories/direct', () => {
 	test('directMachine works', () => {
-		const machine = directMachine<never>()(
+		const machine = directMachine()(
 			{
 				count: 0,
 			},
@@ -15,11 +15,7 @@ describe('machines/factories/direct', () => {
 		const instance = machine()
 		expect(instance.init).toEqual({ count: 0 })
 
-		const s1 = instance.reduce(
-			{ payload: 5, type: 'inc' },
-			{ count: 1 },
-			() => {},
-		)
+		const s1 = instance.reduce({ payload: 5, type: 'inc' }, { count: 1 })
 		expect(s1).toEqual({ count: 6 })
 	})
 })

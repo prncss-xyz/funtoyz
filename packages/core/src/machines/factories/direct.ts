@@ -2,7 +2,7 @@ import { Init } from '../../functions/arguments/init'
 import { Tags } from '../../tags/types'
 import { baseMachine } from './base'
 
-export function directMachine<EventOut = never>() {
+export function directMachine<EventOut = void>() {
 	return function <T, State, Props = void, Result = State>(
 		init: Init<State, [Props]>,
 		events: {
