@@ -11,12 +11,13 @@
 	},
 	"dependencies": {
 		"@funtoyz/core": "workspace:*",
+		"@funtoyz/react": "workspace:*",
 		"react": "^19.2.3",
 		"react-dom": "^19.2.3"
 	},
 	"devDependencies": {
 		"@types/node": "^25.0.10",
-		"@types/react": "^19.2.9",
+		"@types/react": ">=19",
 		"@types/react-dom": "^19.2.3",
 		"@vitejs/plugin-react": "^5.1.2",
 		"babel-plugin-react-compiler": "^1.0.0",
