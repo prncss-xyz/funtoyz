@@ -1,21 +1,17 @@
+import { tag } from '../../tags/tag'
 import { directMachine } from './direct'
 
 describe('machines/factories/direct', () => {
 	test('directMachine works', () => {
-		const machine = directMachine()(
-			{
-				count: 0,
-			},
-			{
-				finish: (e: any) => e,
-				inc: (e: any, s: { count: number }) => ({ count: s.count + e.payload }),
-			},
-		)
+		const machine = directMachine()(0, {
+			finish: (e: number) => e,
+			inc: (e: number, count) => count + e,
+		})
 
 		const instance = machine()
-		expect(instance.init).toEqual({ count: 0 })
+		expect(instance.init).toEqual(0)
 
-		const s1 = instance.reduce({ payload: 5, type: 'inc' }, { count: 1 })
-		expect(s1).toEqual({ count: 6 })
+		const s1 = instance.reduce(tag('inc', 5), 1)
+		expect(s1).toEqual(6)
 	})
 })

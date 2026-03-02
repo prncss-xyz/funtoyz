@@ -1,4 +1,3 @@
-import { Init } from '../../functions/arguments/init'
 import { isFunction } from '../../guards'
 import { Empty } from '../../objects/types'
 import { once } from '../sources/sync/once'
@@ -159,14 +158,13 @@ export type Optic<T, S, E, G, F extends Flags> = {
 	setter?: Setter<T, S>
 }
 
-export type Focus<T, S, E, G, F extends Flags> = Init<
-	Optic<T, S, E, G, F>,
-	[Optic<S, S, never, never, Empty>]
->
-
 export function fromFocus<T, S, E, G, F extends Flags>(
-	focus: Focus<T, S, E, G, F>,
+	focus: Focus<T, S, E, G, F> | Optic<T, S, E, G, F>,
 ): Optic<T, S, E, G, F> {
 	if (isFunction(focus)) return focus(once<S>())
 	return focus
 }
+
+export type Focus<T, S, E, G, F extends Flags> = (
+	o: Optic<S, S, never, never, Empty>,
+) => Optic<T, S, E, G, F>

@@ -1,6 +1,8 @@
 import { Empty } from '../../../../objects/types'
 import { compose } from '../../../compose'
 
+// TODO: add a setter for referential transparency
+
 export function iso<T, S>({
 	get,
 	set,

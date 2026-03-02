@@ -2,11 +2,11 @@ import { optional } from '.'
 import { remove, replace } from '../../../../arrays'
 import { Nothing } from '../../../../tags/results'
 
+// TODO: preserve reference if no change
+
 export function at<X>(index: number) {
 	return optional<X, X[], Nothing>({
-		get: (xs) => {
-			return xs.at(index)
-		},
+		get: (xs) => xs.at(index),
 		remove: (xs) => remove(index)(xs),
 		set: (x: X, xs) => replace(x, index)(xs),
 	})

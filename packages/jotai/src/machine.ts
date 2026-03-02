@@ -1,5 +1,6 @@
 import {
 	baseMachine,
+	directMachine,
 	fromInit,
 	Machine,
 	modalMachine,
@@ -12,23 +13,31 @@ import { unwrap } from './_utils'
 type CW = (cb: (get: Getter, set: Setter) => void) => void
 type CR = Getter
 
-export function machineAtom<Value, State = Value, Result = State, R = void>(
+export function createMachine<Value, State = Value, Result = State, R = void>(
 	machine: Machine<Value, State, Result, CW, CR>,
 	atomFactory: (init: State) => WritableAtom<Promise<State>, [State], R>,
 ): {
 	disabled: (action: Value) => WritableAtom<Promise<boolean>, [], R>
 	next: (action: Value) => WritableAtom<Promise<Result>, [], R>
-	result: WritableAtom<Promise<Result>, [action: Value], R>
+	resultAtom: WritableAtom<Promise<Result>, [action: Value], R>
 }
-export function machineAtom<Value, State = Value, Result = State, R = void>(
+export function createMachine<Value, State = Value, Result = State, R = void>(
 	machine: Machine<Value, State, Result, CW, CR>,
-	atomFactory?: (init: State) => WritableAtom<State, [State], R>,
+	atomFactory: (init: State) => WritableAtom<State, [State], R>,
+): {
+	disabled: (action: Value) => WritableAtom<Promise<boolean>, [], R>
+	next: (action: Value) => WritableAtom<Result, [], R>
+	resultAtom: WritableAtom<Promise<Result>, [action: Value], R>
+}
+export function createMachine<Value, State = Value, Result = State, R = void>(
+	machine: Machine<Value, State, Result, CW, CR>,
 ): {
 	disabled: (action: Value) => WritableAtom<boolean, [], R>
 	next: (action: Value) => WritableAtom<Result, [], R>
-	result: WritableAtom<Result, [action: Value], R>
+	resultAtom: WritableAtom<Result, [action: Value], R>
 }
-export function machineAtom<Value, State, Result, R>(
+
+export function createMachine<Value, State, Result, R>(
 	machine: Machine<Value, State, Result, CW, CR>,
 	atomFactory?: (
 		init: State,
@@ -56,9 +65,15 @@ export function machineAtom<Value, State, Result, R>(
 				(get) => unwrap(get(baseAtom), spiced.next(action, get)),
 				(get, set) => setter(get, set, action),
 			),
-		result: atom((get) => unwrap(get(baseAtom), spiced.result(get)), setter),
+		resultAtom: atom(
+			(get) => unwrap(get(baseAtom), spiced.result(get)),
+			setter,
+		),
 	}
 }
 
 export const jotaiBaseMachine = baseMachine<CW, CR>()
+export const jotaiDirectMachine = directMachine<CW, CR>()
 export const jotaiModalMachine = modalMachine<CW, CR>()
+
+// TODO: check how autocompletion fares in typical react setting

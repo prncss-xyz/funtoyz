@@ -13,10 +13,14 @@ export function prop<Key extends keyof O, O>(key: Key) {
 			return res as never
 		},
 		remove: (o) => {
+			if (o[key] == undefined) return o
 			const res = { ...o }
 			delete res[key]
 			return res
 		},
-		set: (v, o) => ({ ...o, [key]: v }),
+		set: (v, o) => {
+			if (o[key] === v) return o
+			return { ...o, [key]: v }
+		},
 	})
 }
