@@ -8,6 +8,7 @@ export function zipper<V1, V2, V>(
 	const v1s: V1[] = []
 	const v2s: V2[] = []
 	return {
+		// completes if both are completed
 		complete1() {
 			if (opened2) {
 				opened1 = false
