@@ -1,5 +1,6 @@
 import { fromInit } from '../../../../functions/arguments/init'
 import { noop } from '../../../../functions/basics'
+import { Empty } from '../../../../objects/types'
 import { match } from '../../../../tags/match'
 import { Result } from '../../../../tags/results'
 import { compose } from '../../../compose'
@@ -11,7 +12,7 @@ export function prism<Part, Whole, EG>({
 	get: (w: Whole) => Result<Part, EG>
 	set: (p: Part) => Whole
 }) {
-	return compose<Whole, Part, never, EG, object>({
+	return compose<Whole, Part, never, EG, Empty>({
 		flags: { EXISTS: false },
 		getter: (w, next, error) =>
 			match(get(w), { failure: (e) => error(fromInit(e, w)), success: next }),

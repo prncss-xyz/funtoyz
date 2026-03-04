@@ -40,10 +40,10 @@ export type View<T, G> = (G extends never ? never : undefined) | T
 
 export function view<T, S, E, G, F extends Flags>(
 	o: Optic<T, S, E, G, HasFlag<'SYNC', F>>,
-): (s: S) => View<T, G>
+): (s: S) => (G extends never ? never : undefined) | T
 export function view<T, S, E, G, F extends Flags>(
 	o: Optic<T, S, E, G, F>,
-): (s: S) => Promise<View<T, G>>
+): (s: S) => Promise<(G extends never ? never : undefined) | T>
 export function view<T, S, E, G, F extends Flags>(o: Optic<T, S, E, G, F>) {
 	return extract1<T, S>(o.flags.SYNC, (next, s) =>
 		first(o)(s, next, () => undefined),

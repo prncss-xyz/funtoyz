@@ -1,11 +1,11 @@
 import { AnyTag, PAYLOAD, Tag, TYPE } from './types'
 
 export function createTag<Prop extends PropertyKey>(prop: Prop) {
-	function of(t: void): {
+	function of(p: void): {
 		[PAYLOAD]: void
 		[TYPE]: Prop
 	}
-	function of<P>(t: P): {
+	function of<const P>(p: P): {
 		[PAYLOAD]: P
 		[TYPE]: Prop
 	}

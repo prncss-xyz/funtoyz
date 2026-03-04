@@ -41,7 +41,7 @@ function composeGetter<T, U, S, E1, G1, E2, G2>(
 		o2.getter!(s, (t) => o1.getter!(t, next, error), error)
 }
 
-function composeEmitter<T, U, S, E1, E2, G2, F2 extends Flags>(
+export function composeEmitter<T, U, S, E1, E2, G2, F2 extends Flags>(
 	o1: Optic<U, T, E1, any, any>,
 	o2: Optic<T, S, E2, G2, F2>,
 ): Emitter<U, S, E1 | E2 | G2> | undefined {

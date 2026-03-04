@@ -5,6 +5,10 @@ export function exhaustive(v: never): never {
 	throw new Error(`Unexpected value: ${v}`)
 }
 
+export function toExhaustive(v: never): void {
+	throw new Error(`Unexpected value: ${v}`)
+}
+
 /**
  * Use to assert a codepath is never reached.
  */

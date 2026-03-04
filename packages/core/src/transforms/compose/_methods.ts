@@ -27,15 +27,17 @@ export type Setter<T, S> = (t: T, next: (s: S) => void, s: S) => void
 
 export type Remover<S> = (s: S, next: (s: S) => void) => void
 
+export type EmitterReturn = {
+	abort: () => void
+	start: () => void
+}
+
 export type Emitter<T, S, E> = (
 	s: S,
 	next: (t: T) => void,
 	error: (e: E) => void,
 	complete: () => void,
-) => {
-	abort: () => void
-	start: () => void
-}
+) => EmitterReturn
 
 export function first<T, S, E extends G, G>(o: {
 	emitter?: Emitter<T, S, E>
@@ -121,6 +123,7 @@ export function reduce<T, S, U, E, G, R>(
 						acc = reduce(t, acc)
 					}
 				},
+				// errors are ignored because we want prims to act as filters
 				noop,
 				() => {
 					if (!done) {
