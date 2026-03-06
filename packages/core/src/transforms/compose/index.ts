@@ -147,6 +147,12 @@ export function compose<T, U, E1, G1, F1 extends Flags>(
 	}
 }
 
+export function focus<T, U, E1, G1, F1 extends Flags>(
+	o1: Focus<U, T, E1, G1, F1>,
+) {
+  return compose(fromFocus(o1))
+}
+
 export type Optic<T, S, E, G, F extends Flags> = {
 	emitter?: Emitter<T, S, E>
 	flags: F

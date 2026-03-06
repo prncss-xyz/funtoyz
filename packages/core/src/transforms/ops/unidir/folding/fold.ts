@@ -13,7 +13,7 @@ export function fold<Value, State, Result = State>(
 		S,
 		never,
 		never,
-		(F['SYNC'] extends false ? { SYNC: false } : object) & {
+		(F['SYNC'] extends false ? { SYNC: false } : {}) & {
 			CONSTRUCT: false
 			WRITE: false
 		}

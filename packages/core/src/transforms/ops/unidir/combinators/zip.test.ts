@@ -1,4 +1,5 @@
 import { flow } from '../../../../functions/flow'
+import { pipe } from '../../../../functions/pipe'
 import { collect } from '../../../extractors'
 import { range } from '../../../sources/sync/loop'
 import { map } from '../monadic/map'
@@ -13,7 +14,8 @@ describe('zip', () => {
 		const res = collect(
 			flow(
 				range(0, 3),
-				zip(flow(range(0, 2), map(toLetter)), (a, b) => a + b),
+				zip(flow(range(0, 2), map(toLetter))),
+				map(([a, b]) => a + b),
 			),
 		)()
 		expect(res).toEqual(['0a', '1b'])
@@ -22,7 +24,8 @@ describe('zip', () => {
 		const res = collect(
 			flow(
 				range(0, 2),
-				zip(flow(range(0, 3), map(toLetter)), (a, b) => a + b),
+				zip(pipe(() => range(0, 3), map(toLetter))),
+				map(([a, b]) => a + b),
 			),
 		)()
 		expect(res).toEqual(['0a', '1b'])

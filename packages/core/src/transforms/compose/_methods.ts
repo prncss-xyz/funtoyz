@@ -39,7 +39,15 @@ export type Emitter<T, S, E> = (
 	complete: () => void,
 ) => EmitterReturn
 
-export function first<T, S, E extends G, G>(o: {
+export function getEmitter<T, S, E, G>(o: {
+	emitter?: Emitter<T, S, E>
+	getter?: Getter<T, S, G>
+	nothing?: () => G
+}) {
+  if (o.emitter) return 
+}
+
+export function getGetter<T, S, E extends G, G>(o: {
 	emitter?: Emitter<T, S, E>
 	getter?: Getter<T, S, G>
 	nothing?: () => G

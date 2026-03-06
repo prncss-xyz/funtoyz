@@ -20,7 +20,7 @@ export function outerJoin<
 		S,
 		E1 | E2,
 		G1 | G2,
-		(F1['SYNC'] extends false ? { SYNC: false } : object) & {
+		(F1['SYNC'] extends false ? { SYNC: false } : {}) & {
 			CONSTRUCT: false
 			UNIQUE: false
 			WRITE: false

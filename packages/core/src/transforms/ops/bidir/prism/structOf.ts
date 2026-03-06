@@ -5,7 +5,7 @@ import { Empty } from '../../../../objects/types'
 import { Reducer } from '../../../../reduce'
 import { Optic } from '../../../compose'
 import { Emitter, EmitterReturn, Getter } from '../../../compose/_methods'
-import { Flags } from '../../../compose/flags'
+import { Flags, HasFlag } from '../../../compose/flags'
 import { Traversal } from '../traversal'
 import { toArray } from '../traversal/elems'
 
@@ -54,18 +54,20 @@ function getGetter_<V1, V2, ACC2, RES1, RES2, E = void>(
 	}
 }
 
-// TODO: firstOf
+// TODO: fallback
 // TODO: object/tuple
 // TODO: opt, default
 // TODO: validation
 // TODO: recursive
+// TODO: partsOf
 
-export function each<V1, V2, ACC1, ACC2, RES1, RES2>(
+// TODO: modifier
+export function structOf<V1, V2, ACC1, ACC2, RES1, RES2>(
 	write: Traversal<V1, ACC1, RES1>,
 	read: Traversal<V2, ACC2, RES2>,
 ) {
 	return function <E extends G, G, F extends Flags>(
-		o: Optic<V1, V2, E, G, F>,
+		o: Optic<V1, V2, E, G, HasFlag<'READ' | 'UNIQUE', F>>,
 	): Optic<
 		RES1,
 		RES2,
@@ -76,8 +78,9 @@ export function each<V1, V2, ACC1, ACC2, RES1, RES2>(
 			: Empty) &
 			(F['SYNC'] extends false ? { SYNC: false } : Empty)
 	> {
-		// TODO: accept emitter as is
-		const reviewer = getGetter_(write, read, { getter: o.reviewer })
+		const reviewer = o.reviewer
+			? getGetter_(write, read, { getter: o.reviewer })
+			: undefined
 		return {
 			flags: {
 				CONSTRUCT: o.flags.CONSTRUCT as never,
@@ -91,5 +94,5 @@ export function each<V1, V2, ACC1, ACC2, RES1, RES2>(
 }
 
 export function arrayOf<V1, V2>() {
-	return each(toArray<V1>(), toArray<V2>())
+	return structOf(toArray<V1>(), toArray<V2>())
 }

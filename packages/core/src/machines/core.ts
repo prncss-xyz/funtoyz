@@ -1,3 +1,4 @@
+import { forbidden } from '../assertions'
 import { Init } from '../functions/arguments/init'
 import { id, noop } from '../functions/basics'
 
@@ -67,17 +68,12 @@ export function machineState<
 	Result = State,
 	EventOut = never,
 >(
-	machine: Machine<
-		EventIn,
-		State,
-		Result,
-		EventOut extends never ? void : (e: EventOut) => void,
-		void
-	>,
+	machine: Machine<EventIn, State, Result, EventOut, void>,
 	state: State,
 	setState: (s: State) => void,
-	onSend: (e: EventOut) => void,
+	onSend?: ((e: EventOut) => void)
 ) {
+  const onSend_ = onSend ?? forbidden as never
 	const reduce = machine.reduce
 	const result = machine.result ?? (id as never)
 	return {
@@ -96,7 +92,7 @@ export function machineState<
 			const calls: EventOut[] = []
 			setState(reduce(event, state, ((e: EventOut) => calls.push(e)) as any))
 			if (calls.length > 0)
-				Promise.resolve().then(() => calls.forEach((c) => onSend(c)))
+				Promise.resolve().then(() => calls.forEach((c) => onSend_(c)))
 		},
 	}
 }

@@ -14,7 +14,7 @@ export function scan<Event, State, Result = State>(
 		S,
 		E,
 		never,
-		(F['SYNC'] extends false ? { SYNC: false } : object) & {
+		(F['SYNC'] extends false ? { SYNC: false } : {}) & {
 			CONSTRUCT: false
 			UNIQUE: false
 			WRITE: false

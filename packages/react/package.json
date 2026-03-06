@@ -30,5 +30,8 @@
 			"import": "./dist/index.js",
 			"types": "./dist/index.d.ts"
 		}
+	},
+	"dependencies": {
+		"@testing-library/react": "^16.3.2"
 	}
 }

@@ -4,7 +4,7 @@ import { Modify } from '../../functions/types'
 import { isFunction } from '../../guards'
 import { failure, Result, success } from '../../tags/results'
 import { Optic } from '../compose'
-import { first, getModifier, reduce } from '../compose/_methods'
+import { getGetter, getModifier, reduce } from '../compose/_methods'
 import { Flags, HasFlag } from '../compose/flags'
 import { toArray } from '../ops/bidir/traversal/elems'
 
@@ -46,7 +46,7 @@ export function view<T, S, E, G, F extends Flags>(
 ): (s: S) => Promise<(G extends never ? never : undefined) | T>
 export function view<T, S, E, G, F extends Flags>(o: Optic<T, S, E, G, F>) {
 	return extract1<T, S>(o.flags.SYNC, (next, s) =>
-		first(o)(s, next, () => undefined),
+		getGetter(o)(s, next, () => undefined),
 	)
 }
 
@@ -60,7 +60,7 @@ export function preview<T, S, E extends G, G, F extends Flags>(
 	o: Optic<T, S, E, G, F>,
 ) {
 	return extract1<Result<T, G>, S>(o.flags.SYNC, (next, s) =>
-		first(o)(s, pipe2(success.of, next), pipe2(failure.of, next)),
+		getGetter(o)(s, pipe2(success.of, next), pipe2(failure.of, next)),
 	)
 }
 
