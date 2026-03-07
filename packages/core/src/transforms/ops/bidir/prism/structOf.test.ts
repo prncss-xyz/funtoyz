@@ -1,9 +1,9 @@
 import { flow } from '../../../../functions/flow'
 import { review, view } from '../../../extractors'
 import { linear } from '../iso/linear'
-import { arrayOf } from './structOf'
 import { filter } from './filter'
 import { num, strToNum } from './primitives'
+import { arrayOf } from './structOf'
 
 function isOdd(n: number) {
 	return n % 2 === 1

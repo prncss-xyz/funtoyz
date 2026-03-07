@@ -1,5 +1,3 @@
-/* @vitest-environment jsdom */
-
 import { directMachine, Tags } from '@funtoyz/core'
 import { act, renderHook } from '@testing-library/react'
 import { vi } from 'vitest'

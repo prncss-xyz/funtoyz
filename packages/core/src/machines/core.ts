@@ -71,9 +71,9 @@ export function machineState<
 	machine: Machine<EventIn, State, Result, EventOut, void>,
 	state: State,
 	setState: (s: State) => void,
-	onSend?: ((e: EventOut) => void)
+	onSend?: (e: EventOut) => void,
 ) {
-  const onSend_ = onSend ?? forbidden as never
+	const onSend_ = onSend ?? (forbidden as never)
 	const reduce = machine.reduce
 	const result = machine.result ?? (id as never)
 	return {
