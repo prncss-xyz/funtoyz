@@ -12,9 +12,11 @@ Sum, Slice, Map. Higher-order machines (undo-redo etc., see x-state)
 
 ## Transforms
 
-maybe use undefined to trigger remove
+setter for transducers
 
-outer join, zipCmp
+use undefined to trigger remove
+
+zipCmp
 
 sync zip
 
@@ -26,6 +28,6 @@ Validation:
 
 port relation utils
 
-Do notation.
+Do notation
 
 Logic (microkanren)
