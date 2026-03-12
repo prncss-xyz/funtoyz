@@ -14,7 +14,7 @@ describe('machines/factories/base', () => {
 			},
 			String,
 		)
-		const o = flow(once<number[]>(), elems(), scan(machine()))
+		const o = flow(once<number[]>(), elems(), scan(machine))
 		const res = collect(o)([1, 2, 3])
 		expect(res).toEqual(['0', '1', '3', '6'])
 	})

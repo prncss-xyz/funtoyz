@@ -19,7 +19,7 @@ describe('machineAtom', () => {
 			add: (n: number, state) => state + n,
 			set: (n: number) => n,
 		})
-		const { resultAtom } = createMachine(demoMachine())
+		const { resultAtom } = createMachine(demoMachine)
 		expect(store.get(resultAtom)).toEqual(1)
 		store.set(resultAtom, tag('add', 2))
 		await Promise.resolve()
@@ -37,7 +37,7 @@ describe('machineAtom', () => {
 				event.type === 'add' ? { n: state.n + event.n } : state,
 			(state: State) => state.n,
 		)
-		const { disabled, next, resultAtom } = createMachine(machine())
+		const { disabled, next, resultAtom } = createMachine(machine, undefined)
 		expect(store.get(resultAtom)).toBe(1)
 		expect(store.get(next({ n: 1, type: 'add' }))).toBe(2)
 		expect(store.get(resultAtom)).toBe(1)
@@ -53,7 +53,7 @@ describe('machineAtom', () => {
 				event.type === 'add' ? { n: state.n + event.n } : state,
 			(state: State) => state,
 		)
-		const { resultAtom } = createMachine(machine(), asyncAtomFactory)
+		const { resultAtom } = createMachine(machine, undefined, asyncAtomFactory)
 		expect(await store.get(resultAtom)).toEqual({ n: 1 })
 		store.set(resultAtom, { n: 1, type: 'add' })
 		await Promise.resolve()
@@ -78,7 +78,7 @@ describe('machineAtom', () => {
 			},
 			(state: State) => state,
 		)
-		const { resultAtom } = createMachine(machine())
+		const { resultAtom } = createMachine(machine)
 		store.set(resultAtom, { type: 'tick' })
 		await Promise.resolve()
 		expect(store.get(countAtom)).toBe(1)

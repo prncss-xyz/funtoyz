@@ -22,7 +22,7 @@ describe('useMachine', () => {
 		const panic = vi.fn()
 		const toast = vi.fn()
 		const { result } = renderHook(() =>
-			useMachine(machine(), {
+			useMachine(machine, undefined, {
 				panic,
 				toast,
 			}),

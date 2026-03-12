@@ -1,6 +1,7 @@
 import {
 	AnyTag,
 	forbidden,
+	fromInit,
 	isFunction,
 	type Machine,
 	machineState,
@@ -26,15 +27,32 @@ function fromHandlers<EventOut>(
 }
 
 export function useMachine<State, EventIn = State, Result = State>(
-	machine: Machine<EventIn, State, Result>,
+	machine: Machine<void, EventIn, State, Result>,
+	param?: void,
 ): {
 	disabled: (event: EventIn) => boolean
 	next: (event: EventIn) => Result
 	result: Result
 	send: (event: EventIn) => void
 }
-export function useMachine<State, EventOut, EventIn = State, Result = State>(
-	machine: Machine<EventIn, State, Result, EventOut>,
+export function useMachine<Prop, State, EventIn = State, Result = State>(
+	machine: Machine<Prop, EventIn, State, Result>,
+	param: Prop,
+): {
+	disabled: (event: EventIn) => boolean
+	next: (event: EventIn) => Result
+	result: Result
+	send: (event: EventIn) => void
+}
+export function useMachine<
+	Prop,
+	State,
+	EventOut,
+	EventIn = State,
+	Result = State,
+>(
+	machine: Machine<Prop, EventIn, State, Result, EventOut>,
+	param: Prop,
 	onSend: Handlers<EventOut>,
 ): {
 	disabled: (event: EventIn) => boolean
@@ -42,11 +60,12 @@ export function useMachine<State, EventOut, EventIn = State, Result = State>(
 	result: Result
 	send: (event: EventIn) => void
 }
-export function useMachine<State, EventIn, Result, EventOut>(
-	machine: Machine<EventIn, State, Result, EventOut>,
+export function useMachine<Prop, State, EventIn, Result, EventOut>(
+	machine: Machine<Prop, EventIn, State, Result, EventOut>,
+	param: Prop,
 	onSend?: Handlers<EventOut>,
 ) {
-	const [state, setState] = useState(machine.init)
+	const [state, setState] = useState(() => fromInit(machine.init, param))
 	const h = fromHandlers(onSend)
 	return machineState(machine as never, state, setState, h)
 }

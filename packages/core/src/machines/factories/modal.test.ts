@@ -27,22 +27,20 @@ describe('machines/factories/modal', () => {
 			},
 		})
 
-		const instance = machine()
-
 		// Idle -> Start
-		const s1 = instance.reduce(tag('start'), tag('idle'))
+		const s1 = machine.reduce(tag('start'), tag('idle'))
 		expect(s1).toEqual(tag('running', 0))
 
 		// Running -> Tick
-		const s2 = instance.reduce(tag('tick'), tag('running', 10))
+		const s2 = machine.reduce(tag('tick'), tag('running', 10))
 		expect(s2).toEqual(tag('running', 11))
 
 		// Running -> Stop
-		const s3 = instance.reduce(tag('stop'), tag('running', 20))
+		const s3 = machine.reduce(tag('stop'), tag('running', 20))
 		expect(s3).toEqual(tag('idle'))
 
 		// No handler
-		const s4 = instance.reduce(tag('tick'), tag('idle'))
+		const s4 = machine.reduce(tag('tick'), tag('idle'))
 		expect(s4).toEqual(tag('idle'))
 	})
 
@@ -59,7 +57,6 @@ describe('machines/factories/modal', () => {
 				done: (s) => s * 2,
 			},
 		)
-		const instance = machine()
-		expect(instance.result?.(tag('done', 10))).toBe(20)
+		expect(machine.result?.(tag('done', 10))).toBe(20)
 	})
 })
