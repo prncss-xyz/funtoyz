@@ -2,6 +2,7 @@ import { Init } from '../../functions/arguments/init'
 import { AnyTag, PayloadOf, TypeIn } from '../../tags/types'
 import { Machine } from '../core'
 import { baseMachine } from './base'
+import { fromSendable, Sendable } from './sendable'
 
 export function modalMachine<CW = void, CR = void>() {
 	return function <
@@ -23,14 +24,15 @@ export function modalMachine<CW = void, CR = void>() {
 		result?: {
 			[S in TypeIn<State>]: (state: PayloadOf<State, S>, cr: CR) => Result
 		},
-	): Machine<Props, EventIn, State, Result, CW, CR> {
-		return baseMachine<CW, CR>()<EventIn, State, Props, Result>(
+	): Machine<Props, Sendable<EventIn>, State, Result, CW, CR> {
+		return baseMachine<CW, CR>()<Sendable<EventIn>, State, Props, Result>(
 			init,
 			(event, state, send) => {
+				const sendableEvent = fromSendable(event)
 				const s = (states as any)[state.type]
-				const handler = s[event.type]
+				const handler = s[sendableEvent.type]
 				if (!handler) return state
-				return handler(event.payload, state.payload, send)
+				return handler(sendableEvent.payload, state.payload, send)
 			},
 			result
 				? (state) => (result as any)[state.type](state.payload)

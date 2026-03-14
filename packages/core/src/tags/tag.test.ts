@@ -1,4 +1,4 @@
-import { tag } from './tag'
+import { tag, tagAll } from './tag'
 
 describe('tag', () => {
 	test('one argument', () => {
@@ -10,7 +10,7 @@ describe('tag', () => {
 		expect(t2).toEqual({ payload: 'b', type: 'a' })
 	})
 	test('three arguments', () => {
-		const t3 = tag('a', 'b', 'c') satisfies {
+		const t3 = tagAll('a', 'b', 'c') satisfies {
 			payload: { payload: 'c'; type: 'b' }
 			type: 'a'
 		}
