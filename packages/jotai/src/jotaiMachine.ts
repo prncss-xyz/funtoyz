@@ -1,12 +1,19 @@
-import { fromInit, Machine, spicedMachine } from '@funtoyz/core'
+import {
+	baseMachine,
+	directMachine,
+	fromInit,
+	Machine,
+	modalMachine,
+	spicedMachine,
+} from '@funtoyz/core'
 import { atom, Getter, Setter, WritableAtom } from 'jotai'
 
 import { unwrap } from './_utils'
 
+type CW = (cb: (get: Getter, set: Setter) => void) => void
 type CR = Getter
 
-/*
-export function createMachine<Prop, Value, State, Result, R = void>(
+export function createJotaiMachine<Prop, Value, State, Result, R = void>(
 	machine: Machine<Prop, Value, State, Result, CW, CR>,
 	prop: Prop,
 	atomFactory: (init: State) => WritableAtom<Promise<State>, [State], R>,
@@ -15,7 +22,7 @@ export function createMachine<Prop, Value, State, Result, R = void>(
 	next: (action: Value) => WritableAtom<Promise<Result>, [], R>
 	resultAtom: WritableAtom<Promise<Result>, [action: Value], R>
 }
-export function createMachine<Prop, Value, State, Result, R = void>(
+export function createJotaiMachine<Prop, Value, State, Result, R = void>(
 	machine: Machine<Prop, Value, State, Result, CW, CR>,
 	prop: Prop,
 	atomFactory: (init: State) => WritableAtom<State, [State], R>,
@@ -24,15 +31,15 @@ export function createMachine<Prop, Value, State, Result, R = void>(
 	next: (action: Value) => WritableAtom<Result, [], R>
 	resultAtom: WritableAtom<Promise<Result>, [action: Value], R>
 }
-export function createMachine<Value, State, Result, R = void>(
+export function createJotaiMachine<Value, State, Result, R = void>(
 	machine: Machine<void, Value, State, Result, CW, CR>,
-	prop?: void,
+  prop?: void,
 ): {
 	disabled: (action: Value) => WritableAtom<boolean, [], R>
 	next: (action: Value) => WritableAtom<Result, [], R>
 	resultAtom: WritableAtom<Result, [action: Value], R>
 }
-export function createMachine<Prop, Value, State, Result, R = void>(
+export function createJotaiMachine<Prop, Value, State, Result, R = void>(
 	machine: Machine<Prop, Value, State, Result, CW, CR>,
 	prop: Prop,
 ): {
@@ -40,20 +47,16 @@ export function createMachine<Prop, Value, State, Result, R = void>(
 	next: (action: Value) => WritableAtom<Result, [], R>
 	resultAtom: WritableAtom<Result, [action: Value], R>
 }
-*/
 
-export function createMachine<Prop, Value, State, Result, Ef, R>(
-	machine: Machine<Prop, Value, State, Result, (ef: Ef) => void, CR>,
-	props?: {
-		atomFactory?: (
-			init: State,
-		) => WritableAtom<Promise<State> | State, [State], R>
-		effects?: (ef: Ef, get: Getter, set: Setter) => void
-		prop?: Prop
-	},
+export function createJotaiMachine<Prop, Value, State, Result, R>(
+	machine: Machine<Prop, Value, State, Result, CW, CR>,
+	prop: Prop,
+	atomFactory?: (
+		init: State,
+	) => WritableAtom<Promise<State> | State, [State], R>,
 ) {
-	const baseAtom = (props?.atomFactory ?? (atom as never))(
-		fromInit(machine.init, props!.prop!),
+	const baseAtom = (atomFactory ?? (atom as never))(
+		fromInit(machine.init, prop),
 	)
 	const spiced = spicedMachine(machine)
 	const setter = (get: Getter, set: Setter, action: Value) =>
@@ -62,7 +65,7 @@ export function createMachine<Prop, Value, State, Result, Ef, R>(
 			spiced.send(
 				action,
 				(state) => set(baseAtom, state),
-				(ef) => (props?.effects ? props.effects(ef, get, set) : noEffects(ef)),
+				(cb) => cb(get, set),
 			),
 		)
 	return {
@@ -83,6 +86,8 @@ export function createMachine<Prop, Value, State, Result, Ef, R>(
 	}
 }
 
-function noEffects(e: unknown): never {
-	throw new Error(`Effects are not supported in this machine (${e})`)
-}
+export const jotaiBaseMachine = baseMachine<CW, CR>()
+export const jotaiDirectMachine = directMachine<CW, CR>()
+export const jotaiModalMachine = modalMachine<CW, CR>()
+
+// TODO: check how autocompletion fares in typical react setting
