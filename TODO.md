@@ -13,11 +13,6 @@ Sum, Slice, Map. Higher-order machines (undo-redo etc., see x-state)
 ## Transforms
 
 setter for transducers
-should abort call complete?
-
-maybe use undefined to trigger remove
-
-use undefined to trigger remove
 
 zipCmp
 
@@ -25,9 +20,7 @@ sync zip
 
 scan1, fold1
 
-Validation:
-
-- change in protocol: close must be called after error
+Validation
 
 port relation utils
 
