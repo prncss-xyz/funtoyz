@@ -1,6 +1,6 @@
 import { flow } from '../../../../functions/flow'
 import { failure, nothing, success } from '../../../../tags/results'
-import { preview, REMOVE, update } from '../../../extractors'
+import { preview, update } from '../../../extractors'
 import { once } from '../../../sources/sync/once'
 import { stack } from './stack'
 
@@ -27,10 +27,10 @@ describe('stack', () => {
 	})
 	describe('remove', () => {
 		it('defined', () => {
-			expect(update(o)(REMOVE)(sourceDefined)).toEqual(['a', 'b'])
+			expect(update(o)(undefined)(sourceDefined)).toEqual(['a', 'b'])
 		})
 		it('undefined', () => {
-			expect(update(o)(REMOVE)(sourceUndefined)).toEqual(sourceUndefined)
+			expect(update(o)(undefined)(sourceUndefined)).toEqual(sourceUndefined)
 		})
 	})
 })

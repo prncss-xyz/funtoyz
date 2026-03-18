@@ -1,6 +1,6 @@
 import { flow } from '../../../../functions/flow'
 import { failure, nothing, success } from '../../../../tags/results'
-import { preview, REMOVE, update, view } from '../../../extractors'
+import { preview, update, view } from '../../../extractors'
 import { once } from '../../../sources/sync/once'
 import { prop } from './prop'
 import { queue } from './queue'
@@ -28,10 +28,10 @@ describe('queue', () => {
 	})
 	describe('remove', () => {
 		it('defined', () => {
-			expect(update(o)(REMOVE)(sourceDefined)).toEqual(['b', 'c'])
+			expect(update(o)(undefined)(sourceDefined)).toEqual(['b', 'c'])
 		})
 		it('undefined', () => {
-			expect(update(o)(REMOVE)(sourceUndefined)).toEqual(sourceUndefined)
+			expect(update(o)(undefined)(sourceUndefined)).toEqual(sourceUndefined)
 		})
 	})
 })
@@ -95,7 +95,7 @@ describe('prop', () => {
 		})
 	})
 	it('remove', () => {
-		expect(update(focusB)(REMOVE)(sourceDefined)).toEqual({ a: 'A', c: 'C' })
-		expect(update(focusB)(REMOVE)(sourceUndefined)).toEqual({ a: 'A', c: null })
+		expect(update(focusB)(undefined)(sourceDefined)).toEqual({ a: 'A', c: 'C' })
+		expect(update(focusB)(undefined)(sourceUndefined)).toEqual({ a: 'A', c: null })
 	})
 })

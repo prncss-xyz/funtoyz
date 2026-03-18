@@ -3,7 +3,7 @@ import { expect } from 'vitest'
 import { innerJoin } from '.'
 import { flow } from '../../../../../functions/flow'
 import { pipe } from '../../../../../functions/pipe'
-import { collect, preview, REMOVE, update } from '../../../../extractors'
+import { collect, preview, update } from '../../../../extractors'
 import { once } from '../../../../sources/sync/once'
 import { prop } from '../../optional/prop'
 import { elems } from '../../traversal/elems'
@@ -73,7 +73,7 @@ describe.skip('join, many', () => {
 			current: ['alice', 'alice', 'charlie', 'toto'],
 			people,
 		}
-		expect(update(o)(REMOVE)(data)).toEqual({
+		expect(update(o)(undefined)(data)).toEqual({
 			current: ['alice', 'alice', 'charlie', 'toto'],
 			people: {
 				bob: 'Bob',

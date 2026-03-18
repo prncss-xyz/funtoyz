@@ -1,6 +1,6 @@
 import { flow } from '../../../../functions/flow'
 import { failure, nothing, success } from '../../../../tags/results'
-import { preview, REMOVE, update, view } from '../../../extractors'
+import { preview, update, view } from '../../../extractors'
 import { once } from '../../../sources/sync/once'
 import { prop } from './prop'
 
@@ -64,10 +64,10 @@ describe('prop', () => {
 		})
 	})
 	it('remove', () => {
-		expect(update(focusB)(REMOVE)(sourceDefined)).toEqual({ a: 'A', c: 'C' })
-		expect(update(focusB)(REMOVE)(sourceUndefined)).toEqual({ a: 'A', c: null })
+		expect(update(focusB)(undefined)(sourceDefined)).toEqual({ a: 'A', c: 'C' })
+		expect(update(focusB)(undefined)(sourceUndefined)).toEqual({ a: 'A', c: null })
 		// @ts-expect-error cannot remove from a defined source
-		update(focusA)(REMOVE)
-		update(focusC)(REMOVE)
+		update(focusA)(undefined)
+		update(focusC)(undefined)
 	})
 })

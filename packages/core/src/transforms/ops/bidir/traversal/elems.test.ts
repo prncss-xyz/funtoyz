@@ -1,6 +1,6 @@
 import { flow } from '../../../../functions/flow'
 import { success } from '../../../../tags/results'
-import { preview, REMOVE, update, view } from '../../../extractors'
+import { preview, update, view } from '../../../extractors'
 import { once } from '../../../sources/sync/once'
 import { fold } from '../../unidir/folding/fold'
 import { lens } from '../lens'
@@ -16,7 +16,7 @@ describe('elems', () => {
 		expect(update(o)((x) => x * 2)([1, 2, 3])).toEqual([2, 4, 6])
 	})
 	test('remove', () => {
-		expect(update(o)(REMOVE)([1, 2, 3])).toEqual([])
+		expect(update(o)(undefined)([1, 2, 3])).toEqual([])
 	})
 })
 
@@ -30,7 +30,7 @@ describe('compose with prism', () => {
 		expect(update(o)((x) => x * 2)([1, 2, 3])).toEqual([1, 4, 3])
 	})
 	test('remove', () => {
-		expect(update(o)(REMOVE)([1, 2, 3])).toEqual([1, 3])
+		expect(update(o)(undefined)([1, 2, 3])).toEqual([1, 3])
 	})
 })
 

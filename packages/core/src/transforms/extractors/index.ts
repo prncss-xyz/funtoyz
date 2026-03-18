@@ -90,9 +90,8 @@ export function review<T, S, G, E, F extends Flags>(
 	return extract1<S, T>(o.flags.SYNC, (next, t) => o.reviewer!(t, next))
 }
 
-export const REMOVE = Symbol('REMOVE')
 export type Update<T, G> =
-	| (G extends never ? never : typeof REMOVE)
+	| (G extends never ? never : undefined)
 	| Modify<T>
 	| T
 function update_<T, S, G>(
@@ -102,7 +101,7 @@ function update_<T, S, G>(
 	s: S,
 ) {
 	if (isFunction(t)) return getModifier(o)!((v, n) => n(t(v)), next, s)
-	if (t === REMOVE) return o.remover!(s, next)
+	if (t === undefined) return o.remover!(s, next)
 	if (o.setter) return o.setter(t, next, s)
 	return getModifier(o)!((_, n) => n(t), next, s)
 }

@@ -1,7 +1,7 @@
 import { flow } from '../../../../functions/flow'
 import { success } from '../../../../tags/results'
 import { TYPE } from '../../../../tags/types'
-import { preview, REMOVE, update } from '../../../extractors'
+import { preview, update } from '../../../extractors'
 import { once } from '../../../sources/sync/once'
 import { at } from './at'
 
@@ -22,7 +22,7 @@ describe('at', () => {
 		expect(update(o)((x) => x + 1)([1, 2, 3])).toEqual([1, 3, 3])
 	})
 	test('remove', () => {
-		expect(update(o)(REMOVE)([1, 2, 3])).toEqual([1, 3])
+		expect(update(o)(undefined)([1, 2, 3])).toEqual([1, 3])
 	})
 })
 
@@ -57,7 +57,7 @@ describe('composed at', () => {
 		])
 	})
 	test('remove', () => {
-		const res = update(o)(REMOVE)([
+		const res = update(o)(undefined)([
 			[1, 2, 3],
 			[4, 5, 6],
 		])

@@ -1,5 +1,5 @@
 import { flow } from '../../functions/flow'
-import { REMOVE, update } from '../extractors'
+import { update } from '../extractors'
 import { once } from '../sources/sync/once'
 import { setter } from './setter'
 
@@ -17,7 +17,7 @@ describe('setter', () => {
 			// @ts-expect-error should not allow over
 			update(o)((x) => !x)
 			// @ts-expect-error should not allow remove
-			update(o)(REMOVE)
+			update(o)(undefined)
 		})
 		it('defined, false', () => {
 			expect(update(o)(false)(sourceDefined)).toEqual(['c', 'b', 'a'])

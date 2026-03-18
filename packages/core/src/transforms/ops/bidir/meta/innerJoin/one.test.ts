@@ -4,7 +4,7 @@ import { innerJoin } from '.'
 import { flow } from '../../../../../functions/flow'
 import { pipe } from '../../../../../functions/pipe'
 import { success } from '../../../../../tags/results'
-import { collect, preview, REMOVE, update } from '../../../../extractors'
+import { collect, preview, update } from '../../../../extractors'
 import { once } from '../../../../sources/sync/once'
 import { prop } from '../../optional/prop'
 import { filter } from '../../prism/filter'
@@ -95,7 +95,7 @@ describe.skip('join, one', () => {
 			current: 'bob',
 			people,
 		}
-		expect(update(o)(REMOVE)(data)).toEqual({
+		expect(update(o)(undefined)(data)).toEqual({
 			current: 'bob',
 			people: [
 				{ id: 'alice', name: 'Alice' },
