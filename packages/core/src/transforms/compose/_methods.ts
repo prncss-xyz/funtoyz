@@ -51,25 +51,22 @@ export function getGetter<T, S, E extends G, G>(o: {
 			const { abort, start } = o.emitter!(
 				s,
 				(t) => {
-					if (!done) {
-						done = true
-						abort()
-						next(t)
-					}
+					if (done) return
+					done = true
+					abort()
+					next(t)
 				},
 				(e) => {
-					if (!done) {
-						done = true
-						abort()
-						error(e)
-					}
+					if (done) return
+					done = true
+					abort()
+					error(e)
 				},
 				() => {
-					if (!done) {
-						done = true
-						abort()
-						error(o.nothing!())
-					}
+					if (done) return
+					done = true
+					abort()
+					error(o.nothing!())
 				},
 			)
 			start()

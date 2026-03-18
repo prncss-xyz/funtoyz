@@ -3,6 +3,7 @@ import { tag } from '../../tags/tag'
 import { Tags } from '../../tags/types'
 import { Emitter } from '../compose/_methods'
 
+// TODO: will need to replay multiple errors too
 // TODO: encapsulate
 
 // cold observable
@@ -38,6 +39,7 @@ export function replay<T, S, E>(
 			() => {
 				state = tag('complete')
 				subs.forEach(({ complete }) => complete())
+				subs.clear()
 			},
 		)
 		start()
@@ -49,7 +51,7 @@ export function replay<T, S, E>(
 				},
 				start: () => {
 					match(state, {
-						complete: () => complete(),
+						complete,
 						error,
 						next: (buffer) => {
 							buffer.forEach((t) => next(t))

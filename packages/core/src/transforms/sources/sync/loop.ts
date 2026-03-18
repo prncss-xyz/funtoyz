@@ -15,8 +15,8 @@ export function loop<Value>(
 			},
 			start() {
 				for (let acc = fromInit(init); cond(acc); acc = step(acc)) {
-					next(acc)
 					if (done) return
+					next(acc)
 				}
 				complete()
 			},

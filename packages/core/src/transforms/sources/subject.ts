@@ -21,7 +21,10 @@ export function subject<T, S, E>(
 			s,
 			(t) => subs.forEach(({ next }) => next(t)),
 			(e) => subs.forEach(({ error }) => error(e)),
-			() => subs.forEach(({ complete }) => complete()),
+			() => {
+				subs.forEach(({ complete }) => complete())
+				subs.clear()
+			},
 		)
 		return (_s, next, error, complete) => {
 			const _id = id++

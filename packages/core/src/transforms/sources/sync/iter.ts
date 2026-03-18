@@ -9,7 +9,7 @@ export function iter<S>() {
 			},
 			start() {
 				for (const t of s) {
-					if (done) break
+					if (done) return
 					next(t)
 				}
 				complete()

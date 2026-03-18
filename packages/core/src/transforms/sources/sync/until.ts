@@ -15,9 +15,9 @@ export function until<Value>(
 			start() {
 				let acc = init
 				while (true) {
+					if (done) return
 					acc = step(fromInit(acc))
 					next(acc)
-					if (done) return
 					if (cond(acc)) break
 				}
 				complete()
