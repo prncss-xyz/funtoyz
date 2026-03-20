@@ -70,7 +70,7 @@ function composesReviewer<T, U, S>(
 	if (o1.reviewer && o2.reviewer) {
 		if (o1.reviewer === trush) return o2.reviewer as never
 		if (o2.reviewer === trush) return o1.reviewer as never
-		return (t, next) => o1.reviewer!(t, (t) => o2.reviewer!(t, next))
+		return (u, next) => o1.reviewer!(u, (t) => o2.reviewer!(t, next))
 	}
 	return undefined
 }
@@ -82,22 +82,32 @@ function composeSetter<T, U, S, E2, G2, F2 extends Flags>(
 	if (o1.reviewer)
 		if (o2.setter) {
 			if (o1.reviewer === trush) return o2.setter as never
-			return (t, next, s) => o1.reviewer!(t, (t) => o2.setter!(t, next, s))
+			return (u, next, s) => o1.reviewer!(u, (t) => o2.setter!(t, next, s))
 		}
+	if (o2.modifier && o1.reviewer) {
+		return (u, next, s) => {
+			o2.modifier!((_t, n) => o1.reviewer!(u, n), next, s)
+		}
+	}
+	if (o2.modifier && o1.setter) {
+		return (u, next, s) => {
+			o2.modifier!((t, n) => o1.setter!(u, n, t), next, s)
+		}
+	}
 	if (o1.setter && o2.getter) {
 		if (o2.reviewer) {
-			return (t, next, s) =>
+			return (u, next, s) =>
 				o2.getter!(
 					s,
-					(u) => o1.setter!(t, (t) => o2.reviewer!(t, next), u),
+					(t) => o1.setter!(u, (t) => o2.reviewer!(t, next), t),
 					() => next(s),
 				)
 		}
 		if (o2.setter)
-			return (t, next, s) =>
+			return (u, next, s) =>
 				o2.getter!(
 					s,
-					(u) => o1.setter!(t, (t) => o2.setter!(t, next, s), u),
+					(t) => o1.setter!(u, (t) => o2.setter!(t, next, s), t),
 					() => next(s),
 				)
 	}

@@ -26,6 +26,9 @@ describe('compose with prism', () => {
 		elems(),
 		filter((x) => x % 2 === 0),
 	)
+	test('put', () => {
+		expect(update(o)(0)([1, 2, 3])).toEqual([0, 0, 0])
+	})
 	test('modify', () => {
 		expect(update(o)((x) => x * 2)([1, 2, 3])).toEqual([1, 4, 3])
 	})
@@ -42,6 +45,10 @@ describe('compose with lens', () => {
 		})
 	}
 	const o = flow(once<{ a: number }[]>(), elems(), prop('a'))
+	test('put', () => {
+		const res = update(o)(0)([{ a: 1 }, { a: 3 }])
+		expect(res).toEqual([{ a: 0 }, { a: 0 }])
+	})
 	test('modify', () => {
 		const res = update(o)((x) => x * 2)([{ a: 1 }, { a: 3 }])
 		expect(res).toEqual([{ a: 2 }, { a: 6 }])

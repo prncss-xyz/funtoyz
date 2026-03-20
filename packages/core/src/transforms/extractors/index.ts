@@ -1,4 +1,4 @@
-import { exhaustive } from '../../assertions'
+import { exhaustive, forbidden } from '../../assertions'
 import { pipe2 } from '../../functions/basics'
 import { Modify } from '../../functions/types'
 import { isFunction } from '../../guards'
@@ -90,10 +90,7 @@ export function review<T, S, G, E, F extends Flags>(
 	return extract1<S, T>(o.flags.SYNC, (next, t) => o.reviewer!(t, next))
 }
 
-export type Update<T, G> =
-	| (G extends never ? never : undefined)
-	| Modify<T>
-	| T
+export type Update<T, G> = (G extends never ? never : undefined) | Modify<T> | T
 function update_<T, S, G>(
 	o: Optic<T, S, any, G, any>,
 	next: (r: S) => void,
@@ -103,7 +100,8 @@ function update_<T, S, G>(
 	if (isFunction(t)) return getModifier(o)!((v, n) => n(t(v)), next, s)
 	if (t === undefined) return o.remover!(s, next)
 	if (o.setter) return o.setter(t, next, s)
-	return getModifier(o)!((_, n) => n(t), next, s)
+	if (o.reviewer) return o.reviewer(t, next)
+	return forbidden()
 }
 
 export function update<T, S, E, G, F extends Flags>(
