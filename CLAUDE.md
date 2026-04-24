@@ -9,8 +9,8 @@ FunToyz is a TypeScript functional programming library providing composable opti
 ## Commands
 
 - `pnpm run verify` — full verification (lint + types + tests)
-- `pnpm run check:tests` — run all tests with coverage (vitest)
-- `pnpm run dev:tests` — watch mode tests
+- `pnpm run check:test` — run all tests with coverage (vitest)
+- `pnpm run dev:test` — watch mode tests
 - `pnpm vitest run packages/core/src/tags/match.test.ts` — run a single test file
 - `pnpm run lint` — eslint + prettier checks
 - `pnpm run lint:eslint` — eslint only (zero warnings policy)
@@ -26,7 +26,7 @@ FunToyz is a TypeScript functional programming library providing composable opti
 - `packages/config/` — shared eslint, prettier, and vitest configs (`@funtoyz/config`)
 - `apps/demo/` — React + Vite demo app showcasing machines with `useMachine` hook
 
-Build pipeline (turbo.json): `build` → `check:types` / `check:tests` → `check` → `pre-commit` → `verify`. Lint runs independently.
+Build pipeline (turbo.json): `build` → `check:types` / `check:test` → `check` → `pre-commit` → `verify`. Lint runs independently.
 
 ## Architecture
 

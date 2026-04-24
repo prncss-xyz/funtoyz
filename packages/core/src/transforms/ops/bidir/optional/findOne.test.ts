@@ -15,7 +15,10 @@ describe('findOne', () => {
 		{ bar: 'nomatch' },
 		{ bar: 'foo' },
 	]
-	const o = flow(once<Source[]>(), findOne((item) => item.bar === 'quux'))
+	const o = flow(
+		once<Source[]>(),
+		findOne((item) => item.bar === 'quux'),
+	)
 	describe('view', () => {
 		it('defined', () => {
 			expect(view(o)(sourceDefined)).toEqual({ bar: 'quux' })
@@ -66,7 +69,10 @@ describe('findOne', () => {
 	})
 	test('refine type', () => {
 		type T = number | string
-		const o = flow(once<T[]>(), findOne((item) => typeof item === 'string'))
+		const o = flow(
+			once<T[]>(),
+			findOne((item) => typeof item === 'string'),
+		)
 		const source: T[] = []
 		const res = view(o)(source)
 		expectTypeOf(res).toEqualTypeOf<string | undefined>()

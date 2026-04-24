@@ -33,7 +33,7 @@ export function createMachine<Prop, Value, State, Result, R = void>(
 }
 export function createMachine<Value, State, Result, R = void>(
 	machine: Machine<void, Value, State, Result, CW, CR>,
-  prop?: void,
+	prop?: void,
 ): {
 	disabled: (action: Value) => WritableAtom<boolean, [], R>
 	next: (action: Value) => WritableAtom<Result, [], R>

@@ -96,6 +96,9 @@ describe('prop', () => {
 	})
 	it('remove', () => {
 		expect(update(focusB)(undefined)(sourceDefined)).toEqual({ a: 'A', c: 'C' })
-		expect(update(focusB)(undefined)(sourceUndefined)).toEqual({ a: 'A', c: null })
+		expect(update(focusB)(undefined)(sourceUndefined)).toEqual({
+			a: 'A',
+			c: null,
+		})
 	})
 })
