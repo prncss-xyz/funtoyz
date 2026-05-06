@@ -35,7 +35,11 @@
 			"outputs": []
 		},
 		"check:types": {
-			"dependsOn": ["build"]
+			"dependsOn": [
+				"@funtoyz/core#build",
+				"@funtoyz/jotai#build",
+				"@funtoyz/react#build"
+			]
 		},
 		"check": {
 			"dependsOn": ["check:types", "//#check:test"]
