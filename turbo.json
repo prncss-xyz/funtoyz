@@ -7,7 +7,11 @@
 			"dependsOn": ["^build"]
 		},
 		"//#check:test": {
-			"dependsOn": ["^build"],
+			"dependsOn": [
+				"@funtoyz/core#build",
+				"@funtoyz/jotai#build",
+				"@funtoyz/react#build"
+			],
 			"outputs": ["coverage/**"]
 		},
 		"check:types": {
