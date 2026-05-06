@@ -6,20 +6,20 @@ import { AnyTag, PAYLOAD, PayloadOf, TypeIn } from '../tags/types'
 
 export function steps<Final = void>() {
 	return <
-			Event extends Record<TypeIn<State>, AnyTag>,
-			State extends AnyTag,
-			Props = void,
-		>(flow: {
-			init: Init<State, [Props]>
-			states: {
-				[S in TypeIn<State>]: Partial<{
-					[E in TypeIn<Event[S]>]: (
-						event: PayloadOf<Event[S], E>,
-						state: PayloadOf<State, S>,
-					) => State
-				}>
-			}
-		}) =>
+		Event extends Record<TypeIn<State>, AnyTag>,
+		State extends AnyTag,
+		Props = void,
+	>(flow: {
+		init: Init<State, [Props]>
+		states: {
+			[S in TypeIn<State>]: Partial<{
+				[E in TypeIn<Event[S]>]: (
+					event: PayloadOf<Event[S], E>,
+					state: PayloadOf<State, S>,
+				) => State
+			}>
+		}
+	}) =>
 		<Result>(opts: {
 			implementation: {
 				[S in TypeIn<State>]: (props: {

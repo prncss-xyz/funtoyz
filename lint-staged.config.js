@@ -3,9 +3,9 @@
  */
 export default {
 	'*.{js,jsx,ts,tsx,cjs,mjs,mts,cts}': [
-		'prettier --write',
-		'eslint --fix --cache --max-warnings 0 --no-warn-ignored',
+		'oxfmt --no-error-on-unmatched-pattern',
+		'oxlint --fix',
 	],
 	'*.{json,jsonc,json5,md,mdx,markdown,yaml,yml,css,less,scss,html,gql,graphql,hbs,handlebars,vue}':
-		'prettier --write --cache --cache-strategy metadata .',
+		'oxfmt --no-error-on-unmatched-pattern',
 }

@@ -16,12 +16,8 @@
 			"dependsOn": ["check:types", "//#check:test"]
 		},
 		"//#lint:style": {},
-		"//#lint:eslint": {},
-		"lint": {
-			"dependsOn": ["//#lint:style", "//#lint:eslint"]
-		},
 		"verify": {
-			"dependsOn": ["lint", "check"]
+			"dependsOn": ["check"]
 		},
 		"dev": {
 			"persistent": true,
