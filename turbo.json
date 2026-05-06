@@ -14,6 +14,26 @@
 			],
 			"outputs": ["coverage/**"]
 		},
+		"//#check:test:changed": {
+			"dependsOn": [
+				"@funtoyz/core#build",
+				"@funtoyz/jotai#build",
+				"@funtoyz/react#build"
+			],
+			"inputs": [
+				"apps/*/package.json",
+				"apps/*/src/**/*.{js,jsx,ts,tsx}",
+				"package.json",
+				"packages/*/package.json",
+				"packages/*/src/**/*.{js,jsx,ts,tsx}",
+				"pnpm-lock.yaml",
+				"scripts/check-test-changed.sh",
+				"tsconfig*.json",
+				"turbo.json",
+				"vitest.config.ts"
+			],
+			"outputs": []
+		},
 		"check:types": {
 			"dependsOn": ["build"]
 		},

@@ -12,6 +12,7 @@
 		"update": "pnpm update --latest --recursive",
 		"knip": "knip --cache",
 		"check:test": "vitest run --coverage",
+		"check:test:changed": "./scripts/check-test-changed.sh",
 		"dev:test": "vitest",
 		"lint:style": "oxfmt --check",
 		"sherif": "sherif -r non-existant-packages",
