@@ -65,7 +65,7 @@ export function collection<Key, Payload, Encoded>(
 					++count
 					return () => {
 						--count
-						Promise.resolve().then(() => {
+						void Promise.resolve().then(() => {
 							if (count > 0) return
 							if (ttl === 0) store.delete(hash)
 							teardown?.()

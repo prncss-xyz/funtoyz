@@ -9,7 +9,7 @@ export function iterAsync<S>() {
 					done = true
 				},
 				start() {
-					;(async () => {
+					void (async () => {
 						for await (const t of s) {
 							if (done) return
 							next(t)

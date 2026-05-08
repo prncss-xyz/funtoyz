@@ -31,7 +31,8 @@ export function subject<T, S, E>(
 			return {
 				abort: () => {
 					subs.delete(_id)
-					if (count === 1) Promise.resolve().then(() => count === 0 && abort())
+					if (count === 1)
+						void Promise.resolve().then(() => count === 0 && abort())
 					count--
 				},
 				start: () => {

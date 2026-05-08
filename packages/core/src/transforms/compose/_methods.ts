@@ -111,9 +111,8 @@ export function reduce<T, S, U, E, G, R>(
 		return (s, next) => {
 			let done = false
 			let acc = fromInit(reducer.init)
-			let res: ReturnType<Emitter<T, S, E>> | undefined
 			const abort = () => res?.abort()
-			res = o.emitter!(
+			const res = o.emitter!(
 				s,
 				(t) => {
 					if (!done) {
@@ -134,7 +133,7 @@ export function reduce<T, S, U, E, G, R>(
 		}
 	if (o.getter)
 		return (s, next) => {
-			let acc = fromInit(reducer.init)
+			const acc = fromInit(reducer.init)
 			o.getter!(
 				s,
 				(t) => next(result(reduce(t, acc))),

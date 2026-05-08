@@ -34,7 +34,7 @@ export function seq<V, S, E, G, F extends Flags>(
 					let i = 0
 					function step() {
 						if (closed) return
-						let o = os[i++]
+						const o = os[i++]
 						if (o === undefined) return c()
 						if (o.emitter) {
 							const res = o.emitter(s, next, step, c)

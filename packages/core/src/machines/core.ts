@@ -58,7 +58,7 @@ export function spicedMachine<
 				const calls: CWA[] = []
 				setState(reduce(event, state, (e) => calls.push(e)))
 				if (calls.length > 0)
-					Promise.resolve().then(() => calls.forEach((c) => onSend(c)))
+					void Promise.resolve().then(() => calls.forEach((c) => onSend(c)))
 			},
 	}
 }
@@ -95,7 +95,7 @@ export function machineState<
 			const calls: EventOut[] = []
 			setState(reduce(event, state, ((e: EventOut) => calls.push(e)) as any))
 			if (calls.length > 0)
-				Promise.resolve().then(() => calls.forEach((c) => onSend_(c)))
+				void Promise.resolve().then(() => calls.forEach((c) => onSend_(c)))
 		},
 	}
 }

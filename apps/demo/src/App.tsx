@@ -15,16 +15,18 @@ function App() {
 	return (
 		<>
 			<div>
-				<a href='https://vite.dev' target='_blank'>
+				<a href='https://vite.dev' rel='noreferrer' target='_blank'>
 					<img alt='Vite logo' className='logo' src={viteLogo} />
 				</a>
-				<a href='https://react.dev' target='_blank'>
+				<a href='https://react.dev' rel='noreferrer' target='_blank'>
 					<img alt='React logo' className='logo react' src={reactLogo} />
 				</a>
 			</div>
 			<h1>Vite + React</h1>
 			<div className='card'>
-				<button onClick={() => send()}>count is {result}</button>
+				<button onClick={() => send()} type='button'>
+					count is {result}
+				</button>
 				<p>
 					Edit <code>src/App.tsx</code> and save to test HMR
 				</p>

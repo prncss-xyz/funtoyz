@@ -4,7 +4,7 @@ import { id } from '../../../../functions/basics'
 import { Empty } from '../../../../objects/types'
 import { Reducer } from '../../../../reduce'
 import { Optic } from '../../../compose'
-import { Emitter, EmitterReturn, Getter } from '../../../compose/_methods'
+import { Emitter, Getter } from '../../../compose/_methods'
 import { Flags, HasFlag } from '../../../compose/flags'
 import { Traversal } from '../traversal'
 import { toArray } from '../traversal/elems'
@@ -26,8 +26,7 @@ function getGetter_<V1, V2, ACC2, RES1, RES2, E = void>(
 	return (s, next, e) => {
 		let done = false
 		let acc = fromInit(write.init)
-		let res: EmitterReturn | undefined
-		res = read.emitter(
+		const res = read.emitter(
 			s,
 			(t) => {
 				// TODO: should accept emitter
@@ -45,7 +44,7 @@ function getGetter_<V1, V2, ACC2, RES1, RES2, E = void>(
 			toExhaustive,
 			() => {
 				if (!done) {
-					res!.abort()
+					res.abort()
 					next(result(acc))
 				}
 			},

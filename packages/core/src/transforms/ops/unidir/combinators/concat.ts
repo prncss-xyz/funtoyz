@@ -27,10 +27,8 @@ export function concat<T1, S, E1, G1, F1 extends Flags & { UNIQUE: false }>(
 				e: (error: E1 | E2) => void,
 				c: () => void,
 			) => {
-				let result1: EmitterResult
 				let result2: EmitterResult | undefined
-
-				result1 = o2.emitter!(source, next, e, () => {
+				const result1 = o2.emitter!(source, next, e, () => {
 					// When first completes, start second
 					if (o1.emitter) {
 						result2 = o1.emitter(source, next, e, c)
