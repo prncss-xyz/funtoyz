@@ -3,8 +3,8 @@
 	"version": "0.0.0",
 	"scripts": {
 		"check:types": "tsc --noEmit",
-		"build": "tsdown",
-		"dev": "tsdown --watch",
+		"build": "vp pack",
+		"dev": "vp pack --watch",
 		"gen:exports": "node scripts/generate-exports.mjs"
 	},
 	"keywords": [],
@@ -14,8 +14,8 @@
 	"devDependencies": {
 		"@funtoyz/config": "workspace:*",
 		"@types/node": "^25.6.2",
-		"tsdown": "^0.22.0",
-		"typescript": "^6.0.3"
+		"typescript": "^6.0.3",
+		"vite-plus": "catalog:"
 	},
 	"files": [
 		"dist"

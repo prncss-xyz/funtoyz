@@ -1,5 +1,3 @@
-import { expect } from 'vitest'
-
 import { flow } from '../../../../functions/flow'
 import { collect, view } from '../../../extractors'
 import { once } from '../../../sources/sync/once'

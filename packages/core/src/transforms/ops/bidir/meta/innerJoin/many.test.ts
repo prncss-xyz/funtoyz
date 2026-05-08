@@ -1,5 +1,3 @@
-import { expect } from 'vitest'
-
 import { innerJoin } from '.'
 import { flow } from '../../../../../functions/flow'
 import { pipe } from '../../../../../functions/pipe'
