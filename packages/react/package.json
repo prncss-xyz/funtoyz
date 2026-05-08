@@ -18,8 +18,8 @@
 	"devDependencies": {
 		"@funtoyz/config": "workspace:*",
 		"@types/node": "^25.6.2",
-		"@types/react": ">=19",
-		"tsdown": "^0.20.1",
+		"@types/react": "^19.2.14",
+		"tsdown": "^0.22.0",
 		"typescript": "^6.0.3"
 	},
 	"files": [

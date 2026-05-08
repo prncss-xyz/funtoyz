@@ -16,11 +16,10 @@
 		"dev:test": "vitest",
 		"lint:style": "oxfmt --check",
 		"sherif": "sherif -r non-existant-packages",
-		"lint": "pnpm run lint:style && pnpm run lint:oxlint",
 		"lint:oxlint": "oxlint",
 		"fix:style": "oxfmt",
 		"fix:oxlint": "oxlint --fix",
-		"fix:sherif": "pnpm run sherif --fix",
+		"fix:sherif": "sherif --fix",
 		"prepare": "husky",
 		"commitlint": "commitlint --edit"
 	},
