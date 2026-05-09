@@ -51,14 +51,17 @@ export default defineConfig({
 					'sherif.json',
 				],
 			},
-			verify: {
+			verify_ci: {
 				command: 'vpr sherif && vpr knip && vpr tsc && vpr test',
 			},
+			verify_pre: {
+				command: 'vpr sherif && vpr knip && vpr tsc && vpr test --changed',
+			},
 			ci: {
-				command: 'vp check && vpr -r build && vpr --parallel verify',
+				command: 'vp check && vpr -r build && vpr --parallel verify_ci',
 			},
 			precommit: {
-				command: 'vp staged && vpr -r build && vpr --parallel verify',
+				command: 'vp staged && vpr -r build && vpr --parallel verify_pre',
 			},
 		},
 	},
