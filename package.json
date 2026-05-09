@@ -7,6 +7,7 @@
 	"scripts": {
 		"check:types": "vp run -r check:types",
 		"clean": "rm -rf **/{.dist,coverage}",
+		"clean-gen": "rm packages/*/src/index.ts",
 		"clean-all": "rm -rf **/{node_modules,dist,coverage}",
 		"dev:test": "vp test watch"
 	},

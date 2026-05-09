@@ -1,12 +1,6 @@
 {
 	"name": "@funtoyz/react",
 	"version": "0.0.0",
-	"scripts": {
-		"check:types": "tsc --noEmit",
-		"build": "vp pack",
-		"dev": "vp pack --watch",
-		"gen:exports": "node scripts/generate-exports.mjs"
-	},
 	"keywords": [],
 	"author": "Juliette Lamarche <juliette.lamarche.xyz@gmail.com> (https://github.com/prncss-xyz/)",
 	"license": "MIT",

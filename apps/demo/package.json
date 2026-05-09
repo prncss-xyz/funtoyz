@@ -3,12 +3,6 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
-	"scripts": {
-		"dev": "vp dev",
-		"build": "tsc -b && vp build",
-		"check:types": "tsc --noEmit",
-		"preview": "vp preview"
-	},
 	"dependencies": {
 		"@funtoyz/core": "workspace:*",
 		"@funtoyz/react": "workspace:*",

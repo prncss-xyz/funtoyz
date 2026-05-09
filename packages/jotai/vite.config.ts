@@ -11,4 +11,15 @@ export default defineConfig({
 		platform: 'neutral',
 		unbundle: true,
 	},
+	run: {
+		tasks: {
+			tsc: { command: 'tsc --noEmit' },
+			build: { command: 'vp pack' },
+			gen: { command: 'node scripts/generate-exports.mjs' },
+			dev: {
+				command: 'vp pack --watch',
+				cache: false,
+			},
+		},
+	},
 })

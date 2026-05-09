@@ -1,5 +1,10 @@
 {
 	"$schema": "https://unpkg.com/knip@5/schema.json",
+	"ignoreFiles": [
+		"packages/core/scripts/generate-exports.mjs",
+		"packages/jotai/scripts/generate-exports.mjs",
+		"packages/react/scripts/generate-exports.mjs"
+	],
 	"ignoreDependencies": ["@commitlint/cli", "sherif"],
 	"exclude": ["types"]
 }

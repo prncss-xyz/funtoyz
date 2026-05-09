@@ -33,7 +33,7 @@ export default defineConfig({
 				cache: true,
 			},
 			tsc: {
-				command: 'vpr -r check:types',
+				command: 'vpr -r tsc',
 			},
 			knip: {
 				command: 'knip --cache',
