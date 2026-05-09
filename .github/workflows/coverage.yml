@@ -1,22 +1,20 @@
+name: Upload Coverage
 on:
-  push:
+  workflow_run:
+    workflows: ['build']
+    types:
+      - completed
     branches:
       - main
-      - dev
-  pull_request:
-    branches-ignore:
-      - main
-      - dev
-env:
-  BASE_PATH: '/funtoyz/'
+
 permissions:
   contents: read
-  pages: write
   id-token: write
+
 jobs:
-  build:
+  upload:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Check out code
         uses: actions/checkout@v5
@@ -27,15 +25,11 @@ jobs:
           cache: true
           package-manager: aube
       - name: Install dependencies
-        run: vp install
+        run: aube install
       - name: Ci
-        run: vp run ci
-      - name: to Codecov
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: aube run ci
+      - name: Upload to Codecov
         uses: codecov/codecov-action@v5
         with:
           use_oidc: true
           fail_ci_if_error: true
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
