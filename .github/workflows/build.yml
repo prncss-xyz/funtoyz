@@ -39,6 +39,8 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+      - name: Build
+        run: pnpm vp build
       - name: Check
         run: pnpm vp check
       - name: Verify
