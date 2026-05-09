@@ -40,11 +40,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Build
-        run: pnpm vp build
+        run: pnpm vp run build
       - name: Check
-        run: pnpm vp check
+        run: pnpm vp run check
       - name: Verify
-        run: pnpm vp test
+        run: pnpm vp run test
       - name: Sherif
         run: pnpm vp run sherif
       - name: Knip
