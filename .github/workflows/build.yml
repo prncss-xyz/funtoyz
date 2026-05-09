@@ -32,9 +32,10 @@ jobs:
             ${{ runner.os }}-vp-cache-
       - name: Install pnpm
         uses: pnpm/action-setup@v5
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 24
         uses: actions/setup-node@v5
         with:
+          node-version: 24
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
