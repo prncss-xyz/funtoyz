@@ -1,6 +1,69 @@
 import { defineConfig } from 'vite-plus'
 
 export default defineConfig({
+	staged: {
+		'*.{js,jsx,ts,tsx,cjs,mjs,mts,cts}': 'vp check --fix',
+		'*.{json,jsonc,json5,md,mdx,markdown,yaml,yml,css,less,scss,html,gql,graphql,hbs,handlebars,vue}':
+			'vp fmt',
+	},
+	run: {
+		tasks: {
+			test: {
+				command: 'vp test',
+				input: [
+					'vite.config.ts',
+					'vitest.config.ts',
+					'package.json',
+					'pnpm-workspace.yaml',
+					'apps/**/src/**/*.{js,ts,jsx,tsx}',
+					'packages/**/src/**/*.{js,ts,jsx,tsx}',
+				],
+				cache: true,
+			},
+			'test:coverage': {
+				command: 'vp test run --coverage',
+				input: [
+					'vite.config.ts',
+					'vitest.config.ts',
+					'package.json',
+					'pnpm-workspace.yaml',
+					'apps/**/src/**/*.{js,ts,jsx,tsx}',
+					'packages/**/src/**/*.{js,ts,jsx,tsx}',
+				],
+				cache: true,
+			},
+			'lint:knip': {
+				command: 'knip --cache',
+			},
+			sherif: {
+				command: 'sherif -r non-existant-packages',
+				// Explicitly define inputs that affect Sherif's audit
+				input: [
+					'package.json',
+					'**/package.json',
+					'pnpm-workspace.yaml', // or bunfig.toml / custom paths
+					'sherif.json',
+				],
+			},
+		},
+	},
+	test: {
+		coverage: {
+			exclude: ['**/*.test.*'],
+			include: ['**/src/**/*.{js,ts,jsx,tsx}'],
+			provider: 'v8',
+			reporter: ['text', 'json'],
+			thresholds: {
+				// branches: 100,
+				// functions: 100,
+				// lines: 100,
+				// statements: 100,
+			},
+		},
+		environment: 'happy-dom',
+		globals: true,
+		include: ['**/src/**/*.test.{js,ts,jsx,tsx}'],
+	},
 	fmt: {
 		arrowParens: 'always',
 		ignorePatterns: [

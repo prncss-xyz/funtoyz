@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+set -e
+
+vp staged
+vp run sherif
+vp run lint:knip
