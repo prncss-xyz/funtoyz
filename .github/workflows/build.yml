@@ -40,13 +40,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Check
-        run: vp check
+        run: pnpm vp check
       - name: Verify
-        run: vp test
+        run: pnpm vp test
       - name: Sherif
-        run: vp run sherif
+        run: pnpm vp run sherif
       - name: Knip
-        run: vp run lint:knip
+        run: pnpm vp run lint:knip
       - name: Upload to Codecov
         if: github.ref == 'refs/heads/main'
         uses: codecov/codecov-action@v5
