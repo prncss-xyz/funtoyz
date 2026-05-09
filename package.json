@@ -14,13 +14,11 @@
 		"lint:oxlint": "vp lint",
 		"fix:style": "vp fmt",
 		"fix:oxlint": "vp lint --fix",
-		"fix:sherif": "sherif --fix",
-		"commitlint": "commitlint --edit"
+		"fix:sherif": "sherif --fix"
 	},
 	"keywords": [],
 	"author": "Juliette Lamarche <juliette.lamarche.xyz@gmail.com> (https://github.com/prncss-xyz/)",
 	"license": "MIT",
-	"packageManager": "pnpm@10.15.1",
 	"type": "module",
 	"devDependencies": {
 		"@commitlint/cli": "^20.5.3",
@@ -35,5 +33,6 @@
 		"typescript": "^6.0.3",
 		"vite-plus": "catalog:",
 		"vitest": "catalog:"
-	}
+	},
+	"packageManager": "pnpm@11.0.9"
 }

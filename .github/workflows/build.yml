@@ -24,12 +24,12 @@ jobs:
         uses: actions/cache@v5
         with:
           path: |
-            .turbo
-            apps/website/.next/cache
+            node_modules/.vite/task-cache
             node_modules/.cache
-            .eslintcache
-          key: ${{ runner.os }}-cache-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-cache-
+          key: ${{ runner.os }}-vp-cache-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-vp-cache-${{ hashFiles('**/pnpm-lock.yaml') }}-
+            ${{ runner.os }}-vp-cache-
       - name: Install pnpm
         uses: pnpm/action-setup@v5
       - name: Use Node.js ${{ matrix.node-version }}
@@ -38,12 +38,14 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+      - name: Check
+        run: vp check
       - name: Verify
-        run: pnpm run verify
+        run: vp test
       - name: Sherif
-        run: pnpm run sherif
+        run: vp run sherif
       - name: Knip
-        run: pnpm run knip
+        run: vp run lint:knip
       - name: Upload to Codecov
         if: github.ref == 'refs/heads/main'
         uses: codecov/codecov-action@v5

@@ -74,7 +74,7 @@ State machines following `Machine<EventIn, State, Result, EventOut>` with `init`
 
 - Tests are colocated: `foo.ts` has `foo.test.ts` in the same directory
 - ESLint flat config with zero max-warnings; perfectionist plugin enforces natural sorting of imports/object keys
-- Conventional commits enforced via commitlint + husky
+- Conventional commits enforced via commitlint + viteplus hooks
 - `tsdown` for building, `tsc --noEmit` for type checking
 - Vitest globals are enabled (no need to import `describe`/`it`/`expect`)
 

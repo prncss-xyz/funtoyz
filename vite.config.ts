@@ -35,6 +35,9 @@ export default defineConfig({
 			'lint:knip': {
 				command: 'knip --cache',
 			},
+			commitlint: {
+				command: 'commitlint --edit',
+			},
 			sherif: {
 				command: 'sherif -r non-existant-packages',
 				// Explicitly define inputs that affect Sherif's audit
