@@ -32,7 +32,10 @@ export default defineConfig({
 				],
 				cache: true,
 			},
-			'lint:knip': {
+			tsc: {
+				command: 'vpr -r check:types',
+			},
+			knip: {
 				command: 'knip --cache',
 			},
 			commitlint: {
@@ -47,6 +50,15 @@ export default defineConfig({
 					'pnpm-workspace.yaml', // or bunfig.toml / custom paths
 					'sherif.json',
 				],
+			},
+			verify: {
+				command: 'vpr sherif && vpr knip && vpr tsc && vpr test',
+			},
+			ci: {
+				command: 'vp check && vpr -r build && vpr --parallel verify',
+			},
+			precommit: {
+				command: 'vp staged && vpr -r build && vpr --parallel verify',
 			},
 		},
 	},

@@ -27,8 +27,8 @@ jobs:
           cache: true
       - name: Install dependencies
         run: vp install
-      - name: Verify
-        run: vp run verify
+      - name: Ci
+        run: vp run ci
       - name: Upload to Codecov
         if: github.ref == 'refs/heads/main'
         uses: codecov/codecov-action@v5
