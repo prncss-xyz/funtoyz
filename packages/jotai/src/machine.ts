@@ -5,42 +5,76 @@ import { unwrap } from './_utils'
 
 type CR = Getter
 
-/*
-export function createMachine<Prop, Value, State, Result, R = void>(
-	machine: Machine<Prop, Value, State, Result, CW, CR>,
-	prop: Prop,
-	atomFactory: (init: State) => WritableAtom<Promise<State>, [State], R>,
+export function createMachine<Prop, Value, State, Result, Ef, R = void>(
+	machine: Machine<Prop, Value, State, Result, (ef: Ef) => void, CR>,
+	props: {
+		atomFactory: (init: State) => WritableAtom<Promise<State>, [State], R>
+		effects?: (ef: Ef, get: Getter, set: Setter) => void
+		prop: Prop
+	},
 ): {
 	disabled: (action: Value) => WritableAtom<Promise<boolean>, [], R>
 	next: (action: Value) => WritableAtom<Promise<Result>, [], R>
 	resultAtom: WritableAtom<Promise<Result>, [action: Value], R>
 }
-export function createMachine<Prop, Value, State, Result, R = void>(
-	machine: Machine<Prop, Value, State, Result, CW, CR>,
-	prop: Prop,
-	atomFactory: (init: State) => WritableAtom<State, [State], R>,
+export function createMachine<Prop, Value, State, Result, Ef, R = void>(
+	machine: Machine<Prop, Value, State, Result, (ef: Ef) => void, CR>,
+	props: {
+		atomFactory: (init: State) => WritableAtom<State, [State], R>
+		effects?: (ef: Ef, get: Getter, set: Setter) => void
+		prop: Prop
+	},
 ): {
 	disabled: (action: Value) => WritableAtom<Promise<boolean>, [], R>
 	next: (action: Value) => WritableAtom<Result, [], R>
 	resultAtom: WritableAtom<Promise<Result>, [action: Value], R>
 }
-export function createMachine<Value, State, Result, R = void>(
-	machine: Machine<void, Value, State, Result, CW, CR>,
-	prop?: void,
+export function createMachine<Value, State, Result, Ef, R = void>(
+	machine: Machine<void, Value, State, Result, (ef: Ef) => void, CR>,
+	props?: {
+		atomFactory: (init: State) => WritableAtom<Promise<State>, [State], R>
+		effects?: (ef: Ef, get: Getter, set: Setter) => void
+		prop?: void
+	},
+): {
+	disabled: (action: Value) => WritableAtom<Promise<boolean>, [], R>
+	next: (action: Value) => WritableAtom<Promise<Result>, [], R>
+	resultAtom: WritableAtom<Promise<Result>, [action: Value], R>
+}
+export function createMachine<Value, State, Result, Ef, R = void>(
+	machine: Machine<void, Value, State, Result, (ef: Ef) => void, CR>,
+	props?: {
+		atomFactory: (init: State) => WritableAtom<State, [State], R>
+		effects?: (ef: Ef, get: Getter, set: Setter) => void
+		prop?: void
+	},
+): {
+	disabled: (action: Value) => WritableAtom<Promise<boolean>, [], R>
+	next: (action: Value) => WritableAtom<Result, [], R>
+	resultAtom: WritableAtom<Promise<Result>, [action: Value], R>
+}
+export function createMachine<Value, State, Result, Ef, R = void>(
+	machine: Machine<void, Value, State, Result, (ef: Ef) => void, CR>,
+	props?: {
+		effects?: (ef: Ef, get: Getter, set: Setter) => void
+		prop?: void
+	},
 ): {
 	disabled: (action: Value) => WritableAtom<boolean, [], R>
 	next: (action: Value) => WritableAtom<Result, [], R>
 	resultAtom: WritableAtom<Result, [action: Value], R>
 }
-export function createMachine<Prop, Value, State, Result, R = void>(
-	machine: Machine<Prop, Value, State, Result, CW, CR>,
-	prop: Prop,
+export function createMachine<Prop, Value, State, Result, Ef, R = void>(
+	machine: Machine<Prop, Value, State, Result, (ef: Ef) => void, CR>,
+	props: {
+		effects?: (ef: Ef, get: Getter, set: Setter) => void
+		prop: Prop
+	},
 ): {
 	disabled: (action: Value) => WritableAtom<boolean, [], R>
 	next: (action: Value) => WritableAtom<Result, [], R>
 	resultAtom: WritableAtom<Result, [action: Value], R>
 }
-*/
 
 export function createMachine<Prop, Value, State, Result, Ef, R>(
 	machine: Machine<Prop, Value, State, Result, (ef: Ef) => void, CR>,

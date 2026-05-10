@@ -2,7 +2,11 @@ import { tag } from '@funtoyz/core'
 import { atom, createStore, Getter, Setter } from 'jotai'
 
 import { asyncAtomFactory } from './_testUtils'
-import { createJotaiMachine, jotaiBaseMachine, jotaiDirectMachine } from './jotaiMachine'
+import {
+	createJotaiMachine,
+	jotaiBaseMachine,
+	jotaiDirectMachine,
+} from './jotaiMachine'
 
 type Event =
 	| { n: number; type: 'add' }
@@ -37,7 +41,10 @@ describe('machineAtom', () => {
 				event.type === 'add' ? { n: state.n + event.n } : state,
 			(state: State) => state.n,
 		)
-		const { disabled, next, resultAtom } = createJotaiMachine(machine, undefined)
+		const { disabled, next, resultAtom } = createJotaiMachine(
+			machine,
+			undefined,
+		)
 		expect(store.get(resultAtom)).toBe(1)
 		expect(store.get(next({ n: 1, type: 'add' }))).toBe(2)
 		expect(store.get(resultAtom)).toBe(1)
@@ -53,7 +60,11 @@ describe('machineAtom', () => {
 				event.type === 'add' ? { n: state.n + event.n } : state,
 			(state: State) => state,
 		)
-		const { resultAtom } = createJotaiMachine(machine, undefined, asyncAtomFactory)
+		const { resultAtom } = createJotaiMachine(
+			machine,
+			undefined,
+			asyncAtomFactory,
+		)
 		expect(await store.get(resultAtom)).toEqual({ n: 1 })
 		store.set(resultAtom, { n: 1, type: 'add' })
 		await Promise.resolve()
