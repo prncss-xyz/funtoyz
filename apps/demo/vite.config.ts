@@ -7,13 +7,13 @@ export default defineConfig({
 	plugins: [react(), babel({ presets: [reactCompilerPreset()] })],
 	run: {
 		tasks: {
-			tsc: { command: 'tsc --noEmit' },
 			build: { command: 'vp build' },
-			gen: { command: 'node scripts/generate-exports.mjs' },
 			dev: {
-				command: 'vp preview',
 				cache: false,
+				command: 'vp preview',
 			},
+			gen: { command: 'node scripts/generate-exports.mjs' },
+			tsc: { command: 'tsc --noEmit' },
 		},
 	},
 })

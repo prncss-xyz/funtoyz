@@ -13,13 +13,13 @@ export default defineConfig({
 	},
 	run: {
 		tasks: {
-			tsc: { command: 'tsc --noEmit' },
 			build: { command: 'vp pack' },
-			gen: { command: 'node scripts/generate-exports.mjs' },
 			dev: {
-				command: 'vp pack --watch',
 				cache: false,
+				command: 'vp pack --watch',
 			},
+			gen: { command: 'node scripts/generate-exports.mjs' },
+			tsc: { command: 'tsc --noEmit' },
 		},
 	},
 })

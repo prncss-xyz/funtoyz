@@ -2,9 +2,10 @@ import { defineConfig } from 'vite-plus'
 
 export default defineConfig({
 	staged: {
-		'*.{js,jsx,ts,tsx,cjs,mjs,mts,cts}': 'vp check --fix',
+		'*.{js,jsx,ts,tsx,cjs,mjs,mts,cts}':
+			'vp check --fix --no-error-on-unmatched-pattern',
 		'*.{json,jsonc,json5,md,mdx,markdown,yaml,yml,css,less,scss,html,gql,graphql,hbs,handlebars,vue}':
-			'vp fmt',
+			'vp fmt --no-error-on-unmatched-pattern',
 	},
 	run: {
 		tasks: {
