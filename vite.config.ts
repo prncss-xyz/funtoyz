@@ -2,9 +2,9 @@ import { defineConfig } from 'vite-plus'
 
 export default defineConfig({
 	staged: {
-		'*.{js,jsx,ts,tsx,cjs,mjs,mts,cts}':
+		'[!.]*.{js,jsx,ts,tsx,cjs,mjs,mts,cts}':
 			'vp check --fix --no-error-on-unmatched-pattern',
-		'*.{json,jsonc,json5,md,mdx,markdown,yaml,yml,css,less,scss,html,gql,graphql,hbs,handlebars,vue}':
+		'[!.]*.{json,jsonc,json5,md,mdx,markdown,yaml,yml,css,less,scss,html,gql,graphql,hbs,handlebars,vue}':
 			'vp fmt --no-error-on-unmatched-pattern',
 	},
 	run: {
@@ -89,14 +89,7 @@ export default defineConfig({
 	},
 	fmt: {
 		arrowParens: 'always',
-		include: [
-			'apps/*/src/**/*.{js,jsx,ts,tsx,json,md,yaml,yml,css,scss,html}',
-			'packages/*/src/**/*.{js,jsx,ts,tsx,json,md,yaml,yml,css,scss,html}',
-			'packages/*/bin/**/*.{js,jsx,ts,tsx}',
-			'*.{js,ts,json,md,yaml,yml}',
-			'**/package.json',
-			'**/tsconfig.json',
-		],
+		ignorePatterns: ['.*'],
 		jsxSingleQuote: true,
 		printWidth: 80,
 		semi: false,
@@ -106,6 +99,7 @@ export default defineConfig({
 		useTabs: true,
 	},
 	lint: {
+		ignorePatterns: ['.*'],
 		options: {
 			typeAware: true,
 			denyWarnings: true,
