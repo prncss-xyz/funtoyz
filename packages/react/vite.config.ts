@@ -18,7 +18,16 @@ export default defineConfig({
 				cache: false,
 				command: 'vp pack --watch',
 			},
-			gen: { command: 'node scripts/generate-exports.mjs' },
+			'gen:exports': {
+				command: 'gen-exports',
+				input: [
+					'src/**/*.ts',
+					'src/**/*.tsx',
+					'!src/index.ts',
+					'!src/index.tsx',
+				],
+				cache: true,
+			},
 			tsc: { command: 'tsc --noEmit' },
 		},
 	},

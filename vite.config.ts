@@ -21,6 +21,9 @@ export default defineConfig({
 				],
 				cache: true,
 			},
+			'gen:exports': {
+				command: 'vpr -r gen:exports',
+			},
 			'test:coverage': {
 				command: 'vp test run --coverage',
 				input: [
@@ -62,7 +65,7 @@ export default defineConfig({
 				command: 'vp check && vpr -r build && vpr --parallel verify_ci',
 			},
 			precommit: {
-				command: 'vp staged && vpr -r build && vpr --parallel verify_pre',
+				command: 'vpr gen:exports && git add packages/*/src/index.ts && vp staged && vpr -r build && vpr --parallel verify_pre',
 			},
 		},
 	},
