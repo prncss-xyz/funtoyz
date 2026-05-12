@@ -65,7 +65,8 @@ export default defineConfig({
 				command: 'vp check && vpr -r build && vpr --parallel verify_ci',
 			},
 			precommit: {
-				command: 'vpr gen:exports && git add packages/*/src/index.ts && vp staged && vpr -r build && vpr --parallel verify_pre',
+				command:
+					'vpr gen:exports && git add packages/*/src/index.ts && vp staged && vpr -r build && vpr --parallel verify_pre',
 			},
 		},
 	},
@@ -131,6 +132,7 @@ export default defineConfig({
 			'*.local',
 			'vite.config.ts.timestamp-*',
 			'.turbo',
+			'.serena',
 			'*.tsbuildinfo',
 			'.gen.',
 			'*generated*',
