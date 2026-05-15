@@ -11,7 +11,7 @@ export function clearCollectionEntries(filter: (u: unknown) => boolean) {
 }
 
 export function collection<Key, Payload, Encoded>(
-	factory: (key: Key, onMount?: OnMount) => Payload,
+	factory: (key: Key, onMount: OnMount) => Payload,
 	opts?: {
 		hydrate?: {
 			decode: (value: Encoded, key: Key) => Payload
