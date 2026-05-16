@@ -76,6 +76,21 @@ describe('collection', () => {
 		expect(factory).not.toHaveBeenCalled()
 	})
 
+	it('should clear mounted entries on unmount when ttl is 0', async () => {
+		const factoryWithMount = vi.fn((_key: string, mount: any) => {
+			const release = mount!()
+			return { release }
+		})
+		const col = collection(factoryWithMount)
+
+		const item = col.get('a')
+		item.release()
+		await Promise.resolve()
+
+		col.get('a')
+		expect(factoryWithMount).toHaveBeenCalledTimes(2)
+	})
+
 	it('should handle TTL', async () => {
 		vi.useFakeTimers()
 		const factoryWithMount = vi.fn((_key: string, mount: any) => {

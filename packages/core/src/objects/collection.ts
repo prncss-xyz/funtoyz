@@ -28,7 +28,7 @@ export function collection<Key, Payload, Encoded>(
 		payload: Payload
 	}
 	const store = new Map<string, Entry>()
-	let count = 1
+	let count = 0
 	let teardown: Teardown = undefined
 	if (opts?.hydrate) {
 		for (const [key, value] of opts.hydrate.values)

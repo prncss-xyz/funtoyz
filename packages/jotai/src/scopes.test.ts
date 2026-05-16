@@ -24,9 +24,12 @@ describe("createJotaiScope", () => {
     const store = createStore();
     const atom1 = family(1);
     const unmount = store.sub(atom1, noop);
-    expect(atom1).toBe(family(1))
+
+    expect(atom1).toBe(family(1));
+
     unmount();
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    await Promise.resolve();
+
     expect(atom1).not.toBe(family(1));
   });
 });
