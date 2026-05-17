@@ -1,7 +1,7 @@
 import { Empty } from './objects/types'
 import { Prettify } from './types'
 
-type Schema<O> = {
+export type Schema<O> = {
 	[K in keyof O]: (o: O) => O[K]
 }
 type AnySchema<O> = {
@@ -38,7 +38,7 @@ export function createContainer(fn: (s: any) => any, parent?: any) {
 				return cache[prop]
 			}
 			if (parent) return parent[prop]
-			throw new Error(`Property ${String(prop)} not found`)
+			throw new Error(`property ${String(prop)} not found`)
 		},
 	})
 	return proxy

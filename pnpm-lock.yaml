@@ -29,7 +29,7 @@ importers:
         version: 20.5.0
       '@testing-library/react':
         specifier: ^16.3.2
-        version: 16.3.2(@testing-library/dom@10.4.1)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@types/node':
         specifier: ^25.6.2
         version: 25.6.2
@@ -116,20 +116,25 @@ importers:
         version: 0.1.20(@types/node@25.6.2)(@vitest/coverage-v8@4.1.5)(esbuild@0.27.7)(happy-dom@20.9.0)(jiti@2.7.0)(typescript@6.0.3)(vite@7.3.1(@types/node@25.6.2)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.4))(yaml@2.8.4)
 
   packages/jotai:
-    dependencies:
-      '@funtoyz/core':
-        specifier: workspace:*
-        version: link:../core
-      jotai:
-        specifier: '>=2.0.0'
-        version: 2.18.0(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@19.2.14)(react@19.2.6)
     devDependencies:
       '@funtoyz/config':
         specifier: workspace:*
         version: link:../config
+      '@funtoyz/core':
+        specifier: workspace:*
+        version: link:../core
       '@types/node':
         specifier: ^25.6.2
         version: 25.6.2
+      '@types/react':
+        specifier: ^19.2.14
+        version: 19.2.14
+      jotai:
+        specifier: '>=2.0.0'
+        version: 2.18.0(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@19.2.14)(react@19.2.6)
+      react:
+        specifier: '>=19'
+        version: 19.2.6
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -138,23 +143,22 @@ importers:
         version: 0.1.20(@types/node@25.6.2)(@vitest/coverage-v8@4.1.5)(esbuild@0.27.7)(happy-dom@20.9.0)(jiti@2.7.0)(typescript@6.0.3)(vite@7.3.1(@types/node@25.6.2)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.4))(yaml@2.8.4)
 
   packages/react:
-    dependencies:
-      '@funtoyz/core':
-        specifier: workspace:*
-        version: link:../core
-      react:
-        specifier: '>=19'
-        version: 19.2.3
     devDependencies:
       '@funtoyz/config':
         specifier: workspace:*
         version: link:../config
+      '@funtoyz/core':
+        specifier: workspace:*
+        version: link:../core
       '@types/node':
         specifier: ^25.6.2
         version: 25.6.2
       '@types/react':
         specifier: ^19.2.14
         version: 19.2.14
+      react:
+        specifier: '>=19'
+        version: 19.2.3
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -3142,12 +3146,15 @@ snapshots:
       picocolors: 1.1.1
       pretty-format: 27.5.1
 
-  '@testing-library/react@16.3.2(@testing-library/dom@10.4.1)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
+  '@testing-library/react@16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
     dependencies:
       '@babel/runtime': 7.29.2
       '@testing-library/dom': 10.4.1
       react: 19.2.6
       react-dom: 19.2.6(react@19.2.6)
+    optionalDependencies:
+      '@types/react': 19.2.14
+      '@types/react-dom': 19.2.3(@types/react@19.2.14)
 
   '@tybys/wasm-util@0.10.2':
     dependencies:
@@ -3219,7 +3226,7 @@ snapshots:
       obug: 2.1.1
       std-env: 4.1.0
       tinyrainbow: 3.1.0
-      vitest: 4.1.5(@types/node@25.6.2)(@vitest/coverage-v8@4.1.5)(happy-dom@20.9.0)(vite@7.3.1(@types/node@25.6.2)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.4))
+      vitest: 4.1.5(@types/node@25.6.2)(@vitest/coverage-v8@4.1.5)(@voidzero-dev/vite-plus-core@0.1.20(@types/node@25.6.2)(esbuild@0.27.7)(jiti@2.7.0)(typescript@6.0.3)(yaml@2.8.4))(happy-dom@20.9.0)
     optional: true
 
   '@vitest/expect@4.1.5':
@@ -3232,13 +3239,13 @@ snapshots:
       tinyrainbow: 3.1.0
     optional: true
 
-  '@vitest/mocker@4.1.5(vite@7.3.1(@types/node@25.6.2)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.4))':
+  '@vitest/mocker@4.1.5(@voidzero-dev/vite-plus-core@0.1.20(@types/node@25.6.2)(esbuild@0.27.7)(jiti@2.7.0)(typescript@6.0.3)(yaml@2.8.4))':
     dependencies:
       '@vitest/spy': 4.1.5
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.3.1(@types/node@25.6.2)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.4)
+      vite: '@voidzero-dev/vite-plus-core@0.1.20(@types/node@25.6.2)(esbuild@0.27.7)(jiti@2.7.0)(typescript@6.0.3)(yaml@2.8.4)'
     optional: true
 
   '@vitest/pretty-format@4.1.5':
@@ -4209,10 +4216,10 @@ snapshots:
       lightningcss: 1.32.0
       yaml: 2.8.4
 
-  vitest@4.1.5(@types/node@25.6.2)(@vitest/coverage-v8@4.1.5)(happy-dom@20.9.0)(vite@7.3.1(@types/node@25.6.2)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.4)):
+  vitest@4.1.5(@types/node@25.6.2)(@vitest/coverage-v8@4.1.5)(@voidzero-dev/vite-plus-core@0.1.20(@types/node@25.6.2)(esbuild@0.27.7)(jiti@2.7.0)(typescript@6.0.3)(yaml@2.8.4))(happy-dom@20.9.0):
     dependencies:
       '@vitest/expect': 4.1.5
-      '@vitest/mocker': 4.1.5(vite@7.3.1(@types/node@25.6.2)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.4))
+      '@vitest/mocker': 4.1.5(@voidzero-dev/vite-plus-core@0.1.20(@types/node@25.6.2)(esbuild@0.27.7)(jiti@2.7.0)(typescript@6.0.3)(yaml@2.8.4))
       '@vitest/pretty-format': 4.1.5
       '@vitest/runner': 4.1.5
       '@vitest/snapshot': 4.1.5
@@ -4229,7 +4236,7 @@ snapshots:
       tinyexec: 1.1.2
       tinyglobby: 0.2.16
       tinyrainbow: 3.1.0
-      vite: 7.3.1(@types/node@25.6.2)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.4)
+      vite: '@voidzero-dev/vite-plus-core@0.1.20(@types/node@25.6.2)(esbuild@0.27.7)(jiti@2.7.0)(typescript@6.0.3)(yaml@2.8.4)'
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 25.6.2
