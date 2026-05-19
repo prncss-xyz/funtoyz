@@ -2,7 +2,7 @@ import { forbidden } from '../assertions'
 import { Init } from '../functions/arguments/init'
 import { id, noop } from '../functions/basics'
 
-export type AnyMachine = Machine<any, any, any, any, any, any>
+export type AnyMachine = Machine<any, any, any, any, any>
 
 export interface Machine<
 	Props,
@@ -10,11 +10,10 @@ export interface Machine<
 	State = EventIn,
 	Result = State,
 	CW = void,
-	CR = void,
 > {
 	init: Init<State, [Props]>
 	reduce: (event: EventIn, state: State, send: CW) => State
-	result?: (state: State, cr: CR) => Result
+	result?: (state: State) => Result
 }
 
 export type MachineReducer<Value, State = Value, Result = State> = Machine<
@@ -29,8 +28,7 @@ export function spicedMachine<
 	State = EventIn,
 	Result = State,
 	CWA = void,
-	CR = void,
->(machine: Machine<Props, EventIn, State, Result, (e: CWA) => void, CR>) {
+>(machine: Machine<Props, EventIn, State, Result, (e: CWA) => void>) {
 	const reduce = machine.reduce
 	const result = machine.result ?? (id as never)
 
@@ -45,9 +43,9 @@ export function spicedMachine<
 			)
 		},
 		init: machine.init,
-		next: (event: EventIn, cr: CR) => (state: State) =>
-			result(reduce(event, state, noop), cr),
-		result: (cr: CR) => (state: State) => result(state, cr),
+		next: (event: EventIn) => (state: State) =>
+			result(reduce(event, state, noop)),
+		result: () => (state: State) => result(state),
 		send:
 			(
 				event: EventIn,
@@ -70,7 +68,7 @@ export function machineState<
 	Result = State,
 	EventOut = never,
 >(
-	machine: Machine<Props, EventIn, State, Result, EventOut, void>,
+	machine: Machine<Props, EventIn, State, Result, EventOut>,
 	state: State,
 	setState: (s: State) => void,
 	onSend?: (e: EventOut) => void,

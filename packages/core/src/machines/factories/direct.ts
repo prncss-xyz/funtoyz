@@ -3,7 +3,7 @@ import { Tags } from '../../tags/types'
 import { baseMachine } from './base'
 import { fromSendable, Sendable } from './sendable'
 
-export function directMachine<CW = void, CR = void>() {
+export function directMachine<CW = void>() {
 	return function <T, State, Props = void, Result = State>(
 		init: Init<State, [Props]>,
 		events: {
@@ -13,9 +13,9 @@ export function directMachine<CW = void, CR = void>() {
 				send: (event: CW) => void,
 			) => Init<State, [State]>
 		},
-		result?: (state: State, cr: CR) => Result,
+		result?: (state: State) => Result,
 	) {
-		return baseMachine<CW, CR>()<Sendable<Tags<T>>, State, Props, Result>(
+		return baseMachine<CW>()<Sendable<Tags<T>>, State, Props, Result>(
 			init,
 			(event: any, state, send) => {
 				const ev = fromSendable(event)

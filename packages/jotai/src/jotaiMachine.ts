@@ -14,7 +14,7 @@ type CW = (cb: (get: Getter, set: Setter) => void) => void
 type CR = Getter
 
 export function createJotaiMachine<Prop, Value, State, Result, R = void>(
-	machine: Machine<Prop, Value, State, Result, CW, CR>,
+	machine: Machine<Prop, Value, State, Result, CW>,
 	prop: Prop,
 	atomFactory: (init: State) => WritableAtom<Promise<State>, [State], R>,
 ): {
@@ -23,7 +23,7 @@ export function createJotaiMachine<Prop, Value, State, Result, R = void>(
 	resultAtom: WritableAtom<Promise<Result>, [action: Value], R>
 }
 export function createJotaiMachine<Prop, Value, State, Result, R = void>(
-	machine: Machine<Prop, Value, State, Result, CW, CR>,
+	machine: Machine<Prop, Value, State, Result, CW>,
 	prop: Prop,
 	atomFactory: (init: State) => WritableAtom<State, [State], R>,
 ): {
@@ -32,7 +32,7 @@ export function createJotaiMachine<Prop, Value, State, Result, R = void>(
 	resultAtom: WritableAtom<Promise<Result>, [action: Value], R>
 }
 export function createJotaiMachine<Value, State, Result, R = void>(
-	machine: Machine<void, Value, State, Result, CW, CR>,
+	machine: Machine<void, Value, State, Result, CW>,
 	prop?: void,
 ): {
 	disabled: (action: Value) => WritableAtom<boolean, [], R>
@@ -40,7 +40,7 @@ export function createJotaiMachine<Value, State, Result, R = void>(
 	resultAtom: WritableAtom<Result, [action: Value], R>
 }
 export function createJotaiMachine<Prop, Value, State, Result, R = void>(
-	machine: Machine<Prop, Value, State, Result, CW, CR>,
+	machine: Machine<Prop, Value, State, Result, CW>,
 	prop: Prop,
 ): {
 	disabled: (action: Value) => WritableAtom<boolean, [], R>
@@ -49,7 +49,7 @@ export function createJotaiMachine<Prop, Value, State, Result, R = void>(
 }
 
 export function createJotaiMachine<Prop, Value, State, Result, R>(
-	machine: Machine<Prop, Value, State, Result, CW, CR>,
+	machine: Machine<Prop, Value, State, Result, CW>,
 	prop: Prop,
 	atomFactory?: (
 		init: State,
@@ -76,18 +76,18 @@ export function createJotaiMachine<Prop, Value, State, Result, R>(
 			),
 		next: (action: Value) =>
 			atom(
-				(get) => unwrap(get(baseAtom), spiced.next(action, get)),
+				(get) => unwrap(get(baseAtom), spiced.next(action)),
 				(get, set) => setter(get, set, action),
 			),
 		resultAtom: atom(
-			(get) => unwrap(get(baseAtom), spiced.result(get)),
+			(get) => unwrap(get(baseAtom), spiced.result()),
 			setter,
 		),
 	}
 }
 
-export const jotaiBaseMachine = baseMachine<CW, CR>()
-export const jotaiDirectMachine = directMachine<CW, CR>()
-export const jotaiModalMachine = modalMachine<CW, CR>()
+export const jotaiBaseMachine = baseMachine<CW>()
+export const jotaiDirectMachine = directMachine<CW>()
+export const jotaiModalMachine = modalMachine<CW>()
 
 // TODO: check how autocompletion fares in typical react setting

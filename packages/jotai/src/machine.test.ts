@@ -11,7 +11,7 @@ type State = { n: number }
 describe('createMachine', () => {
 	it('updates result with sync base atom and prop', async () => {
 		const store = createStore()
-		const machine = baseMachine<(ef: never) => void, Getter>()(
+		const machine = baseMachine<(ef: never) => void>()(
 			(prop: number) => ({ n: prop }),
 			(event: Event, state: State) =>
 				event.type === 'add' ? { n: state.n + event.n } : state,
@@ -26,7 +26,7 @@ describe('createMachine', () => {
 
 	it('supports async base atom factories', async () => {
 		const store = createStore()
-		const machine = baseMachine<(ef: never) => void, Getter>()(
+		const machine = baseMachine<(ef: never) => void>()(
 			{ n: 1 },
 			(event: Event, state: State) =>
 				event.type === 'add' ? { n: state.n + event.n } : state,
@@ -44,7 +44,7 @@ describe('createMachine', () => {
 	it('dispatches effects with get/set access', async () => {
 		const store = createStore()
 		const countAtom = atom(0)
-		const machine = baseMachine<(ef: number) => void, Getter>()(
+		const machine = baseMachine<(ef: number) => void>()(
 			{ n: 0 },
 			(event: Event, state: State, send: (ef: number) => void) => {
 				if (event.type === 'tick') {
@@ -66,7 +66,7 @@ describe('createMachine', () => {
 
 	it('throws when effects are emitted without handlers', () => {
 		const store = createStore()
-		const machine = baseMachine<(ef: number) => void, Getter>()(
+		const machine = baseMachine<(ef: number) => void>()(
 			{ n: 0 },
 			(event: Event, state: State, send: (ef: number) => void) => {
 				if (event.type === 'tick') {
