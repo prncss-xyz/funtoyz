@@ -4,7 +4,7 @@ import { Machine } from '../core'
 import { baseMachine } from './base'
 import { fromSendable, Sendable } from './sendable'
 
-export function modalMachine<CW = void>() {
+export function modalMachine<E = never>() {
 	return function <
 		EventIn extends AnyTag,
 		State extends AnyTag,
@@ -17,15 +17,15 @@ export function modalMachine<CW = void>() {
 				[E in TypeIn<EventIn>]: (
 					event: PayloadOf<EventIn, E>,
 					state: PayloadOf<State, S>,
-					send: CW,
+					send: E,
 				) => State
 			}>
 		},
 		result?: {
 			[S in TypeIn<State>]: (state: PayloadOf<State, S>) => Result
 		},
-	): Machine<Props, Sendable<EventIn>, State, Result, CW> {
-		return baseMachine<CW>()<Sendable<EventIn>, State, Props, Result>(
+	): Machine<Props, Sendable<EventIn>, State, Result, E> {
+		return baseMachine<E>()<Sendable<EventIn>, State, Props, Result>(
 			init,
 			(event, state, send) => {
 				const sendableEvent = fromSendable(event)

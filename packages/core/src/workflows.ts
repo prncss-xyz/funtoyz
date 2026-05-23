@@ -1,5 +1,5 @@
-import { fromInit, Init } from '../functions/arguments/init'
-import { AnyTag, PAYLOAD, PayloadOf, TypeIn } from '../tags/types'
+import { fromInit, Init } from './functions/arguments/init'
+import { AnyTag, PAYLOAD, PayloadOf, TypeIn } from './tags/types'
 
 // Do not write tests for this
 // TODO: exit handler, maybe other handlers

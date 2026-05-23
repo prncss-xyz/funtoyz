@@ -29,21 +29,15 @@ type EventIn<M extends MS> = ValueUnion<{
 }>
 
 type State<M extends MS> = Prettify<{
-	[K in keyof M]: M[K] extends Machine<any, any, infer T, any, any>
-		? T
-		: never
+	[K in keyof M]: M[K] extends Machine<any, any, infer T, any, any> ? T : never
 }>
 
 type Result<M extends MS> = Prettify<{
-	[K in keyof M]: M[K] extends Machine<any, any, any, infer T, any>
-		? T
-		: never
+	[K in keyof M]: M[K] extends Machine<any, any, any, infer T, any> ? T : never
 }>
 
 type CW<M extends MS> = ValueIntersection<{
-	[K in keyof M]: M[K] extends Machine<any, any, any, any, infer T>
-		? T
-		: never
+	[K in keyof M]: M[K] extends Machine<any, any, any, any, infer T> ? T : never
 }>
 
 export function sliceMachine<M extends MS>(ms: M) {

@@ -31,6 +31,7 @@ export function reduce<Event, State, Result = State>(
 	return result(acc)
 }
 
+// TODO:
 export function reduce1<Event, State, Result = State>(
 	reducer: Reducer<Event, State, Result>,
 	events: Iterable<Event>,

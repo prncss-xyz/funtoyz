@@ -110,10 +110,7 @@ export function createMachine<Prop, Value, State, Result, Ef, R>(
 				(get) => unwrap(get(baseAtom), spiced.next(action)),
 				(get, set) => setter(get, set, action),
 			),
-		resultAtom: atom(
-			(get) => unwrap(get(baseAtom), spiced.result()),
-			setter,
-		),
+		resultAtom: atom((get) => unwrap(get(baseAtom), spiced.result()), setter),
 	}
 }
 

@@ -3,16 +3,21 @@ import { Init } from '../functions/arguments/init'
 import { id, noop } from '../functions/basics'
 
 export type AnyMachine = Machine<any, any, any, any, any>
+export type InferMachineProps<M> = M extends Machine<infer P, any, any, any, any> ? P : never
+export type InferMachineEventIn<M> = M extends Machine<any, infer E, any, any, any> ? E : never
+export type InferMachineState<M> = M extends Machine<any, any, infer S, any, any> ? S : never
+export type InferMachineResult<M> = M extends Machine<any, any, any, infer R, any> ? R : never
+export type InferMachineEventOut<M> = M extends Machine<any, any, any, any, infer E> ? E : never
 
 export interface Machine<
 	Props,
 	EventIn,
 	State = EventIn,
 	Result = State,
-	CW = void,
+	E = never,
 > {
 	init: Init<State, [Props]>
-	reduce: (event: EventIn, state: State, send: CW) => State
+	reduce: (event: EventIn, state: State, send: (e: E) => void) => State
 	result?: (state: State) => Result
 }
 
@@ -27,8 +32,8 @@ export function spicedMachine<
 	EventIn,
 	State = EventIn,
 	Result = State,
-	CWA = void,
->(machine: Machine<Props, EventIn, State, Result, (e: CWA) => void>) {
+	E = never,
+>(machine: Machine<Props, EventIn, State, Result, E>) {
 	const reduce = machine.reduce
 	const result = machine.result ?? (id as never)
 
@@ -50,10 +55,10 @@ export function spicedMachine<
 			(
 				event: EventIn,
 				setState: (s: State) => void,
-				onSend: (e: CWA) => void,
+				onSend: (e: E) => void,
 			) =>
 			(state: State) => {
-				const calls: CWA[] = []
+				const calls: E[] = []
 				setState(reduce(event, state, (e) => calls.push(e)))
 				if (calls.length > 0)
 					void Promise.resolve().then(() => calls.forEach((c) => onSend(c)))

@@ -1,5 +1,9 @@
 import { AnyFunction } from './types'
 
+export function isObject(u: unknown): u is object {
+	return u !== null && typeof u === 'object'
+}
+
 export function isFunction(u: unknown): u is AnyFunction {
 	return typeof u === 'function'
 }
