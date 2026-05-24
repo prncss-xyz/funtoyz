@@ -6,6 +6,7 @@
 	"description": "",
 	"scripts": {
 		"check:types": "vp run -r check:types",
+		"build": "vp run -r build",
 		"clean": "rm -rf **/{.dist,coverage}",
 		"clean-gen": "rm packages/*/src/index.ts",
 		"clean-all": "rm -rf **/{node_modules,dist,coverage}",

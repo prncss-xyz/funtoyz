@@ -26,34 +26,38 @@ type Result<M extends MS<any>> = Prettify<{
 }>
 
 export function sumMachine<E, F>() {
-  // TODO: exclude K when events out dont have 'exit'
-	return function <M extends MS<E>>(ms: M, resend: {[K in keyof M]: (
-    e: PayloadOf<InferMachineEventOut<M[K]>, 'exit'>
-  ) => State<M> | Tag<typeof EXIT, F>}) {
-    // TODO: actual init
+	// TODO: exclude K when M[K] events out dont have EXIT type
+	return function <M extends MS<E>>(
+		ms: M,
+		resend: {
+			[K in keyof M]: (
+				e: PayloadOf<InferMachineEventOut<M[K]>, typeof EXIT>,
+			) => State<M> | Tag<typeof EXIT, F>
+		},
+	) {
+		// TODO: actual init
 		function init(p: any) {
-			return tag(p[TYPE], fromInit(ms[p[TYPE]], p[PAYLOAD])) as any
+			return tag(p[TYPE], fromInit(ms[p[TYPE]]!.init, p[PAYLOAD])) as any
 		}
 		return baseMachine<E>()<E, State<M>, Props<M>, Result<M>>(
 			init,
 			(event: any, state, send: (e: E) => void) => {
-        let ns = undefined
-        const type = state[TYPE]
-        const v = ms[type] as any
-        const	res = v.reduce(event, state[PAYLOAD], (event: any) => {
-          if (exit.is(event)) {
-            const res = (resend[state[PAYLOAD] as any] as any)(exit.get(event))
-
-            if (res !== undefined) ns = init(res) 
-          }
-          else send(event)
-        })
-				return ns ?? tag(type, res) as any
+				let ns = undefined
+				const type = state[TYPE]
+				const v = ms[type] as any
+				const res = v.reduce(event, state[PAYLOAD], (event: any) => {
+					if (exit.is(event)) {
+						const res = (resend[type] as any)(exit.get(event))
+						if (res[TYPE] === EXIT) send(res)
+						else ns = init(res)
+					} else send(event)
+				})
+				return ns ?? (tag(type, res) as any)
 			},
 			(state) => {
-        const type = state[TYPE]
-        const v = ms[type] as any
-        return tag(type, v.result ? v.result(state[PAYLOAD]) : id) as any
+				const type = state[TYPE]
+				const v = ms[type] as any
+				return tag(type, v.result ? v.result(state[PAYLOAD]) : id) as any
 			},
 		)
 	}

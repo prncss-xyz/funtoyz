@@ -11,7 +11,6 @@ import { atom, Getter, Setter, WritableAtom } from 'jotai'
 import { unwrap } from './_utils'
 
 type CW = (cb: (get: Getter, set: Setter) => void) => void
-type CR = Getter
 
 export function createJotaiMachine<Prop, Value, State, Result, R = void>(
 	machine: Machine<Prop, Value, State, Result, CW>,
