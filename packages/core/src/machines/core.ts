@@ -3,11 +3,16 @@ import { Init } from '../functions/arguments/init'
 import { id, noop } from '../functions/basics'
 
 export type AnyMachine = Machine<any, any, any, any, any>
-export type InferMachineProps<M> = M extends Machine<infer P, any, any, any, any> ? P : never
-export type InferMachineEventIn<M> = M extends Machine<any, infer E, any, any, any> ? E : never
-export type InferMachineState<M> = M extends Machine<any, any, infer S, any, any> ? S : never
-export type InferMachineResult<M> = M extends Machine<any, any, any, infer R, any> ? R : never
-export type InferMachineEventOut<M> = M extends Machine<any, any, any, any, infer E> ? E : never
+export type InferMachineProps<M> =
+	M extends Machine<infer P, any, any, any, any> ? P : never
+export type InferMachineEventIn<M> =
+	M extends Machine<any, infer E, any, any, any> ? E : never
+export type InferMachineState<M> =
+	M extends Machine<any, any, infer S, any, any> ? S : never
+export type InferMachineResult<M> =
+	M extends Machine<any, any, any, infer R, any> ? R : never
+export type InferMachineEventOut<M> =
+	M extends Machine<any, any, any, any, infer E> ? E : never
 
 export interface Machine<
 	Props,
@@ -52,11 +57,7 @@ export function spicedMachine<
 			result(reduce(event, state, noop)),
 		result: () => (state: State) => result(state),
 		send:
-			(
-				event: EventIn,
-				setState: (s: State) => void,
-				onSend: (e: E) => void,
-			) =>
+			(event: EventIn, setState: (s: State) => void, onSend: (e: E) => void) =>
 			(state: State) => {
 				const calls: E[] = []
 				setState(reduce(event, state, (e) => calls.push(e)))

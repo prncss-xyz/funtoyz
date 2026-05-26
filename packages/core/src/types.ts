@@ -1,6 +1,9 @@
-export type Prettify<T> = unknown & {
-	[K in keyof T]: T[K]
-}
+type Full = Record<PropertyKey, unknown>
+export type Prettify<T> = T extends Full
+	? unknown & {
+			[K in keyof T]: T[K]
+		}
+	: T
 
 export type Equals<T, U> = [T] extends [U]
 	? [U] extends [T]
@@ -20,6 +23,24 @@ export type ValueIntersection<T> = Prettify<
 		? I
 		: never
 >
+
+type KeysOfUnion<T> = T extends T ? keyof T : never
+
+type OmitNeverValues<T> = {
+	[K in keyof T as [T[K]] extends [never] ? never : K]: T[K]
+}
+
+export type ValueEventIntersection<T> = [ValueUnion<T>] extends [object]
+	? OmitNeverValues<{
+			[K in KeysOfUnion<ValueUnion<T>>]: ValueIntersection<{
+				[P in keyof T]: T[P] extends infer O
+					? K extends keyof O
+						? O[K]
+						: unknown
+					: never
+			}>
+		}>
+	: ValueIntersection<T>
 
 export type AnyFunction = (...args: any[]) => any
 export type NonEmptyArray<T> = [T, ...T[]]

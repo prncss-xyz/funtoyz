@@ -1,3 +1,4 @@
+import { toExhaustive } from '../../assertions'
 import { tag } from '../../tags/tag'
 import { Tags } from '../../tags/types'
 import { modalMachine } from './modal'
@@ -28,19 +29,19 @@ describe('machines/factories/modal', () => {
 		})
 
 		// Idle -> Start
-		const s1 = machine.reduce(tag('start'), tag('idle'))
+		const s1 = machine.reduce(tag('start'), tag('idle'), toExhaustive)
 		expect(s1).toEqual(tag('running', 0))
 
 		// Running -> Tick
-		const s2 = machine.reduce(tag('tick'), tag('running', 10))
+		const s2 = machine.reduce(tag('tick'), tag('running', 10), toExhaustive)
 		expect(s2).toEqual(tag('running', 11))
 
 		// Running -> Stop
-		const s3 = machine.reduce(tag('stop'), tag('running', 20))
+		const s3 = machine.reduce(tag('stop'), tag('running', 20), toExhaustive)
 		expect(s3).toEqual(tag('idle'))
 
 		// No handler
-		const s4 = machine.reduce(tag('tick'), tag('idle'))
+		const s4 = machine.reduce(tag('tick'), tag('idle'), toExhaustive)
 		expect(s4).toEqual(tag('idle'))
 	})
 

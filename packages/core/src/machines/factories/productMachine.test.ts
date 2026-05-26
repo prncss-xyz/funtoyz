@@ -1,3 +1,4 @@
+import { toExhaustive } from '../../assertions'
 import { fromInit } from '../../functions/arguments/init'
 import { id } from '../../functions/basics'
 import { add } from '../../functions/elementary'
@@ -15,7 +16,7 @@ describe('productMachine', () => {
 		expectTypeOf(s1).toEqualTypeOf<{ a: number; b: number }>()
 		expect(s1).toEqual({ a: 1, b: 2 })
 
-		const s2 = machine.reduce(3, s1)
+		const s2 = machine.reduce(3, s1, toExhaustive)
 		expect(s2).toEqual({ a: 4, b: 5 })
 	})
 })

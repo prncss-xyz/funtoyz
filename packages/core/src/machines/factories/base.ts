@@ -2,12 +2,16 @@ import { fromInit, Init } from '../../functions/arguments/init'
 import { id } from '../../functions/basics'
 import { Machine } from '../core'
 
-export function baseMachine<E = never>() {
+export function baseMachine<EventOut = never>() {
 	return function <EventIn, State, Props = void, Result = State>(
 		init: Init<State, [Props]>,
-		reduce: (event: EventIn, state: State, send: (e: E) => void) => Init<State, [State]>,
+		reduce: (
+			event: EventIn,
+			state: State,
+			send: (e: EventOut) => void,
+		) => Init<State, [State]>,
 		result?: (state: State) => Result,
-	): Machine<Props, EventIn, State, Result, E> {
+	): Machine<Props, EventIn, State, Result, EventOut> {
 		return {
 			init,
 			reduce: (event: any, state, send) =>

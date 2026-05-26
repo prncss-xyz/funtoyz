@@ -3,6 +3,7 @@ import { Tags } from '../../tags/types'
 import { baseMachine } from './base'
 import { fromSendable, Sendable } from './sendable'
 
+// TODO: maybe do away with reversed mapped type to allow not typing event when void
 export function directMachine<E = never>() {
 	return function <T, State, Props = void, Result = State>(
 		init: Init<State, [Props]>,
