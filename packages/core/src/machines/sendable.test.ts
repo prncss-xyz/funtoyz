@@ -1,4 +1,4 @@
-import { Tags } from '../../tags/types'
+import { Tags } from '../tags/types'
 import { fromSendable, Sendable } from './sendable'
 
 type T = Tags<{ start: void; tick: number }>

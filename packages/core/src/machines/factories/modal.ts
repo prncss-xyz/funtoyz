@@ -2,7 +2,7 @@ import { Init } from '../../functions/arguments/init'
 import { AnyTag, PayloadOf, TypeIn } from '../../tags/types'
 import { Machine } from '../core'
 import { baseMachine } from './base'
-import { fromSendable, Sendable } from './sendable'
+import { fromSendable, Sendable } from '../sendable'
 
 export function modalMachine<E = never>() {
 	return function <

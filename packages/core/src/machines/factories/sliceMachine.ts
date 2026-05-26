@@ -22,7 +22,7 @@ type Props<M extends MS> = Prettify<
 	}
 >
 
-type EventIn<M extends MS> = ValueUnion<{
+type EvIn<M extends MS> = ValueUnion<{
 	[K in keyof M]: M[K] extends Machine<any, infer T, any, any, any>
 		? Tag<K, T>
 		: never
@@ -36,12 +36,12 @@ type Result<M extends MS> = Prettify<{
 	[K in keyof M]: M[K] extends Machine<any, any, any, infer T, any> ? T : never
 }>
 
-type CW<M extends MS> = ValueIntersection<{
+type EvOut<M extends MS> = ValueIntersection<{
 	[K in keyof M]: M[K] extends Machine<any, any, any, any, infer T> ? T : never
 }>
 
 export function sliceMachine<M extends MS>(ms: M) {
-	return baseMachine<CW<M>>()<EventIn<M>, State<M>, Props<M>, Result<M>>(
+	return baseMachine<EvOut<M>>()<EvIn<M>, State<M>, Props<M>, Result<M>>(
 		(p) => {
 			const res = {} as any
 			for (const [k, v] of Object.entries(ms)) {

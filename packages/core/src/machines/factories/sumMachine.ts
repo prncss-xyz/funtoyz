@@ -55,6 +55,7 @@ type MapMachine<M, F> = {
 	) => State<M> | Tag<typeof EXIT, F>
 }
 
+// TODO: can F be inferred from R
 export function sumMachine<F>() {
 	return function <
 		M extends Record<string, AnyMachine>,
