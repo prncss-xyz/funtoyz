@@ -1,6 +1,6 @@
 import { traversal } from '.'
 import { flow } from '../../../../functions/flow'
-import { reduce } from '../../../../reduce'
+import { reduce } from '../../../../reducers/reduce'
 import { collect } from '../../../extractors'
 import { once } from '../../../sources/sync/once'
 import { toJoin } from './join'

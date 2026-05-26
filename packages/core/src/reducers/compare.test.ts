@@ -1,4 +1,4 @@
-import { reduce } from '.'
+import { reduce } from './reduce'
 import { shallowEqual } from '../objects/shallowEqual'
 import { maxFold, minFold, shuffle, sort } from './compare'
 

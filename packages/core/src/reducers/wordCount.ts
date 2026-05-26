@@ -1,4 +1,4 @@
-import { Reducer } from '.'
+import { Reducer } from './reduce'
 
 function isWordLike(t: string) {
 	return /\w/.test(t)

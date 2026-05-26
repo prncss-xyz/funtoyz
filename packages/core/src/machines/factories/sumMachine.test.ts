@@ -8,10 +8,10 @@ import { sumMachine } from './sumMachine'
 
 describe('machines/factories/sumMachine', () => {
 	it('switches between direct machines and can finish with exit', () => {
-type ChildEventOut = Tags<{
-	exit: number
-	forwarded: string
-}>
+		type ChildEventOut = Tags<{
+			exit: number
+			forwarded: string
+		}>
 		const m0 = directMachine<ChildEventOut>()(
 			id<number>,
 			{

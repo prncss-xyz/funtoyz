@@ -1,4 +1,4 @@
-import { Reducer } from '.'
+import { Reducer } from './reduce'
 import { insert, insertSorted } from '../arrays'
 import { compare } from '../functions/elementary'
 

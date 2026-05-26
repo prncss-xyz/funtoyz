@@ -1,6 +1,6 @@
 import { fromInit } from '../../../../functions/arguments/init'
 import { id, noop } from '../../../../functions/basics'
-import { ReducerNonDest } from '../../../../reduce'
+import { ReducerNonDest } from '../../../../reducers/reduce'
 import { Optic } from '../../../compose'
 import { Flags } from '../../../compose/flags'
 

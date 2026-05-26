@@ -154,7 +154,6 @@ export default defineConfig({
 			'no-obj-calls': 'error',
 			'no-prototype-builtins': 'error',
 			'no-regex-spaces': 'error',
-			'no-restricted-imports': ['error', { paths: [{ name: './index' }] }],
 			'no-self-assign': 'error',
 			'no-setter-return': 'error',
 			'no-shadow-restricted-names': 'error',

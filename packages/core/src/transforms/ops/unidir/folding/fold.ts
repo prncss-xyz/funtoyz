@@ -1,4 +1,4 @@
-import { Reducer } from '../../../../reduce'
+import { Reducer } from '../../../../reducers/reduce'
 import { Optic } from '../../../compose'
 import { reduce } from '../../../compose/_methods'
 import { Flags } from '../../../compose/flags'

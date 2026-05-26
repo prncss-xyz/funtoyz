@@ -1,4 +1,4 @@
-import { reduce } from '.'
+import { reduce } from './reduce'
 import { productFold, sumFold } from './misc'
 
 describe('sumFold', () => {

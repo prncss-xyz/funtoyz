@@ -3,8 +3,6 @@ import { atom, Getter, Setter, WritableAtom } from 'jotai'
 
 import { unwrap } from './_utils'
 
-type CR = Getter
-
 export function createMachine<Prop, Value, State, Result, Ef, R = void>(
 	machine: Machine<Prop, Value, State, Result, (ef: Ef) => void>,
 	props: {

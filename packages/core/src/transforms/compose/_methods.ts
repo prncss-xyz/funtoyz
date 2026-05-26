@@ -2,7 +2,7 @@ import { Optic } from '.'
 import { forbidden } from '../../assertions'
 import { fromInit } from '../../functions/arguments/init'
 import { id, noop } from '../../functions/basics'
-import { Reducer } from '../../reduce'
+import { Reducer } from '../../reducers/reduce'
 import { Flags } from './flags'
 
 export function trush<V>(v: V, cb: (v: V) => void) {

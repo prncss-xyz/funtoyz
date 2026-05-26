@@ -1,6 +1,6 @@
 import { fromInit } from '../../../../functions/arguments/init'
 import { id, noop } from '../../../../functions/basics'
-import { Reducer } from '../../../../reduce'
+import { Reducer } from '../../../../reducers/reduce'
 import { nothing, Nothing } from '../../../../tags/results'
 import { compose } from '../../../compose'
 import { Emitter } from '../../../compose/_methods'

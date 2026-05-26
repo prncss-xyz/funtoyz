@@ -1,5 +1,5 @@
 import { baseMachine } from '@funtoyz/core'
-import { atom, createStore, Getter } from 'jotai'
+import { atom, createStore } from 'jotai'
 
 import { asyncAtomFactory } from './_testUtils'
 import { createMachine } from './machine'

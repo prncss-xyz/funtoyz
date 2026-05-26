@@ -1,4 +1,4 @@
-import { reduce } from '.'
+import { reduce } from './reduce'
 import { wordCount } from './wordCount'
 
 describe('isWordLike', () => {

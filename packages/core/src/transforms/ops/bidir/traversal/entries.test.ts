@@ -1,4 +1,4 @@
-import { reduce } from '../../../../reduce'
+import { reduce } from '../../../../reducers/reduce'
 import { fromEntries } from './entries'
 
 describe('fromEntries', () => {

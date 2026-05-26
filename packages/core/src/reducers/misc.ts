@@ -1,4 +1,4 @@
-import { Reducer } from '.'
+import { Reducer } from './reduce'
 
 export function sumFold(): Reducer<number> {
 	return {
