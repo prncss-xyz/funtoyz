@@ -6,13 +6,12 @@ import { directMachine } from './direct'
 import { Sendable } from './sendable'
 import { sumMachine } from './sumMachine'
 
+describe('machines/factories/sumMachine', () => {
+	it('switches between direct machines and can finish with exit', () => {
 type ChildEventOut = Tags<{
 	exit: number
 	forwarded: string
 }>
-
-describe('machines/factories/sumMachine', () => {
-	it('switches between direct machines and can finish with exit', () => {
 		const m0 = directMachine<ChildEventOut>()(
 			id<number>,
 			{
