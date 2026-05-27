@@ -44,7 +44,7 @@ describe('createMachine', () => {
 	it('dispatches effects with get/set access', async () => {
 		const store = createStore()
 		const countAtom = atom(0)
-		const machine = baseMachine<(ef: number) => void>()(
+		const machine = baseMachine<number>()(
 			{ n: 0 },
 			(event: Event, state: State, send: (ef: number) => void) => {
 				if (event.type === 'tick') {
@@ -66,7 +66,7 @@ describe('createMachine', () => {
 
 	it('throws when effects are emitted without handlers', () => {
 		const store = createStore()
-		const machine = baseMachine<(ef: number) => void>()(
+		const machine = baseMachine<number>()(
 			{ n: 0 },
 			(event: Event, state: State, send: (ef: number) => void) => {
 				if (event.type === 'tick') {

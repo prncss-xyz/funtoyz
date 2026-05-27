@@ -2,9 +2,8 @@ import { fromInit, Machine, spicedMachine } from '@funtoyz/core'
 import { atom, Getter, Setter, WritableAtom } from 'jotai'
 
 import { unwrap } from './_utils'
-
 export function createMachine<Prop, Value, State, Result, Ef, R = void>(
-	machine: Machine<Prop, Value, State, Result, (ef: Ef) => void>,
+	machine: Machine<Prop, Value, State, Result, Ef>,
 	props: {
 		atomFactory: (init: State) => WritableAtom<Promise<State>, [State], R>
 		effects?: (ef: Ef, get: Getter, set: Setter) => void
@@ -16,7 +15,7 @@ export function createMachine<Prop, Value, State, Result, Ef, R = void>(
 	resultAtom: WritableAtom<Promise<Result>, [action: Value], R>
 }
 export function createMachine<Prop, Value, State, Result, Ef, R = void>(
-	machine: Machine<Prop, Value, State, Result, (ef: Ef) => void>,
+	machine: Machine<Prop, Value, State, Result, Ef>,
 	props: {
 		atomFactory: (init: State) => WritableAtom<State, [State], R>
 		effects?: (ef: Ef, get: Getter, set: Setter) => void
@@ -28,7 +27,7 @@ export function createMachine<Prop, Value, State, Result, Ef, R = void>(
 	resultAtom: WritableAtom<Promise<Result>, [action: Value], R>
 }
 export function createMachine<Value, State, Result, Ef, R = void>(
-	machine: Machine<void, Value, State, Result, (ef: Ef) => void>,
+	machine: Machine<void, Value, State, Result, Ef>,
 	props?: {
 		atomFactory: (init: State) => WritableAtom<Promise<State>, [State], R>
 		effects?: (ef: Ef, get: Getter, set: Setter) => void
@@ -40,7 +39,7 @@ export function createMachine<Value, State, Result, Ef, R = void>(
 	resultAtom: WritableAtom<Promise<Result>, [action: Value], R>
 }
 export function createMachine<Value, State, Result, Ef, R = void>(
-	machine: Machine<void, Value, State, Result, (ef: Ef) => void>,
+	machine: Machine<void, Value, State, Result, Ef>,
 	props?: {
 		atomFactory: (init: State) => WritableAtom<State, [State], R>
 		effects?: (ef: Ef, get: Getter, set: Setter) => void
@@ -52,7 +51,7 @@ export function createMachine<Value, State, Result, Ef, R = void>(
 	resultAtom: WritableAtom<Promise<Result>, [action: Value], R>
 }
 export function createMachine<Value, State, Result, Ef, R = void>(
-	machine: Machine<void, Value, State, Result, (ef: Ef) => void>,
+	machine: Machine<void, Value, State, Result, Ef>,
 	props?: {
 		effects?: (ef: Ef, get: Getter, set: Setter) => void
 		prop?: void
@@ -63,7 +62,7 @@ export function createMachine<Value, State, Result, Ef, R = void>(
 	resultAtom: WritableAtom<Result, [action: Value], R>
 }
 export function createMachine<Prop, Value, State, Result, Ef, R = void>(
-	machine: Machine<Prop, Value, State, Result, (ef: Ef) => void>,
+	machine: Machine<Prop, Value, State, Result, Ef>,
 	props: {
 		effects?: (ef: Ef, get: Getter, set: Setter) => void
 		prop: Prop
@@ -75,7 +74,7 @@ export function createMachine<Prop, Value, State, Result, Ef, R = void>(
 }
 
 export function createMachine<Prop, Value, State, Result, Ef, R>(
-	machine: Machine<Prop, Value, State, Result, (ef: Ef) => void>,
+	machine: Machine<Prop, Value, State, Result, Ef>,
 	props?: {
 		atomFactory?: (
 			init: State,
