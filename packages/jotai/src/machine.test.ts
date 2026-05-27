@@ -1,10 +1,14 @@
-import { baseMachine } from '@funtoyz/core'
+import { baseMachine, tag, Tags } from '@funtoyz/core'
 import { atom, createStore } from 'jotai'
 
 import { asyncAtomFactory } from './_testUtils'
 import { createMachine } from './machine'
 
-type Event = { n: number; type: 'add' } | { type: 'noop' } | { type: 'tick' }
+type Event = Tags<{
+	add: number
+	noop: void
+	tick: void
+}>
 
 type State = { n: number }
 
@@ -14,12 +18,12 @@ describe('createMachine', () => {
 		const machine = baseMachine<(ef: never) => void>()(
 			(prop: number) => ({ n: prop }),
 			(event: Event, state: State) =>
-				event.type === 'add' ? { n: state.n + event.n } : state,
+				event.type === 'add' ? { n: state.n + event.payload } : state,
 			(state: State) => state.n,
 		)
 		const { resultAtom } = createMachine(machine, { prop: 1 })
 		expect(store.get(resultAtom)).toBe(1)
-		store.set(resultAtom, { n: 2, type: 'add' })
+		store.set(resultAtom, tag('add', 2))
 		await Promise.resolve()
 		expect(store.get(resultAtom)).toBe(3)
 	})
@@ -29,14 +33,14 @@ describe('createMachine', () => {
 		const machine = baseMachine<(ef: never) => void>()(
 			{ n: 1 },
 			(event: Event, state: State) =>
-				event.type === 'add' ? { n: state.n + event.n } : state,
+				event.type === 'add' ? { n: state.n + event.payload } : state,
 			(state: State) => state,
 		)
 		const { resultAtom } = createMachine(machine, {
 			atomFactory: asyncAtomFactory,
 		})
 		expect(await store.get(resultAtom)).toEqual({ n: 1 })
-		store.set(resultAtom, { n: 1, type: 'add' })
+		store.set(resultAtom, tag('add', 1))
 		await Promise.resolve()
 		expect(await store.get(resultAtom)).toEqual({ n: 2 })
 	})
@@ -58,7 +62,7 @@ describe('createMachine', () => {
 		const { resultAtom } = createMachine(machine, {
 			effects: (ef, get, set) => set(countAtom, get(countAtom) + ef),
 		})
-		store.set(resultAtom, { type: 'tick' })
+		store.set(resultAtom, tag('tick'))
 		await Promise.resolve()
 		expect(store.get(countAtom)).toBe(1)
 		expect(store.get(resultAtom)).toBe(1)
@@ -98,7 +102,7 @@ describe('createMachine', () => {
 				resolve()
 			}
 			process.on('unhandledRejection', handler)
-			store.set(resultAtom, { type: 'tick' })
+			store.set(resultAtom, tag('tick'))
 		})
 	})
 })

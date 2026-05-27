@@ -26,7 +26,11 @@ function fromHandlers<EventOut>(
 	}
 }
 
-export function useMachine<State, EventIn = State, Result = State>(
+export function useMachine<
+	State,
+	EventIn extends AnyTag = State & AnyTag,
+	Result = State,
+>(
 	machine: Machine<void, EventIn, State, Result>,
 	param?: void,
 ): {
@@ -35,7 +39,12 @@ export function useMachine<State, EventIn = State, Result = State>(
 	result: Result
 	send: (event: EventIn) => void
 }
-export function useMachine<Prop, State, EventIn = State, Result = State>(
+export function useMachine<
+	Prop,
+	State,
+	EventIn extends AnyTag = State & AnyTag,
+	Result = State,
+>(
 	machine: Machine<Prop, EventIn, State, Result>,
 	param: Prop,
 ): {
@@ -48,7 +57,7 @@ export function useMachine<
 	Prop,
 	State,
 	EventOut,
-	EventIn = State,
+	EventIn extends AnyTag = State & AnyTag,
 	Result = State,
 >(
 	machine: Machine<Prop, EventIn, State, Result, EventOut>,
@@ -60,7 +69,13 @@ export function useMachine<
 	result: Result
 	send: (event: EventIn) => void
 }
-export function useMachine<Prop, State, EventIn, Result, EventOut>(
+export function useMachine<
+	Prop,
+	State,
+	EventIn extends AnyTag,
+	Result,
+	EventOut,
+>(
 	machine: Machine<Prop, EventIn, State, Result, EventOut>,
 	param: Prop,
 	onSend?: Handlers<EventOut>,

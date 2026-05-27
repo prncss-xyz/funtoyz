@@ -1,8 +1,9 @@
 import { forbidden } from '../assertions'
 import { Init } from '../functions/arguments/init'
 import { id, noop } from '../functions/basics'
+import { AnyTag } from '../tags/types'
 
-export type AnyMachine = Machine<any, any, any, any, any>
+export type AnyMachine = Machine<any, AnyTag, any, any, any>
 export type InferMachineProps<M> =
 	M extends Machine<infer P, any, any, any, any> ? P : never
 export type InferMachineEventIn<M> =
@@ -16,7 +17,7 @@ export type InferMachineEventOut<M> =
 
 export interface Machine<
 	Props,
-	EventIn,
+	EventIn extends AnyTag,
 	State = EventIn,
 	Result = State,
 	E = never,
@@ -26,15 +27,9 @@ export interface Machine<
 	result?: (state: State) => Result
 }
 
-export type MachineReducer<Value, State = Value, Result = State> = Machine<
-	Value,
-	State,
-	Result
->
-
 export function spicedMachine<
 	Props,
-	EventIn,
+	EventIn extends AnyTag,
 	State = EventIn,
 	Result = State,
 	E = never,
@@ -69,7 +64,7 @@ export function spicedMachine<
 
 export function machineState<
 	Props,
-	EventIn,
+	EventIn extends AnyTag,
 	State = EventIn,
 	Result = State,
 	EventOut = never,

@@ -16,8 +16,8 @@ describe('machines/factories/direct', () => {
 		expect(s1).toEqual(6)
 
 		// finish accepts a void payload
-		machine.reduce('finish', s1, toExhaustive)
+		machine.reduce(tag('finish'), s1, toExhaustive)
 		// @ts-expect-error inc does not accept a void payload
-		machine.reduce('inc', s1, toExhaustive)
+		machine.reduce(tag('inc'), s1, toExhaustive)
 	})
 })

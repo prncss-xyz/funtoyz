@@ -1,9 +1,10 @@
 import { fromInit, Init } from '../../functions/arguments/init'
 import { id } from '../../functions/basics'
+import { AnyTag } from '../../tags/types'
 import { Machine } from '../core'
 
 export function baseMachine<EventOut = never>() {
-	return function <EventIn, State, Props = void, Result = State>(
+	return function <EventIn extends AnyTag, State, Props = void, Result = State>(
 		init: Init<State, [Props]>,
 		reduce: (
 			event: EventIn,

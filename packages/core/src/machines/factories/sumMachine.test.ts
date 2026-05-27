@@ -3,7 +3,6 @@ import { tag } from '../../tags/tag'
 import { Tag, Tags } from '../../tags/types'
 import { InferMachineEventIn, InferMachineEventOut } from '../core'
 import { directMachine } from './direct'
-import { Sendable } from '../sendable'
 import { sumMachine } from './sumMachine'
 
 describe('machines/factories/sumMachine', () => {
@@ -39,12 +38,10 @@ describe('machines/factories/sumMachine', () => {
 			},
 		)
 
-		type EventIn = Sendable<
-			Tags<{
-				inc: number
-				finish: void
-			}>
-		>
+		type EventIn = Tags<{
+			inc: number
+			finish: void
+		}>
 		expectTypeOf<InferMachineEventIn<typeof machine>>().toEqualTypeOf<EventIn>()
 		expectTypeOf<InferMachineEventOut<typeof machine>>().toEqualTypeOf<
 			| Tag<'exit', boolean>
