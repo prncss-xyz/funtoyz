@@ -1,8 +1,8 @@
 import { fromInit } from '../../functions/arguments/init'
 import { createTag } from '../../tags/createTag'
 import { tag } from '../../tags/tag'
-import { PAYLOAD, Tag, Tags, TYPE } from '../../tags/types'
-import { ValueUnion } from '../../types'
+import { FromTags, PAYLOAD, Tag, Tags, TYPE } from '../../tags/types'
+import { ValueEventIntersection, ValueUnion } from '../../types'
 import {
 	AnyMachine,
 	InferMachineEventIn,
@@ -25,9 +25,11 @@ type State<M> = Tags<{
 	[K in keyof M]: InferMachineState<M[K]>
 }>
 
-type EvIn<M> = ValueUnion<{
-	[K in keyof M]: InferMachineEventIn<M[K]>
-}>
+type EvIn<M> = Tags<
+	ValueEventIntersection<{
+		[K in keyof M]: FromTags<InferMachineEventIn<M[K]>>
+	}>
+>
 
 type EvOut<M> = ValueUnion<{
 	[K in keyof M]: InferMachineEventOut<M[K]>

@@ -30,7 +30,7 @@ type OmitNeverValues<T> = {
 	[K in keyof T as [T[K]] extends [never] ? never : K]: T[K]
 }
 
-export type ValueEventIntersection<T> = [ValueUnion<T>] extends [object]
+export type ValueEventIntersection2<T> = [ValueUnion<T>] extends [object]
 	? OmitNeverValues<{
 			[K in KeysOfUnion<ValueUnion<T>>]: ValueIntersection<{
 				[P in keyof T]: T[P] extends infer O
@@ -41,6 +41,16 @@ export type ValueEventIntersection<T> = [ValueUnion<T>] extends [object]
 			}>
 		}>
 	: ValueIntersection<T>
+
+export type ValueEventIntersection<T> = OmitNeverValues<{
+	[K in KeysOfUnion<ValueUnion<T>>]: ValueIntersection<{
+		[P in keyof T]: T[P] extends infer O
+			? K extends keyof O
+				? O[K]
+				: unknown
+			: never
+	}>
+}>
 
 export type AnyFunction = (...args: any[]) => any
 export type NonEmptyArray<T> = [T, ...T[]]

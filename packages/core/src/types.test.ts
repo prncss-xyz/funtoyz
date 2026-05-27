@@ -26,8 +26,8 @@ describe('ValueIntersection', () => {
 describe('ShallowValueIntersection', () => {
 	it('intersects object values field-by-field', () => {
 		type Input = {
-			a: { x: number; y: string }
-			b: { x: number; z: boolean }
+			a: { a: 1; x: number | string; y: string }
+			b: { a: 2; x: number; z: boolean }
 		}
 		type Result = ValueEventIntersection<Input>
 		type Expected = { x: number; y: string; z: boolean }
@@ -44,37 +44,6 @@ describe('ShallowValueIntersection', () => {
 		type Expected = { b: true }
 
 		expectTypeOf<Result>().toEqualTypeOf<Expected>()
-	})
-
-	it('should return never when intersecting object and boolean', () => {
-		type Input = {
-			a: { n: number }
-			b: boolean
-		}
-		type Result = ValueEventIntersection<Input>
-		expectTypeOf<Result>().toEqualTypeOf<
-			{
-				n: number
-			} & boolean
-		>()
-	})
-
-	it('falls back to ValueIntersection when not all members are objects', () => {
-		type Input = {
-			a: number
-			b: string
-		}
-		type Result = ValueEventIntersection<Input>
-		expectTypeOf<Result>().toEqualTypeOf<never>()
-	})
-
-	it('falls back to ValueIntersection when not all members are objects', () => {
-		type Input = {
-			a: number
-			b: string | number
-		}
-		type Result = ValueEventIntersection<Input>
-		expectTypeOf<Result>().toEqualTypeOf<number>()
 	})
 
 	it('handles optional fields', () => {

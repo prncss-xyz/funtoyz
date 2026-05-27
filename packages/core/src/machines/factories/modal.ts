@@ -2,7 +2,6 @@ import { Init } from '../../functions/arguments/init'
 import { AnyTag, PayloadOf, TypeIn } from '../../tags/types'
 import { Machine } from '../core'
 import { baseMachine } from './base'
-import { fromSendable } from '../sendable'
 
 export function modalMachine<E = never>() {
 	return function <
@@ -27,12 +26,11 @@ export function modalMachine<E = never>() {
 	): Machine<Props, EventIn, State, Result, E> {
 		return baseMachine<E>()<EventIn, State, Props, Result>(
 			init,
-			(event, state, send) => {
-				const sendableEvent = fromSendable(event as any)
+			(ev, state, send) => {
 				const s = (states as any)[state.type]
-				const handler = s[sendableEvent.type]
+				const handler = s[ev.type]
 				if (!handler) return state
-				return handler(sendableEvent.payload, state.payload, send)
+				return handler(ev.payload, state.payload, send)
 			},
 			result
 				? (state) => (result as any)[state.type](state.payload)

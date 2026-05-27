@@ -1,7 +1,6 @@
 import { Init } from '../../functions/arguments/init'
 import { Tags } from '../../tags/types'
 import { baseMachine } from './base'
-import { fromSendable } from '../sendable'
 
 // TODO: maybe do away with reversed mapped type to allow not typing event when void
 export function directMachine<E = never>() {
@@ -18,8 +17,7 @@ export function directMachine<E = never>() {
 	) {
 		return baseMachine<E>()<Tags<T>, State, Props, Result>(
 			init,
-			(event: any, state, send) => {
-				const ev = fromSendable(event)
+			(ev: any, state, send) => {
 				return (events as any)[ev.type](ev.payload, state, send)
 			},
 			result,
