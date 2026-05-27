@@ -45,6 +45,11 @@ export function createContainerAtom<I extends Empty>() {
 			}
 			const serviceAtom = atom((get) => {
 				const container = get(containerAtom)
+				if (!container) {
+					throw new Error(
+						`Container not hydrated. Make sure to use SUT or hydrateContainerAtom.`,
+					)
+				}
 				return get((container as any)[key])
 			})
 			cache.set(key, serviceAtom)

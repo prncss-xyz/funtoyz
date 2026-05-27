@@ -37,7 +37,14 @@ export function createContainer(fn: (s: any) => any, parent?: any) {
 				cache[prop] = target[prop](proxy)
 				return cache[prop]
 			}
-			if (parent) return parent[prop]
+			if (parent && prop in parent) return parent[prop]
+			if (
+				typeof prop === 'symbol' ||
+				prop === 'then' ||
+				prop === 'toJSON' ||
+				prop === '$$typeof'
+			)
+				return undefined
 			throw new Error(`property ${String(prop)} not found`)
 		},
 	})

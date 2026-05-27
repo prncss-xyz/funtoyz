@@ -3,7 +3,7 @@ import { tag } from '../../tags/tag'
 import { Tag, Tags } from '../../tags/types'
 import { InferMachineEventIn, InferMachineEventOut } from '../core'
 import { directMachine } from './direct'
-import { Sendable } from './sendable'
+import { Sendable } from '../sendable'
 import { sumMachine } from './sumMachine'
 
 describe('machines/factories/sumMachine', () => {
