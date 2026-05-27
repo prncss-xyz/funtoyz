@@ -1,8 +1,15 @@
 import { fromInit } from '../../functions/arguments/init'
 import { id } from '../../functions/basics'
 import { Tag } from '../../tags/types'
-import { Prettify, ValueIntersection, ValueUnion } from '../../types'
-import { AnyMachine, Machine } from '../core'
+import { Prettify, ValueUnion } from '../../types'
+import {
+	AnyMachine,
+	InferMachineEventIn,
+	InferMachineEventOut,
+	InferMachineProps,
+	InferMachineResult,
+	InferMachineState,
+} from '../core'
 import { baseMachine } from './base'
 
 type MS = Record<string, AnyMachine>
@@ -10,34 +17,28 @@ type MS = Record<string, AnyMachine>
 // all props key that can be undefined are optional
 type Props<M extends MS> = Prettify<
 	{
-		[K in keyof M]: M[K] extends Machine<infer T, any, any, any, any>
-			? T extends undefined
-				? never
-				: T
-			: never
+		[K in keyof M]: InferMachineProps<M[K]> extends undefined
+			? never
+			: InferMachineProps<M[K]>
 	} & {
-		[K in keyof M]?: M[K] extends Machine<infer T, any, any, any, any>
-			? T
-			: never
+		[K in keyof M]?: InferMachineProps<M[K]>
 	}
 >
 
 type EvIn<M extends MS> = ValueUnion<{
-	[K in keyof M]: M[K] extends Machine<any, infer T, any, any, any>
-		? Tag<K, T>
-		: never
+	[K in keyof M]: Tag<K, InferMachineEventIn<M[K]>>
 }>
 
 type State<M extends MS> = Prettify<{
-	[K in keyof M]: M[K] extends Machine<any, any, infer T, any, any> ? T : never
+	[K in keyof M]: InferMachineState<M[K]>
 }>
 
 type Result<M extends MS> = Prettify<{
-	[K in keyof M]: M[K] extends Machine<any, any, any, infer T, any> ? T : never
+	[K in keyof M]: InferMachineResult<M[K]>
 }>
 
-type EvOut<M extends MS> = ValueIntersection<{
-	[K in keyof M]: M[K] extends Machine<any, any, any, any, infer T> ? T : never
+type EvOut<M> = ValueUnion<{
+	[K in keyof M]: InferMachineEventOut<M[K]>
 }>
 
 export function sliceMachine<M extends MS>(ms: M) {
@@ -49,7 +50,7 @@ export function sliceMachine<M extends MS>(ms: M) {
 			}
 			return res
 		},
-		(event: any, state, send) => {
+		(event: any, state, send: any) => {
 			const res = {} as any
 			for (const [k, v] of Object.entries(ms))
 				res[k] =

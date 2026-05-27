@@ -11,6 +11,7 @@ export type Tag<Type extends PropertyKey, Payload> = {
 }
 
 export type AnyTag = Tag<any, any>
+export type EmptyTag = Tag<never, never>
 
 export type TypeIn<T extends AnyTag> = T[Type]
 export type TagOf<T extends AnyTag, Type extends TypeIn<T>> = Prettify<

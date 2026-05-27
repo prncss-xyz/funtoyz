@@ -3,7 +3,7 @@ import { Init } from '../functions/arguments/init'
 import { id, noop } from '../functions/basics'
 import { AnyTag } from '../tags/types'
 
-export type AnyMachine = Machine<any, AnyTag, any, any, any>
+export type AnyMachine = Machine<any, AnyTag, any, any, AnyTag>
 export type InferMachineProps<M> =
 	M extends Machine<infer P, any, any, any, any> ? P : never
 export type InferMachineEventIn<M> =
@@ -20,10 +20,10 @@ export interface Machine<
 	EventIn extends AnyTag,
 	State = EventIn,
 	Result = State,
-	E = never,
+	EventOut = never,
 > {
 	init: Init<State, [Props]>
-	reduce: (event: EventIn, state: State, send: (e: E) => void) => State
+	reduce: (event: EventIn, state: State, send: (e: EventOut) => void) => State
 	result?: (state: State) => Result
 }
 
@@ -32,8 +32,8 @@ export function spicedMachine<
 	EventIn extends AnyTag,
 	State = EventIn,
 	Result = State,
-	E = never,
->(machine: Machine<Props, EventIn, State, Result, E>) {
+	EventOut = never,
+>(machine: Machine<Props, EventIn, State, Result, EventOut>) {
 	const reduce = machine.reduce
 	const result = machine.result ?? (id as never)
 
@@ -52,9 +52,13 @@ export function spicedMachine<
 			result(reduce(event, state, noop)),
 		result: () => (state: State) => result(state),
 		send:
-			(event: EventIn, setState: (s: State) => void, onSend: (e: E) => void) =>
+			(
+				event: EventIn,
+				setState: (s: State) => void,
+				onSend: (e: EventOut) => void,
+			) =>
 			(state: State) => {
-				const calls: E[] = []
+				const calls: EventOut[] = []
 				setState(reduce(event, state, (e) => calls.push(e)))
 				if (calls.length > 0)
 					void Promise.resolve().then(() => calls.forEach((c) => onSend(c)))

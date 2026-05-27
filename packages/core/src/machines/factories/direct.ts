@@ -3,6 +3,7 @@ import { Tags } from '../../tags/types'
 import { baseMachine } from './base'
 
 // TODO: maybe do away with reversed mapped type to allow not typing event when void
+// TODO: merge when returning a litteral value
 export function directMachine<E = never>() {
 	return function <T, State, Props = void, Result = State>(
 		init: Init<State, [Props]>,

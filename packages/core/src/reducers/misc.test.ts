@@ -1,17 +1,5 @@
 import { reduce } from './reduce'
-import { productFold, stateFold, sumFold } from './misc'
-import { add } from '../functions/elementary'
-
-describe('stateFold', () => {
-	test('value', () => {
-		const res = reduce(stateFold(3), [1])
-		expect(res).toBe(1)
-	})
-	test('funtion', () => {
-		const res = reduce(stateFold(3), [add(1)])
-		expect(res).toBe(4)
-	})
-})
+import { productFold, sumFold } from './misc'
 
 describe('sumFold', () => {
 	test('basic', () => {

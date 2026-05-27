@@ -17,6 +17,7 @@ describe('sliceMachine', () => {
 			a: sub,
 			b: sub,
 		})
+
 		const s1 = fromInit(machine.init, { a: 1, b: 2 })
 		expectTypeOf(s1).toEqualTypeOf<{ a: number; b: number }>()
 		expect(s1).toEqual({ a: 1, b: 2 })

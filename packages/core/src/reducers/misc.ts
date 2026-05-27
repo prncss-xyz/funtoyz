@@ -1,12 +1,4 @@
-import { fromInit, Init } from '../functions/arguments/init'
 import { Reducer } from './reduce'
-
-export function stateFold<T>(init: Init<T>): Reducer<Init<T, [T]>, T> {
-	return {
-		init,
-		reduce: (t, acc) => fromInit(t, acc),
-	}
-}
 
 export function sumFold(): Reducer<number> {
 	return {
