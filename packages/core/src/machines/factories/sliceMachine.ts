@@ -3,16 +3,12 @@ import { id } from '../../functions/basics'
 import { Tag } from '../../tags/types'
 import { Prettify, ValueUnion } from '../../types'
 import {
-	AnyMachine,
 	InferMachineEventIn,
-	InferMachineEventOut,
 	InferMachineProps,
-	InferMachineResult,
 	InferMachineState,
 } from '../core'
+import { EvOut, MapResult, MS, Result } from './_types'
 import { baseMachine } from './base'
-
-type MS = Record<string, AnyMachine>
 
 // all props key that can be undefined are optional
 type Props<M extends MS> = Prettify<
@@ -33,16 +29,11 @@ type State<M extends MS> = Prettify<{
 	[K in keyof M]: InferMachineState<M[K]>
 }>
 
-type Result<M extends MS> = Prettify<{
-	[K in keyof M]: InferMachineResult<M[K]>
-}>
-
-type EvOut<M> = ValueUnion<{
-	[K in keyof M]: InferMachineEventOut<M[K]>
-}>
-
-export function sliceMachine<M extends MS>(ms: M) {
-	return baseMachine<EvOut<M>>()<EvIn<M>, State<M>, Props<M>, Result<M>>(
+export function sliceMachine<M extends MS, const R extends MapResult<M> = {}>(
+	ms: M,
+	opts?: { result?: MapResult<M> & R },
+) {
+	return baseMachine<EvOut<M>>()<EvIn<M>, State<M>, Props<M>, Result<M, R>>(
 		(p) => {
 			const res = {} as any
 			for (const [k, v] of Object.entries(ms)) {
@@ -60,7 +51,8 @@ export function sliceMachine<M extends MS>(ms: M) {
 		(state) => {
 			const res = {} as any
 			for (const [k, v] of Object.entries(ms)) {
-				res[k] = v.result ? v.result(state[k]) : id
+				const res0 = v.result ? v.result(state[k]) : id
+				res[k] = opts?.result?.[k] ? opts.result[k](res0) : res0
 			}
 			return res
 		},

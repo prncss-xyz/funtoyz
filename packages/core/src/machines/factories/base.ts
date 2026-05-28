@@ -4,14 +4,9 @@ import { AnyTag } from '../../tags/types'
 import { Machine } from '../core'
 
 // TODO: machine from reducer
-// TODO: machine from simple value
+// TODO: machine for simple value
 export function baseMachine<EventOut = never>() {
-	return function <
-		EventIn extends AnyTag,
-		State,
-		Props = void,
-		Result = State,
-	>(
+	return function <EventIn extends AnyTag, State, Props = void, Result = State>(
 		init: Init<State, [Props]>,
 		reduce: (
 			event: EventIn,

@@ -1,17 +1,14 @@
 import { fromInit } from '../../functions/arguments/init'
 import { createTag } from '../../tags/createTag'
 import { tag } from '../../tags/tag'
-import { FromTags, PAYLOAD, Tag, Tags, TYPE } from '../../tags/types'
-import { ValueEventIntersection, ValueUnion } from '../../types'
+import { PAYLOAD, Tag, Tags, TYPE } from '../../tags/types'
 import {
-	AnyMachine,
-	InferMachineEventIn,
 	InferMachineEventOut,
 	InferMachineProps,
-	InferMachineResult,
 	InferMachineState,
 } from '../core'
 import { baseMachine } from './base'
+import { EvIn, EvOut, MapResult, MS, Result } from './_types'
 
 const EXIT = 'exit'
 const exit = createTag(EXIT)
@@ -25,28 +22,6 @@ type State<M> = Tags<{
 	[K in keyof M]: InferMachineState<M[K]>
 }>
 
-type EvIn<M> = Tags<
-	ValueEventIntersection<{
-		[K in keyof M]: FromTags<InferMachineEventIn<M[K]>>
-	}>
->
-
-type EvOut<M> = ValueUnion<{
-	[K in keyof M]: InferMachineEventOut<M[K]>
-}>
-
-type MapResult<M> = {
-	[K in keyof M]?: (result: InferMachineResult<M[K]>) => unknown
-}
-
-type Result<M, R extends MapResult<M> = {}> = Tags<{
-	[K in keyof M]: K extends keyof R
-		? NonNullable<R[K]> extends (result: InferMachineResult<M[K]>) => infer T
-			? T
-			: InferMachineResult<M[K]>
-		: InferMachineResult<M[K]>
-}>
-
 type ExitEvent<M> = Extract<InferMachineEventOut<M>, Tag<typeof EXIT, any>>
 
 type ExitPayload<M> = ExitEvent<M> extends Tag<typeof EXIT, infer T> ? T : never
@@ -58,10 +33,7 @@ type MapExit<M, F> = {
 }
 
 export function sumMachine<F>() {
-	return function <
-		M extends Record<string, AnyMachine>,
-		const R extends MapResult<M> = {},
-	>(
+	return function <M extends MS, const R extends MapResult<M> = {}>(
 		machines: M,
 		{
 			exit: mapExit,
@@ -73,7 +45,7 @@ export function sumMachine<F>() {
 		}
 		return baseMachine<
 			Exclude<EvOut<M>, Tag<typeof EXIT, unknown>> | Tag<typeof EXIT, F>
-		>()<EvIn<M>, State<M>, Props<M>, Result<M, R>>(
+		>()<EvIn<M>, State<M>, Props<M>, Tags<Result<M, R>>>(
 			init,
 			(event: any, state, send: (e: any) => void) => {
 				let ns = undefined

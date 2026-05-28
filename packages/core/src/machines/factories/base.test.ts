@@ -15,7 +15,7 @@ describe('machines/factories/base', () => {
 			},
 			String,
 		)
-		// TODO:
+		// TODO: scan for machines
 		const o = flow(once<Tag<'add', number>[]>(), elems(), scan(machine as any))
 		const res = collect(o)([
 			{ type: 'add', payload: 1 },
