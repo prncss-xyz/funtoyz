@@ -8,7 +8,7 @@ import { Machine } from '../core'
 export function baseMachine<EventOut = never>() {
 	return function <
 		EventIn extends AnyTag,
-		State extends object,
+		State,
 		Props = void,
 		Result = State,
 	>(
