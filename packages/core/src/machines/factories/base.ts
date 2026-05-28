@@ -5,9 +5,13 @@ import { Machine } from '../core'
 
 // TODO: machine from reducer
 // TODO: machine from simple value
-// TODO: allow reduce to return void
 export function baseMachine<EventOut = never>() {
-	return function <EventIn extends AnyTag, State, Props = void, Result = State>(
+	return function <
+		EventIn extends AnyTag,
+		State extends object,
+		Props = void,
+		Result = State,
+	>(
 		init: Init<State, [Props]>,
 		reduce: (
 			event: EventIn,

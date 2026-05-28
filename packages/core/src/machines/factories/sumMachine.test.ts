@@ -18,10 +18,7 @@ describe('machines/factories/sumMachine', () => {
 		const m0 = directMachine<ChildEventOut>()(
 			id<number>,
 			{
-				finish: (_: void, state, send) => {
-					send(tag('exit', state + 1))
-					return state
-				},
+				finish: (_: void, state, send) => send(tag('exit', state + 1)),
 				inc: (amount: number, state, send) => {
 					const next = state + amount
 					send(tag('forwarded', `left:${next}`))

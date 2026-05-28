@@ -17,7 +17,7 @@ export function modalMachine<E = never>() {
 					event: PayloadOf<EventIn, E>,
 					state: PayloadOf<State, S>,
 					send: E,
-				) => State
+				) => State | null | undefined | void
 			}>
 		},
 		result?: {
@@ -30,7 +30,7 @@ export function modalMachine<E = never>() {
 				const s = (states as any)[state.type]
 				const handler = s[ev.type]
 				if (!handler) return state
-				return handler(ev.payload, state.payload, send)
+				return handler(ev.payload, state.payload, send) ?? state
 			},
 			result
 				? (state) => (result as any)[state.type](state.payload)

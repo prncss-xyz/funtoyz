@@ -1,5 +1,5 @@
 import { fromInit } from '../../functions/arguments/init'
-import { id, noop } from '../../functions/basics'
+import { noop } from '../../functions/basics'
 import { tag3 } from '../../tags/tag'
 import { Tags } from '../../tags/types'
 import { InferMachineEventIn, InferMachineEventOut } from '../core'
@@ -9,25 +9,54 @@ import { sliceMachine } from './sliceMachine'
 describe('sliceMachine', () => {
 	test('basic', () => {
 		const sub = directMachine<Tags<{ a: number; b: boolean }>>()(
-			id<number>,
+			(count: number) => ({ count }),
 			{
-				inc: (e: number, count) => count + e,
+				inc: (e: number, { count }) => ({ count: count + e }),
 			},
-			(r) => r + 1,
+			({ count }) => count + 1,
 		)
 		const machine = sliceMachine({
 			a: sub,
 			b: sub,
 		})
-		type _EvIn = InferMachineEventIn<typeof machine>
-		type _EvOut = InferMachineEventOut<typeof machine>
+		type EvIn = InferMachineEventIn<typeof machine>
+		expectTypeOf<EvIn>().toEqualTypeOf<
+			| {
+					payload: {
+						payload: number
+						type: 'inc'
+					}
+					type: 'a'
+			  }
+			| {
+					payload: {
+						payload: number
+						type: 'inc'
+					}
+					type: 'b'
+			  }
+		>()
+		type EvOut = InferMachineEventOut<typeof machine>
+		expectTypeOf<EvOut>().toEqualTypeOf<
+			| {
+					payload: number
+					type: 'a'
+			  }
+			| {
+					payload: boolean
+					type: 'b'
+			  }
+		>()
 
 		const s1 = fromInit(machine.init, { a: 1, b: 2 })
-		expectTypeOf(s1).toEqualTypeOf<{ a: number; b: number }>()
-		expect(s1).toEqual({ a: 1, b: 2 })
+		expectTypeOf(s1).toEqualTypeOf<{
+			a: { count: number }
+			b: { count: number }
+		}>()
+		expect(s1).toEqual({ a: { count: 1 }, b: { count: 2 } })
 
 		const s2 = machine.reduce(tag3('a', 'inc', 6), s1, noop)
-		expect(s2).toEqual({ a: 7, b: 2 })
+		expect(s2).toEqual({ a: { count: 7 }, b: { count: 2 } })
 		expect(machine.result?.(s2)).toEqual({ a: 8, b: 3 })
 	})
 })
