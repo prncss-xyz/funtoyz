@@ -1,12 +1,14 @@
 import { fromInit } from '../../functions/arguments/init'
 import { id, noop } from '../../functions/basics'
 import { tag3 } from '../../tags/tag'
+import { Tags } from '../../tags/types'
+import { InferMachineEventIn, InferMachineEventOut } from '../core'
 import { directMachine } from './direct'
 import { sliceMachine } from './sliceMachine'
 
 describe('sliceMachine', () => {
 	test('basic', () => {
-		const sub = directMachine()(
+		const sub = directMachine<Tags<{ a: number; b: boolean }>>()(
 			id<number>,
 			{
 				inc: (e: number, count) => count + e,
@@ -17,6 +19,8 @@ describe('sliceMachine', () => {
 			a: sub,
 			b: sub,
 		})
+		type _EvIn = InferMachineEventIn<typeof machine>
+		type _EvOut = InferMachineEventOut<typeof machine>
 
 		const s1 = fromInit(machine.init, { a: 1, b: 2 })
 		expectTypeOf(s1).toEqualTypeOf<{ a: number; b: number }>()

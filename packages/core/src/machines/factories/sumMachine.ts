@@ -51,18 +51,23 @@ type ExitEvent<M> = Extract<InferMachineEventOut<M>, Tag<typeof EXIT, any>>
 
 type ExitPayload<M> = ExitEvent<M> extends Tag<typeof EXIT, infer T> ? T : never
 
-type MapMachine<M, F> = {
+type MapExit<M, F> = {
 	[K in keyof M as ExitEvent<M[K]> extends never ? never : K]: (
 		e: ExitPayload<M[K]>,
 	) => State<M> | Tag<typeof EXIT, F>
 }
 
-// TODO: can F be inferred from R
 export function sumMachine<F>() {
 	return function <
 		M extends Record<string, AnyMachine>,
 		const R extends MapResult<M> = {},
-	>(machines: M, mapMachine: MapMachine<M, F>, mapResult?: MapResult<M> & R) {
+	>(
+		machines: M,
+		{
+			exit: mapExit,
+			result: mapResult,
+		}: { exit: MapExit<M, F>; result?: MapResult<M> & R },
+	) {
 		function init(p: any) {
 			return tag(p[TYPE], fromInit(machines[p[TYPE]]!.init, p[PAYLOAD])) as any
 		}
@@ -76,7 +81,7 @@ export function sumMachine<F>() {
 				const v = machines[type] as any
 				const res = v.reduce(event, state[PAYLOAD], (event: any) => {
 					if (exit.is(event)) {
-						const res = (mapMachine as any)[type](exit.get(event))
+						const res = (mapExit as any)[type](exit.get(event))
 						if (res[TYPE] === EXIT) send(res)
 						else ns = init(res)
 					} else send(event)

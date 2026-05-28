@@ -1,7 +1,11 @@
 import { id } from '../../functions/basics'
 import { tag } from '../../tags/tag'
 import { Tag, Tags } from '../../tags/types'
-import { InferMachineEventIn, InferMachineEventOut } from '../core'
+import {
+	InferMachineEventIn,
+	InferMachineEventOut,
+	InferMachineResult,
+} from '../core'
 import { directMachine } from './direct'
 import { sumMachine } from './sumMachine'
 
@@ -30,19 +34,26 @@ describe('machines/factories/sumMachine', () => {
 		const machine = sumMachine<boolean>()(
 			{ left: m0, right: m0 },
 			{
-				left: (payload) => tag('right', payload),
-				right: (payload) => tag('exit', payload === 2),
-			},
-			{
-				right: (result) => result.length,
+				exit: {
+					left: (payload) => tag('right', payload),
+					right: (payload) => tag('exit', payload === 2),
+				},
+				result: {
+					right: (result) => result.length,
+				},
 			},
 		)
 
-		type EventIn = Tags<{
-			inc: number
-			finish: void
-		}>
-		expectTypeOf<InferMachineEventIn<typeof machine>>().toEqualTypeOf<EventIn>()
+		type Res = InferMachineResult<typeof machine>
+		expectTypeOf<Res>().toEqualTypeOf<
+			Tags<{
+				left: string
+				right: number
+			}>
+		>()
+		expectTypeOf<InferMachineEventIn<typeof machine>>().toEqualTypeOf<
+			Tags<{ inc: number; finish: void }>
+		>()
 		expectTypeOf<InferMachineEventOut<typeof machine>>().toEqualTypeOf<
 			| Tag<'exit', boolean>
 			| {
