@@ -29,9 +29,16 @@ type State<M extends MS> = Prettify<{
 	[K in keyof M]: InferMachineState<M[K]>
 }>
 
-export function sliceMachine<M extends MS, const R extends MapResult<M> = {}>(
+export function sliceMachine<
+	M extends MS,
+	E extends { [K in keyof M]: (e: EvOut<M>) => void },
+	const R extends MapResult<M> = {},
+>(
 	ms: M,
-	opts?: { result?: MapResult<M> & R },
+	opts?: {
+		events?: E
+		result?: MapResult<M> & R
+	},
 ) {
 	return baseMachine<EvOut<M>>()<EvIn<M>, State<M>, Props<M>, Result<M, R>>(
 		(p) => {
