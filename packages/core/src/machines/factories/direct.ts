@@ -1,6 +1,7 @@
 import { Init } from '../../functions/arguments/init'
 import { Modify } from '../../functions/types'
 import { isFunction } from '../../guards'
+import { merge } from '../../objects/merge'
 import { Empty } from '../../objects/types'
 import { Tags } from '../../tags/types'
 import { baseMachine } from './base'
@@ -29,9 +30,7 @@ export function directMachine<EventOut extends object = Empty>() {
 				const res = (events as any)[ev.type](ev.payload, state, send)
 				if (res == null) return state
 				if (isFunction(res)) return res(state)
-				// FIX: make it work with merge
-				// return merge(res, state)
-				return { ...state, ...res }
+				return merge(state, res)
 			},
 			result,
 		)
