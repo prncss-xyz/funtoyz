@@ -5,7 +5,7 @@ import { directMachine } from './direct'
 
 describe('machines/factories/direct', () => {
 	test('directMachine works', () => {
-		const machine = directMachine()(
+		const m = directMachine()(
 			{
 				count: 0,
 				toto: 3,
@@ -16,9 +16,9 @@ describe('machines/factories/direct', () => {
 			},
 		)
 
-		expect(fromInit(machine.init)).toEqual({ count: 0, toto: 3 })
+		expect(fromInit(m.init)).toEqual({ count: 0, toto: 3 })
 
-		const s1 = machine.reduce(
+		const s1 = m.reduce(
 			tag('inc', 5),
 			{
 				count: 1,
@@ -29,8 +29,8 @@ describe('machines/factories/direct', () => {
 		expect(s1).toEqual({ count: 6, toto: 3 })
 
 		// finish accepts a void payload
-		machine.reduce(tag('finish'), s1, toExhaustive)
+		m.reduce(tag('finish'), s1, toExhaustive)
 		// @ts-expect-error inc does not accept a void payload
-		machine.reduce(tag('inc'), s1, toExhaustive)
+		m.reduce(tag('inc'), s1, toExhaustive)
 	})
 })

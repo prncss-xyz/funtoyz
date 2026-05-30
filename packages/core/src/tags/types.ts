@@ -5,10 +5,10 @@ export type Type = typeof TYPE
 export const PAYLOAD = 'payload'
 export type Payload = typeof PAYLOAD
 
-export type Tag<Type extends PropertyKey, Payload> = {
+export type Tag<Type extends PropertyKey, Payload> = Prettify<{
 	[PAYLOAD]: Payload
 	[TYPE]: Type
-}
+}>
 
 export type AnyTag = Tag<any, any>
 export type EmptyTag = Tag<never, never>
@@ -19,7 +19,8 @@ export type TagOf<T extends AnyTag, Type extends TypeIn<T>> = Prettify<
 		[TYPE]: Type
 	}
 >
-
+// TODO: use Extract?
+// type Extract<T, U> = T extends U ? T : never;
 export type PayloadOf<T extends AnyTag, Type extends TypeIn<T>> = (T & {
 	[TYPE]: Type
 })[Payload]

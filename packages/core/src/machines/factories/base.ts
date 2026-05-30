@@ -1,17 +1,18 @@
 import { fromInit, Init } from '../../functions/arguments/init'
 import { id } from '../../functions/basics'
-import { AnyTag } from '../../tags/types'
+import { Empty } from '../../objects/types'
+import { Tags } from '../../tags/types'
 import { Machine } from '../core'
 
 // TODO: machine from reducer
 // TODO: machine for simple value
-export function baseMachine<EventOut = never>() {
-	return function <EventIn extends AnyTag, State, Props = void, Result = State>(
+export function baseMachine<EventOut extends object = Empty>() {
+	return function <EventIn extends object, State, Props = void, Result = State>(
 		init: Init<State, [Props]>,
 		reduce: (
-			event: EventIn,
+			event: Tags<EventIn>,
 			state: State,
-			send: (e: EventOut) => void,
+			send: (e: Tags<EventOut>) => void,
 		) => Init<State, [State]>,
 		result?: (state: State) => Result,
 	): Machine<Props, EventIn, State, Result, EventOut> {

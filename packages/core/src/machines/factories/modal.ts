@@ -1,30 +1,31 @@
 import { Init } from '../../functions/arguments/init'
-import { AnyTag, PayloadOf, TypeIn } from '../../tags/types'
+import { Empty } from '../../objects/types'
+import { Tags } from '../../tags/types'
 import { Machine } from '../core'
 import { baseMachine } from './base'
 
-export function modalMachine<E = never>() {
+export function modalMachine<E extends object = Empty>() {
 	return function <
-		EventIn extends AnyTag,
-		State extends AnyTag,
+		EventIn extends object,
+		State extends object,
 		Props = void,
-		Result = State,
+		Result = Tags<State>,
 	>(
-		init: Init<State, [Props]>,
+		init: Init<Tags<State>, [Props]>,
 		states: {
-			[S in TypeIn<State>]: Partial<{
-				[E in TypeIn<EventIn>]: (
-					event: PayloadOf<EventIn, E>,
-					state: PayloadOf<State, S>,
+			[S in keyof State]: Partial<{
+				[E in keyof EventIn]: (
+					event: EventIn[E],
+					state: State[S],
 					send: E,
-				) => State | null | undefined | void
+				) => Tags<State> | null | undefined | void
 			}>
 		},
 		result?: {
-			[S in TypeIn<State>]: (state: PayloadOf<State, S>) => Result
+			[S in keyof State]: (state: State[S]) => Result
 		},
-	): Machine<Props, EventIn, State, Result, E> {
-		return baseMachine<E>()<EventIn, State, Props, Result>(
+	): Machine<Props, EventIn, Tags<State>, Result, E> {
+		return baseMachine<E>()<EventIn, Tags<State>, Props, Result>(
 			init,
 			(ev, state, send) => {
 				const s = (states as any)[state.type]

@@ -1,7 +1,7 @@
 import { fromInit } from '../../functions/arguments/init'
 import { id } from '../../functions/basics'
-import { Tag } from '../../tags/types'
-import { Prettify, ValueUnion } from '../../types'
+import { Tags } from '../../tags/types'
+import { Prettify } from '../../types'
 import {
 	InferMachineEventIn,
 	InferMachineProps,
@@ -21,8 +21,8 @@ type Props<M extends MS> = Prettify<
 	}
 >
 
-type EvIn<M extends MS> = ValueUnion<{
-	[K in keyof M]: Tag<K, InferMachineEventIn<M[K]>>
+type EvIn<M extends MS> = Prettify<{
+	[K in keyof M]: Tags<InferMachineEventIn<M[K]>>
 }>
 
 type State<M extends MS> = Prettify<{

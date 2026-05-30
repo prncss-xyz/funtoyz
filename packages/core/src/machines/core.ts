@@ -1,9 +1,10 @@
 import { forbidden } from '../assertions'
 import { Init } from '../functions/arguments/init'
 import { id, noop } from '../functions/basics'
-import { AnyTag } from '../tags/types'
+import { Empty } from '../objects/types'
+import { AnyTag, Tags } from '../tags/types'
 
-export type AnyMachine = Machine<any, AnyTag, any, any, AnyTag>
+export type AnyMachine = Machine<any, any, any, any, any>
 export type InferMachineProps<M> =
 	M extends Machine<infer P, any, any, any, any> ? P : never
 export type InferMachineEventIn<M> =
@@ -17,28 +18,32 @@ export type InferMachineEventOut<M> =
 
 export interface Machine<
 	Props,
-	EventIn extends AnyTag,
-	State = EventIn,
+	EventIn extends object,
+	State,
 	Result = State,
-	EventOut = never,
+	EventOut extends object = Empty,
 > {
 	init: Init<State, [Props]>
-	reduce: (event: EventIn, state: State, send: (e: EventOut) => void) => State
+	reduce: (
+		event: Tags<EventIn>,
+		state: State,
+		send: (e: Tags<EventOut>) => void,
+	) => State
 	result?: (state: State) => Result
 }
 
 export function spicedMachine<
 	Props,
 	EventIn extends AnyTag,
-	State = EventIn,
+	State,
 	Result = State,
-	EventOut = never,
->(machine: Machine<Props, EventIn, State, Result, EventOut>) {
+	EventOut = Empty,
+>(machine: Machine<Props, EventIn, State, Result, Empty>) {
 	const reduce = machine.reduce
 	const result = machine.result ?? (id as never)
 
 	return {
-		disabled: (event: EventIn) => (state: State) => {
+		disabled: (event: Tags<EventIn>) => (state: State) => {
 			let called = false
 			return (
 				Object.is(
@@ -48,12 +53,12 @@ export function spicedMachine<
 			)
 		},
 		init: machine.init,
-		next: (event: EventIn) => (state: State) =>
+		next: (event: Tags<EventIn>) => (state: State) =>
 			result(reduce(event, state, noop)),
 		result: () => (state: State) => result(state),
 		send:
 			(
-				event: EventIn,
+				event: Tags<EventIn>,
 				setState: (s: State) => void,
 				onSend: (e: EventOut) => void,
 			) =>
@@ -66,23 +71,23 @@ export function spicedMachine<
 	}
 }
 
-export function machineState<
+export function machineOverState<
 	Props,
 	EventIn extends AnyTag,
 	State = EventIn,
 	Result = State,
-	EventOut = never,
+	EventOut = Empty,
 >(
-	machine: Machine<Props, EventIn, State, Result, EventOut>,
+	machine: Machine<Props, EventIn, State, Result, Tags<EventOut>>,
 	state: State,
 	setState: (s: State) => void,
-	onSend?: (e: EventOut) => void,
+	onSend?: (e: Tags<EventOut>) => void,
 ) {
 	const onSend_ = onSend ?? (forbidden as never)
 	const reduce = machine.reduce
 	const result = machine.result ?? (id as never)
 	return {
-		disabled: (event: EventIn) => {
+		disabled: (event: Tags<EventIn>) => {
 			let called = false
 			return (
 				Object.is(
@@ -92,11 +97,13 @@ export function machineState<
 			)
 		},
 		init: machine.init,
-		next: (event: EventIn) => result(reduce(event, state, noop as any)),
+		next: (event: Tags<EventIn>) => result(reduce(event, state, noop as any)),
 		result: result(state),
-		send: (event: EventIn) => {
-			const calls: EventOut[] = []
-			setState(reduce(event, state, ((e: EventOut) => calls.push(e)) as any))
+		send: (event: Tags<EventIn>) => {
+			const calls: Tags<EventOut>[] = []
+			setState(
+				reduce(event, state, ((e: Tags<EventOut>) => calls.push(e)) as any),
+			)
 			if (calls.length > 0)
 				void Promise.resolve().then(() => calls.forEach((c) => onSend_(c)))
 		},

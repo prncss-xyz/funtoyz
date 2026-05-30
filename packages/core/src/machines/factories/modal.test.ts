@@ -1,19 +1,18 @@
 import { toExhaustive } from '../../assertions'
 import { tag } from '../../tags/tag'
-import { Tags } from '../../tags/types'
 import { modalMachine } from './modal'
 
-type Events = Tags<{
+type Events = {
 	start: void
 	stop: void
 	tick: void
-}>
+}
 
-type States = Tags<{
+type States = {
 	done: number
 	idle: void
 	running: number
-}>
+}
 
 describe('machines/factories/modal', () => {
 	it('modalMachine works', () => {
@@ -47,8 +46,8 @@ describe('machines/factories/modal', () => {
 
 	it('modalMachine result mapping', () => {
 		const machine = modalMachine<never>()<
-			Tags<{ done: number }>,
-			Tags<{ done: number }>,
+			{ done: number },
+			{ done: number },
 			void,
 			number
 		>(

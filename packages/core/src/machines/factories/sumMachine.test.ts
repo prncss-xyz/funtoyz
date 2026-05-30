@@ -1,6 +1,5 @@
-import { id } from '../../functions/basics'
 import { tag } from '../../tags/tag'
-import { Tag, Tags } from '../../tags/types'
+import { Tags } from '../../tags/types'
 import {
 	InferMachineEventIn,
 	InferMachineEventOut,
@@ -11,18 +10,17 @@ import { sumMachine } from './sumMachine'
 
 describe('machines/factories/sumMachine', () => {
 	it('switches between direct machines and can finish with exit', () => {
-		type ChildEventOut = Tags<{
+		const m0 = directMachine<{
 			exit: number
 			forwarded: string
-		}>
-		const m0 = directMachine<ChildEventOut>()(
-			id<number>,
+		}>()(
+			(count: number) => ({ count }),
 			{
-				finish: (_: void, state, send) => send(tag('exit', state + 1)),
-				inc: (amount: number, state, send) => {
-					const next = state + amount
+				finish: (_: void, { count }, send) => send(tag('exit', count + 1)),
+				inc: (amount: number, { count }, send) => {
+					const next = count + amount
 					send(tag('forwarded', `left:${next}`))
-					return next
+					return { count: next }
 				},
 			},
 			String,
@@ -32,7 +30,7 @@ describe('machines/factories/sumMachine', () => {
 			{ left: m0, right: m0 },
 			{
 				exit: {
-					left: (payload) => tag('right', payload),
+					left: (count) => tag('right', { count }),
 					right: (payload) => tag('exit', payload === 2),
 				},
 				result: {
@@ -48,15 +46,11 @@ describe('machines/factories/sumMachine', () => {
 				right: number
 			}>
 		>()
-		expectTypeOf<InferMachineEventIn<typeof machine>>().toEqualTypeOf<
-			Tags<{ inc: number; finish: void }>
-		>()
-		expectTypeOf<InferMachineEventOut<typeof machine>>().toEqualTypeOf<
-			| Tag<'exit', boolean>
-			| {
-					payload: string
-					type: 'forwarded'
-			  }
-		>()
+		expectTypeOf<InferMachineEventIn<typeof machine>>().toEqualTypeOf<{
+			inc: number
+			finish: void
+		}>()
+		type EvOut = InferMachineEventOut<typeof machine>
+		expectTypeOf<EvOut>().toEqualTypeOf<{ forwarded: string; exit: boolean }>()
 	})
 })

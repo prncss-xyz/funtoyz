@@ -1,5 +1,4 @@
-import { Tags, FromTags } from '../../tags/types'
-import { ValueEventIntersection, ValueUnion } from '../../types'
+import { KeywiseIntersection, KeywiseUnion } from '../../types'
 import {
 	AnyMachine,
 	InferMachineEventIn,
@@ -21,12 +20,10 @@ export type Result<M, R extends {}> = {
 		: InferMachineResult<M[K]>
 }
 
-export type EvIn<M> = Tags<
-	ValueEventIntersection<{
-		[K in keyof M]: FromTags<InferMachineEventIn<M[K]>>
-	}>
->
+export type EvIn<M> = KeywiseIntersection<{
+	[K in keyof M]: InferMachineEventIn<M[K]>
+}>
 
-export type EvOut<M> = ValueUnion<{
+export type EvOut<M> = KeywiseUnion<{
 	[K in keyof M]: InferMachineEventOut<M[K]>
 }>
