@@ -4,7 +4,7 @@ import {
 	fromInit,
 	isFunction,
 	type Machine,
-	machineState,
+	machineOverState,
 	PayloadOf,
 	TypeIn,
 } from '@funtoyz/core'
@@ -82,5 +82,5 @@ export function useMachine<
 ) {
 	const [state, setState] = useState(() => fromInit(machine.init, param))
 	const h = fromHandlers(onSend)
-	return machineState(machine as never, state, setState, h)
+	return machineOverState(machine as never, state, setState, h)
 }

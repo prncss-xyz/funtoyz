@@ -6,14 +6,8 @@ import { Empty } from '../../objects/types'
 import { Tags } from '../../tags/types'
 import { baseMachine } from './base'
 
-// TODO: maybe do away with reversed mapped type to allow not typing event when void
 export function directMachine<EventOut extends object = Empty>() {
-	return function <
-		T extends object,
-		State extends object,
-		Props = void,
-		Result = State,
-	>(
+	return function <T extends object, State, Props = void, Result = State>(
 		init: Init<State, [Props]>,
 		events: {
 			[K in keyof T]: (
@@ -30,7 +24,9 @@ export function directMachine<EventOut extends object = Empty>() {
 				const res = (events as any)[ev.type](ev.payload, state, send)
 				if (res == null) return state
 				if (isFunction(res)) return res(state)
-				return merge(state, res)
+				if (typeof res === 'object' && typeof state === 'object')
+					return merge(state, res)
+				return res
 			},
 			result,
 		)
