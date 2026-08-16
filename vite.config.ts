@@ -26,14 +26,6 @@ export default defineConfig({
 			},
 			'test:coverage': {
 				command: 'vp test run --coverage',
-				input: [
-					'vite.config.ts',
-					'vitest.config.ts',
-					'package.json',
-					'pnpm-workspace.yaml',
-					'apps/**/src/**/*.{js,ts,jsx,tsx}',
-					'packages/**/src/**/*.{js,ts,jsx,tsx}',
-				],
 				cache: true,
 			},
 			tsc: {
@@ -46,7 +38,7 @@ export default defineConfig({
 				command: 'commitlint --edit',
 			},
 			sherif: {
-				command: 'sherif -r non-existant-packages',
+				command: 'sherif -r non-existent-packages',
 				// Explicitly define inputs that affect Sherif's audit
 				input: [
 					'package.json',
@@ -72,20 +64,11 @@ export default defineConfig({
 	},
 	test: {
 		coverage: {
-			exclude: ['**/*.test.*'],
-			include: ['**/src/**/*.{js,ts,jsx,tsx}'],
 			provider: 'v8',
 			reporter: ['text', 'json'],
-			thresholds: {
-				// branches: 100,
-				// functions: 100,
-				// lines: 100,
-				// statements: 100,
-			},
 		},
 		environment: 'happy-dom',
 		globals: true,
-		include: ['**/src/**/*.test.{js,ts,jsx,tsx}'],
 	},
 	fmt: {
 		arrowParens: 'always',
@@ -216,32 +199,17 @@ export default defineConfig({
 			'prefer-rest-params': 'error',
 			'prefer-spread': 'error',
 			'no-redeclare': 'off',
+			'react/exhaustive-deps': 'error',
+			'react/rules-of-hooks': 'error',
+			'react/button-has-type': 'error',
+			'react/jsx-key': 'error',
+			'react/jsx-no-duplicate-props': 'error',
+			'react/jsx-no-target-blank': 'error',
+			'react/jsx-no-undef': 'error',
+			'react/no-children-prop': 'error',
+			'react/no-danger-with-children': 'error',
+			'react/no-unknown-property': 'error',
+			'react/void-dom-elements-no-children': 'error',
 		},
-		overrides: [
-			{
-				files: [
-					'apps/**/*.{js,jsx,ts,tsx}',
-					'packages/react/**/*.{js,jsx,ts,tsx}',
-				],
-				rules: {
-					'react/exhaustive-deps': 'error',
-					'react/rules-of-hooks': 'error',
-				},
-			},
-			{
-				files: ['**/*.{jsx,tsx}'],
-				rules: {
-					'react/button-has-type': 'error',
-					'react/jsx-key': 'error',
-					'react/jsx-no-duplicate-props': 'error',
-					'react/jsx-no-target-blank': 'error',
-					'react/jsx-no-undef': 'error',
-					'react/no-children-prop': 'error',
-					'react/no-danger-with-children': 'error',
-					'react/no-unknown-property': 'error',
-					'react/void-dom-elements-no-children': 'error',
-				},
-			},
-		],
 	},
 })
