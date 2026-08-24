@@ -4,7 +4,7 @@ import {
 	InferMachineEventIn,
 	InferMachineEventOut,
 	InferMachineResult,
-} from '../core'
+} from '../dispatch'
 
 export type MS = Record<string, AnyMachine>
 

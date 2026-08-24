@@ -1,7 +1,10 @@
 import { fromInit } from '../../functions/arguments/init'
-import { noop } from '../../functions/basics'
 import { tag3 } from '../../tags/tag'
-import { InferMachineEventIn, InferMachineEventOut } from '../core'
+import {
+	dispatchMachine,
+	InferMachineEventIn,
+	InferMachineEventOut,
+} from '../dispatch'
 import { directMachine } from './direct'
 import { sliceMachine } from './sliceMachine'
 
@@ -49,7 +52,7 @@ describe('sliceMachine', () => {
 		}>()
 		expect(s1).toEqual({ a: { count: 1 }, b: { count: 2 } })
 
-		const s2 = machine.reduce(tag3('a', 'inc', 6), s1, noop)
+		const s2 = dispatchMachine(machine, tag3('a', 'inc', 6), s1, vi.fn())
 		expect(s2).toEqual({ a: { count: 7 }, b: { count: 2 } })
 		expect(machine.result?.(s2)).toEqual({ a: 8, b: 3 })
 	})

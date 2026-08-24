@@ -3,12 +3,14 @@ import { id } from '../../functions/basics'
 import { Tags } from '../../tags/types'
 import { Prettify } from '../../types'
 import {
+	dispatchMachine,
 	InferMachineEventIn,
 	InferMachineProps,
 	InferMachineState,
-} from '../core'
+	Machine,
+	MachineHandlers,
+} from '../dispatch'
 import { EvOut, MapResult, MS, Result } from './_types'
-import { baseMachine } from './base'
 
 // all props key that can be undefined are optional
 type Props<M extends MS> = Prettify<
@@ -40,22 +42,27 @@ export function sliceMachine<
 		result?: MapResult<M> & R
 	},
 ) {
-	return baseMachine<EvOut<M>>()<EvIn<M>, State<M>, Props<M>, Result<M, R>>(
-		(p) => {
+	const handlers = Object.fromEntries(
+		Object.entries(ms).map(([key, machine]) => [
+			key,
+			(
+				event: Tags<InferMachineEventIn<typeof machine>>,
+				state: State<M>,
+				send: any,
+			) => ({
+				...state,
+				[key]: dispatchMachine(machine, event, state[key], send),
+			}),
+		]),
+	) as unknown as MachineHandlers<EvIn<M>, State<M>, EvOut<M>>
+	return {
+		handlers,
+		init: (p) => {
 			const res = {} as any
-			for (const [k, v] of Object.entries(ms)) {
-				res[k] = fromInit(v.init, p[k])
-			}
+			for (const [k, v] of Object.entries(ms)) res[k] = fromInit(v.init, p[k])
 			return res
 		},
-		(event: any, state, send: any) => {
-			const res = {} as any
-			for (const [k, v] of Object.entries(ms))
-				res[k] =
-					event.type === k ? v.reduce(event.payload, state[k], send) : state[k]
-			return res
-		},
-		(state) => {
+		result: (state) => {
 			const res = {} as any
 			for (const [k, v] of Object.entries(ms)) {
 				const res0 = v.result ? v.result(state[k]) : id
@@ -63,5 +70,5 @@ export function sliceMachine<
 			}
 			return res
 		},
-	)
+	} as Machine<Props<M>, EvIn<M>, State<M>, Result<M, R>, EvOut<M>>
 }

@@ -30,7 +30,11 @@ export type FromTags<T extends AnyTag> = Prettify<{
 	[K in TypeIn<T>]: PayloadOf<T, K>
 }>
 
-type NonUnderscore<S> = S extends `_${string}` ? never : S
+export type PublicKey<K> = K extends string
+	? K extends `_${string}`
+		? never
+		: K
+	: K
 export type PublicTag<E> = E extends { type: string }
-	? E & { type: NonUnderscore<E['type']> }
+	? E & { type: PublicKey<E['type']> }
 	: E

@@ -1,4 +1,4 @@
-import { directMachine, Tags } from '@funtoyz/core'
+import { directMachine } from '@funtoyz/core'
 import { act, renderHook } from '@testing-library/react'
 
 import { useMachine } from './useMachine'
@@ -6,10 +6,10 @@ import { useMachine } from './useMachine'
 describe('useMachine', () => {
 	// issue with testing-library and latest react
 	test.skip('onSend map dispatches to the matching tag handler', async () => {
-		type EventOut = Tags<{
+		type EventOut = {
 			panic: void
 			toast: string
-		}>
+		}
 
 		const machine = directMachine<EventOut>()(0, {
 			emit: (_: void, n: number, send) => {

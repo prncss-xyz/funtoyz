@@ -1,8 +1,7 @@
 import { Init } from '../../functions/arguments/init'
 import { Empty } from '../../objects/types'
 import { Tags } from '../../tags/types'
-import { Machine } from '../core'
-import { baseMachine } from './base'
+import { Machine, MachineHandlers } from '../dispatch'
 
 export function modalMachine<E extends object = Empty>() {
 	return function <
@@ -14,10 +13,10 @@ export function modalMachine<E extends object = Empty>() {
 		init: Init<Tags<State>, [Props]>,
 		states: {
 			[S in keyof State]: Partial<{
-				[E in keyof EventIn]: (
-					event: EventIn[E],
+				[K in keyof EventIn]: (
+					event: EventIn[K],
 					state: State[S],
-					send: E,
+					send: (event: Tags<E>) => void,
 				) => Tags<State> | null | undefined | void
 			}>
 		},
@@ -25,17 +24,30 @@ export function modalMachine<E extends object = Empty>() {
 			[S in keyof State]: (state: State[S]) => Result
 		},
 	): Machine<Props, EventIn, Tags<State>, Result, E> {
-		return baseMachine<E>()<EventIn, Tags<State>, Props, Result>(
+		const eventTypes = new Set(
+			Object.values(states).flatMap((handlers) =>
+				Object.keys(handlers as object),
+			),
+		)
+		const handlers = Object.fromEntries(
+			[...eventTypes].map((type) => [
+				type,
+				(
+					payload: unknown,
+					state: Tags<State>,
+					send: (event: Tags<E>) => void,
+				) => {
+					const handler = (states as any)[state.type][type]
+					return handler?.(payload, state.payload, send) ?? state
+				},
+			]),
+		) as MachineHandlers<EventIn, Tags<State>, E>
+		return {
+			handlers,
 			init,
-			(ev, state, send) => {
-				const s = (states as any)[state.type]
-				const handler = s[ev.type]
-				if (!handler) return state
-				return handler(ev.payload, state.payload, send) ?? state
-			},
-			result
+			result: result
 				? (state) => (result as any)[state.type](state.payload)
 				: undefined,
-		)
+		}
 	}
 }

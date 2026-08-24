@@ -1,86 +1,76 @@
 import {
-	AnyTag,
 	forbidden,
 	fromInit,
 	isFunction,
 	type Machine,
 	machineOverState,
 	PayloadOf,
+	type Tags,
 	TypeIn,
 } from '@funtoyz/core'
 import { useState } from 'react'
 
-type Handlers<EventOut> =
-	| ((e: EventOut) => void)
-	| (EventOut extends AnyTag
-			? { [T in TypeIn<EventOut>]: (event: PayloadOf<EventOut, T>) => void }
-			: never)
+type Handlers<EventOut extends object> =
+	| ((event: Tags<EventOut>) => void)
+	| {
+			[T in TypeIn<Tags<EventOut>>]: (
+				event: PayloadOf<Tags<EventOut>, T>,
+			) => void
+	  }
 
-function fromHandlers<EventOut>(
+function fromHandlers<EventOut extends object>(
 	handlers?: Handlers<EventOut>,
-): (event: EventOut) => void {
+): (event: Tags<EventOut>) => void {
 	if (handlers === undefined) return forbidden as never
 	if (isFunction(handlers)) return handlers
-	return function (event: EventOut) {
-		;(handlers as any)[(event as any).type]((event as any).payload)
-	}
+	return (event) => (handlers as any)[event.type](event.payload)
 }
 
-export function useMachine<
-	State,
-	EventIn extends AnyTag = State & AnyTag,
-	Result = State,
->(
+export function useMachine<State, EventIn extends object, Result = State>(
 	machine: Machine<void, EventIn, State, Result>,
 	param?: void,
 ): {
-	disabled: (event: EventIn) => boolean
-	next: (event: EventIn) => Result
+	disabled: (event: Tags<EventIn>) => boolean
+	next: (event: Tags<EventIn>) => Result
 	result: Result
-	send: (event: EventIn) => void
+	send: (event: Tags<EventIn>) => void
 }
-export function useMachine<
-	Prop,
-	State,
-	EventIn extends AnyTag = State & AnyTag,
-	Result = State,
->(
+export function useMachine<Prop, State, EventIn extends object, Result = State>(
 	machine: Machine<Prop, EventIn, State, Result>,
 	param: Prop,
 ): {
-	disabled: (event: EventIn) => boolean
-	next: (event: EventIn) => Result
+	disabled: (event: Tags<EventIn>) => boolean
+	next: (event: Tags<EventIn>) => Result
 	result: Result
-	send: (event: EventIn) => void
+	send: (event: Tags<EventIn>) => void
 }
 export function useMachine<
 	Prop,
 	State,
-	EventOut,
-	EventIn extends AnyTag = State & AnyTag,
+	EventOut extends object,
+	EventIn extends object,
 	Result = State,
 >(
 	machine: Machine<Prop, EventIn, State, Result, EventOut>,
 	param: Prop,
 	onSend: Handlers<EventOut>,
 ): {
-	disabled: (event: EventIn) => boolean
-	next: (event: EventIn) => Result
+	disabled: (event: Tags<EventIn>) => boolean
+	next: (event: Tags<EventIn>) => Result
 	result: Result
-	send: (event: EventIn) => void
+	send: (event: Tags<EventIn>) => void
 }
 export function useMachine<
 	Prop,
 	State,
-	EventIn extends AnyTag,
+	EventIn extends object,
 	Result,
-	EventOut,
+	EventOut extends object,
 >(
 	machine: Machine<Prop, EventIn, State, Result, EventOut>,
 	param: Prop,
 	onSend?: Handlers<EventOut>,
 ) {
 	const [state, setState] = useState(() => fromInit(machine.init, param))
-	const h = fromHandlers(onSend)
-	return machineOverState(machine as never, state, setState, h)
+	return machineOverState(machine, state, setState, fromHandlers(onSend))
 }

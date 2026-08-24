@@ -1,5 +1,5 @@
-import { toExhaustive } from '../../assertions'
 import { tag } from '../../tags/tag'
+import { dispatchMachine } from '../dispatch'
 import { modalMachine } from './modal'
 
 type Events = {
@@ -28,19 +28,29 @@ describe('machines/factories/modal', () => {
 		})
 
 		// Idle -> Start
-		const s1 = machine.reduce(tag('start'), tag('idle'), toExhaustive)
+		const s1 = dispatchMachine(machine, tag('start'), tag('idle'), vi.fn())
 		expect(s1).toEqual(tag('running', 0))
 
 		// Running -> Tick
-		const s2 = machine.reduce(tag('tick'), tag('running', 10), toExhaustive)
+		const s2 = dispatchMachine(
+			machine,
+			tag('tick'),
+			tag('running', 10),
+			vi.fn(),
+		)
 		expect(s2).toEqual(tag('running', 11))
 
 		// Running -> Stop
-		const s3 = machine.reduce(tag('stop'), tag('running', 20), toExhaustive)
+		const s3 = dispatchMachine(
+			machine,
+			tag('stop'),
+			tag('running', 20),
+			vi.fn(),
+		)
 		expect(s3).toEqual(tag('idle'))
 
 		// No handler
-		const s4 = machine.reduce(tag('tick'), tag('idle'), toExhaustive)
+		const s4 = dispatchMachine(machine, tag('tick'), tag('idle'), vi.fn())
 		expect(s4).toEqual(tag('idle'))
 	})
 
